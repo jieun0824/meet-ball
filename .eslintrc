@@ -2,7 +2,7 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "linebreak-style": ["warn", "unix"],
-    "quotes": ["warn", "single"],
+    // "quotes": ["warn", "single"],
     "semi": ["off", "always"],
     "no-unused-vars": ["warn"],
     // "no-console": "error",
