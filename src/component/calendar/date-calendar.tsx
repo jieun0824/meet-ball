@@ -2,7 +2,7 @@
 import * as React from 'react';
 import dayjs from 'dayjs';
 import { useState, useEffect } from 'react';
-import { LeftIcon, RightIcon } from '../../../public/icon/icon';
+import { LeftIcon, RightIcon } from '@/component/icon';
 import CalenderBody from './calendar-body';
 
 const DateCalender = () => {
