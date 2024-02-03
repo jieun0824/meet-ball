@@ -10,8 +10,8 @@ export default function Layout({
           <Image
             src="/icon/logo.png"
             alt="main logo"
-            layout="fill"
-            objectFit="cover"
+            fill
+            className="object-cover"
           />
         </div>
         <div className="relative w-1/10">
