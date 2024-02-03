@@ -3,9 +3,7 @@ import * as React from 'react';
 import dayjs from 'dayjs';
 import { useState, useEffect } from 'react';
 import { LeftIcon, RightIcon } from '../../../public/icon/icon';
-
 import CalenderBody from './calendar-body';
-import CalendarHeader from './calendar-day';
 
 const DateCalender = () => {
   const currentDay = dayjs();
@@ -41,22 +39,17 @@ const DateCalender = () => {
 
   return (
     <div className="">
-      <div className="flex justify-between">
-        <span>
-          {dayjs(selectedDay).year() +
-            '년 ' +
-            (dayjs(selectedDay).month() + 1) +
-            '월'}
-        </span>
-        <div className="flex">
+      <div className="">
+        <span>{dayjs(selectedDay).format('YYYY년 MM월')}</span>
+        <div className="flex justify-evenly">
           <LeftIcon onClick={handlePrevMonth} />
           <RightIcon onClick={handleNextMonth} />
         </div>
       </div>
-      <div>{components}</div>
-      <div>
+      <div className="bg-cardColor w-full p-4">{components}</div>
+      {/* <div>
         <span>{selectedDay}</span>
-      </div>
+      </div> */}
     </div>
   );
 };

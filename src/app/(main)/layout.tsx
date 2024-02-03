@@ -14,7 +14,7 @@ export default function Layout({
             objectFit="cover"
           />
         </div>
-        <div className="relative w-1/10 ">
+        <div className="relative w-1/10">
           <Image
             src="/icon/profile.svg"
             alt="profile logo"
@@ -23,7 +23,7 @@ export default function Layout({
           />
         </div>
       </header>
-      <div className="relative w-screen h-screen">{children}</div>
+      <div className="w-dvw h-dvh">{children}</div>
     </>
   );
 }

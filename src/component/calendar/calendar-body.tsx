@@ -35,10 +35,7 @@ const CalenderBody = (
       {row.map((date, colIndex) => (
         <td key={`${date || ''}${colIndex}`}>
           {date && (
-            <div
-              onClick={() => handleSelectDate(date)}
-              className="flex justify-center items-center cursor-pointer"
-            >
+            <div onClick={() => handleSelectDate(date)} className="">
               <CalenderBtn
                 isSelected={selectedDay === date}
                 date={dayjs(date).date()}
@@ -51,7 +48,7 @@ const CalenderBody = (
   ));
 
   return (
-    <table className="calender-table">
+    <table>
       <tbody>
         <CalendarDay />
         {content}

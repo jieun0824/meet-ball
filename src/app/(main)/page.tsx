@@ -3,5 +3,9 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 
 export default function MainPage() {
-  return <DateCalender />;
+  return (
+    <div className="flex justify-center items-center">
+      <DateCalender />
+    </div>
+  );
 }
