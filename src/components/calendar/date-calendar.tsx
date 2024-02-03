@@ -2,10 +2,10 @@
 import * as React from 'react';
 import dayjs from 'dayjs';
 import { useState, useEffect } from 'react';
-import { LeftIcon, RightIcon } from '../icon';
+import { LeftIcon, RightIcon } from '@/components/icon';
 import CalenderBody from './calendar-body';
 
-const DateCalender = () => {
+export default function DateCalender() {
   const currentDay = dayjs();
   const [selectedDay, setSelectedDay] = useState<string>(
     currentDay.format('YYYY-MM-DD')
@@ -37,19 +37,24 @@ const DateCalender = () => {
 
   return (
     <div className="">
-      <div className="">
-        <span>{dayjs(selectedDay).format('YYYY년 MM월')}</span>
-        <div className="flex justify-evenly">
-          <LeftIcon onClick={handlePrevMonth} />
-          <RightIcon onClick={handleNextMonth} />
+      <div className="flex justify-between pb-7 pt-2 items-center">
+        <span className="text-2xl font-bold">
+          {dayjs(selectedDay).format('YYYY년 MM월')}
+        </span>
+        <div className="flex">
+          <LeftIcon onClick={handlePrevMonth} size={23} />
+          <RightIcon onClick={handleNextMonth} size={23} />
         </div>
       </div>
-      <CalenderBody
-        selectedDay={selectedDay}
-        handleSelectDate={handleSelectDate}
-      />
+      <div className="bg-cardColor w-full p-6 rounded-lg">
+        <CalenderBody
+          selectedDay={selectedDay}
+          handleSelectDate={handleSelectDate}
+        />
+      </div>
+      {/* <div>
+        <span>{selectedDay}</span>
+      </div> */}
     </div>
   );
-};
-
-export default DateCalender;
+}

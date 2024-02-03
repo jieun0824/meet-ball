@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="w-dvw h-dvh bg-bgColor">{children}</div>
+        <div className="w-dvw h-dvh bg-bgColor p-2">{children}</div>
       </body>
     </html>
   );

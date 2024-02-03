@@ -1,16 +1,16 @@
 'use client';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import CalenderBtn from './calendar-btn';
 import CalendarDay from './calendar-day';
 
-const CalenderBody = ({
+export default function CalenderBody({
   selectedDay,
   handleSelectDate,
 }: {
   selectedDay: string;
   handleSelectDate: (date: string) => void;
-}) => {
+}) {
   const initArr = (firstDay: number, daysInMonth: number) => {
     return Array.from({ length: firstDay + daysInMonth }, (_, i) => {
       const currentDate = dayjs(selectedDay)
@@ -36,9 +36,9 @@ const CalenderBody = ({
   const content = rows.map((row, rowIndex) => (
     <tr key={rowIndex}>
       {row.map((date, colIndex) => (
-        <td key={`${date || ''}${colIndex}`}>
+        <td key={`${date || ''}${colIndex}`} className="p-1">
           {date && (
-            <div onClick={() => handleSelectDate(date)}>
+            <div onClick={() => handleSelectDate(date)} className="">
               <CalenderBtn
                 isSelected={selectedDay === date}
                 date={dayjs(date).date()}
@@ -51,15 +51,11 @@ const CalenderBody = ({
   ));
 
   return (
-    <div className="bg-cardColor w-full p-4 rounded-lg">
-      <table className="table-auto">
-        <tbody>
-          <CalendarDay />
-          {content}
-        </tbody>
-      </table>
-    </div>
+    <table>
+      <tbody>
+        <CalendarDay />
+        {content}
+      </tbody>
+    </table>
   );
-};
-
-export default CalenderBody;
+}
