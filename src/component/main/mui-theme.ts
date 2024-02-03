@@ -10,14 +10,21 @@ const CalendarTheme = (theme: any) =>
             color: 'white',
             borderRadius: 2,
             borderWidth: 0,
-            border: '0px solid',
           },
         },
       },
       MuiDayCalendar: {
         styleOverrides: {
           weekDayLabel: {
-            color: 'white',
+            color: '#20ECC7',
+          },
+          root: {
+            height: '100%',
+            backgroundColor: '#3C3F45',
+            borderRadius: 5,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContents: 'center',
           },
         },
       },
@@ -25,6 +32,10 @@ const CalendarTheme = (theme: any) =>
         styleOverrides: {
           root: {
             color: 'white',
+            '&.Mui-selected': {
+              backgroundColor: '#20ECC7 !important',
+              border: 'none',
+            },
           },
         },
       },
