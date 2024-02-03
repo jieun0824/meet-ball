@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { LeftIcon, RightIcon } from '@/components/icon';
 import CalenderBody from './calendar-body';
 
-const DateCalender = () => {
+export default function DateCalender() {
   const currentDay = dayjs();
   const [selectedDay, setSelectedDay] = useState<string>(
     currentDay.format('YYYY-MM-DD')
@@ -38,7 +38,9 @@ const DateCalender = () => {
   return (
     <div className="">
       <div className="">
-        <span className="text-pointColor">{dayjs(selectedDay).format('YYYY년 MM월')}</span>
+        <span className="text-pointColor">
+          {dayjs(selectedDay).format('YYYY년 MM월')}
+        </span>
         <div className="flex justify-evenly">
           <LeftIcon onClick={handlePrevMonth} />
           <RightIcon onClick={handleNextMonth} />
@@ -55,6 +57,4 @@ const DateCalender = () => {
       </div> */}
     </div>
   );
-};
-
-export default DateCalender;
+}
