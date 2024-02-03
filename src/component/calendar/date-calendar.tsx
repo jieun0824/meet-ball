@@ -2,7 +2,7 @@
 import * as React from 'react';
 import dayjs from 'dayjs';
 import { useState, useEffect } from 'react';
-import { LeftIcon, RightIcon } from '../../../public/icon/icon';
+import { LeftIcon, RightIcon } from '../icon';
 import CalenderBody from './calendar-body';
 
 const DateCalender = () => {
@@ -18,8 +18,6 @@ const DateCalender = () => {
   useEffect(() => {
     console.log(selectedDay);
   }, [selectedDay]);
-
-  const components = CalenderBody(selectedDay, handleSelectDate);
 
   const handlePrevMonth = () => {
     const newDate = dayjs(selectedDay)
@@ -46,10 +44,10 @@ const DateCalender = () => {
           <RightIcon onClick={handleNextMonth} />
         </div>
       </div>
-      <div className="bg-cardColor w-full p-4">{components}</div>
-      {/* <div>
-        <span>{selectedDay}</span>
-      </div> */}
+      <CalenderBody
+        selectedDay={selectedDay}
+        handleSelectDate={handleSelectDate}
+      />
     </div>
   );
 };

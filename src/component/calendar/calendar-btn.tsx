@@ -8,8 +8,8 @@ const CalenderBtn = ({
 }) => {
   return (
     <div
-      className={`flex justify-center items-center w-8 h-8 border-white border rounded ${
-        isSelected && 'bg-white text-black'
+      className={`cursor-pointer flex justify-center items-center w-8 h-8 rounded-2xl ${
+        isSelected && 'bg-pointColor'
       }`}
     >
       {date}
