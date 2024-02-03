@@ -1,4 +1,4 @@
-import DateCalender from '@/component/calendar/date-calendar';
+import DateCalender from '@/components/calendar/date-calendar';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 

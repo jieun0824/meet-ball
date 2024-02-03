@@ -4,7 +4,7 @@ export default function CalendarDay() {
   return (
     <tr>
       {day.map((a, i) => (
-        <th key={a} className="text-pointColor">
+        <th key={a} className="text-sky-500">
           {a}
         </th>
       ))}

@@ -4,10 +4,13 @@ import { useEffect, useState } from 'react';
 import CalenderBtn from './calendar-btn';
 import CalendarDay from './calendar-day';
 
-const CalenderBody = (
-  selectedDay: string,
-  handleSelectDate: (date: string) => void
-) => {
+const CalenderBody = ({
+  selectedDay,
+  handleSelectDate,
+}: {
+  selectedDay: string;
+  handleSelectDate: (date: string) => void;
+}) => {
   const initArr = (firstDay: number, daysInMonth: number) => {
     return Array.from({ length: firstDay + daysInMonth }, (_, i) => {
       const currentDate = dayjs(selectedDay)

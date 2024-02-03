@@ -2,7 +2,7 @@
 import * as React from 'react';
 import dayjs from 'dayjs';
 import { useState, useEffect } from 'react';
-import { LeftIcon, RightIcon } from '@/component/icon';
+import { LeftIcon, RightIcon } from '@/components/icon';
 import CalenderBody from './calendar-body';
 
 const DateCalender = () => {
@@ -18,8 +18,6 @@ const DateCalender = () => {
   useEffect(() => {
     console.log(selectedDay);
   }, [selectedDay]);
-
-  const components = CalenderBody(selectedDay, handleSelectDate);
 
   const handlePrevMonth = () => {
     const newDate = dayjs(selectedDay)
@@ -40,13 +38,18 @@ const DateCalender = () => {
   return (
     <div className="">
       <div className="">
-        <span>{dayjs(selectedDay).format('YYYY년 MM월')}</span>
+        <span className="text-pointColor">{dayjs(selectedDay).format('YYYY년 MM월')}</span>
         <div className="flex justify-evenly">
           <LeftIcon onClick={handlePrevMonth} />
           <RightIcon onClick={handleNextMonth} />
         </div>
       </div>
-      <div className="bg-cardColor w-full p-4">{components}</div>
+      <div className="bg-cardColor w-full p-4">
+        <CalenderBody
+          selectedDay={selectedDay}
+          handleSelectDate={handleSelectDate}
+        />
+      </div>
       {/* <div>
         <span>{selectedDay}</span>
       </div> */}
