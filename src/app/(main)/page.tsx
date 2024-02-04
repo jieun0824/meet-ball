@@ -1,15 +1,14 @@
-import DateCalender from '@/components/calendar/date-calendar';
 import ModeComponent from '@/components/calendar/mode-component';
-import WeekCalendar from '@/components/calendar/week-calendar';
 import EventButton from '@/components/button/button';
-import dayjs from 'dayjs';
-import { useState } from 'react';
+import MainCarousel from '@/components/card/main-carousel';
 
 export default function MainPage() {
   return (
     <div className="flex justify-center items-center flex-col">
       <ModeComponent />
       <EventButton title={'+미트볼 생성하기'} />
+      <MainCarousel title={'생성한 이벤트'} />
+      <MainCarousel title={'참여중인 이벤트'} />
     </div>
   );
 }

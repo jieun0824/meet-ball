@@ -12,7 +12,7 @@ export default function ModeButton({
   return (
     <button
       onClick={modeChange}
-      className={`rounded-xl pr-4 pl-4 pt-1 pb-1 opacity-45 ${mode == title && 'bg-[#353945] opacity-100'}`}
+      className={`rounded-xl pr-4 pl-4 pt-1 pb-1 ${mode == title ? 'bg-[#353945] opacity-100' : 'opacity-45'}`}
     >
       {title}
     </button>

@@ -9,8 +9,8 @@ export function DateCalenderBtn({
 }) {
   return (
     <div
-      className={`cursor-pointer flex justify-center items-center w-8 h-8 rounded-2xl ${
-        (isSelected && 'bg-pointColor') || (isToday && 'bg-gray-500')
+      className={`cursor-pointer flex justify-center items-center w-8 h-8 rounded-2xl  hover:bg-gray-400 ${
+        (isSelected && '!bg-pointColor') || (isToday && 'bg-gray-500')
       }`}
     >
       {date}

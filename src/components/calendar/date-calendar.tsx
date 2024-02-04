@@ -4,25 +4,15 @@ import dayjs from 'dayjs';
 import { useState, useEffect } from 'react';
 import { LeftIcon, RightIcon } from '@/components/icon';
 import CalenderBody from './calendar-body';
+import useMultiSelect from '@/hooks/useMultiSelect';
 
 export default function DateCalender() {
   const currentDay = dayjs();
   const [nowDate, setNowDate] = useState<string>(
     currentDay.format('YYYY-MM-DD')
   );
-  const [selectedDate, setSelectedDate] = useState<string[]>([]);
-
-  //select multiple dates
-  const handleSelectedDate = (date: string) => {
-    if (selectedDate.includes(date)) {
-      const newArr = selectedDate.filter((a, i) => {
-        return a != date;
-      });
-      setSelectedDate(newArr);
-    } else {
-      setSelectedDate([...selectedDate, date]);
-    }
-  };
+  const { selected: selectedDate, handleSelected: handleSelectedDate } =
+    useMultiSelect<string[]>([]);
 
   useEffect(() => {
     console.log(nowDate);
