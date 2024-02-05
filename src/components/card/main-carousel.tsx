@@ -3,8 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import MainCard from './main-card';
 import useCarousel from '@/hooks/useCarousel';
 import { CarouselIndexIcon } from '../icon';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
 
 export default function MainCarousel({ title }: { title: string }) {
   const data = [
