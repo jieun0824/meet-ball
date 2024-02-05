@@ -32,7 +32,7 @@ export default function MainCarousel({ title }: { title: string }) {
   }, [currentSlide]);
 
   return (
-    <div className="mt-8 w-96 h-72 overflow-hidden relative">
+    <div className="mt-8 w-80 h-72 overflow-hidden relative">
       <div className="mb-[20px]">{title}</div>
       <div
         className="grid grid-cols-3 gap-[400px]"

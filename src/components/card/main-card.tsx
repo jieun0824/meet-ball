@@ -2,17 +2,23 @@
 import { useRef } from 'react';
 import { ClockIcon, MoreIcon, PeopleIcon } from '../icon';
 
+type mainCardProps = {
+  meetName: string;
+  description: string;
+  meetTime: string;
+  peopleInfo: string;
+  num: number;
+};
+
 export default function MainCard({
   meetName,
   description,
   meetTime,
   peopleInfo,
   num,
-}: any) {
+}: mainCardProps) {
   return (
-    <div
-      className={`bg-pointColor p-8 w-80 rounded-2xl text-black shadow-2xl mr-10 ml-10`}
-    >
+    <div className={`bg-pointColor p-8 w-80 rounded-2xl text-black shadow-2xl`}>
       <div className="flex justify-between items-center mb-3">
         <h1 className="text-lg font-semibold">{meetName}</h1>
         <MoreIcon size={24} />

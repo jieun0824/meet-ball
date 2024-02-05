@@ -6,7 +6,7 @@ export default function MainPage() {
   return (
     <div className="flex justify-center items-center flex-col">
       <ModeComponent />
-      <EventButton title={'+미트볼 생성하기'} />
+      <EventButton title={'🧆 미트볼 굴리기'} />
       <MainCarousel title={'생성한 이벤트'} />
       <MainCarousel title={'참여중인 이벤트'} />
     </div>

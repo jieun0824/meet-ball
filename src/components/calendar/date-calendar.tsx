@@ -42,8 +42,16 @@ export default function DateCalender() {
           {dayjs(nowDate).format('YYYY년 MM월')}
         </span>
         <div className="flex">
-          <LeftIcon onClick={handlePrevMonth} size={23} />
-          <RightIcon onClick={handleNextMonth} size={23} />
+          <LeftIcon
+            onClick={handlePrevMonth}
+            size={23}
+            className="cursor-pointer"
+          />
+          <RightIcon
+            onClick={handleNextMonth}
+            size={23}
+            className="cursor-pointer"
+          />
         </div>
       </div>
       <div className="bg-cardColor w-full p-6 rounded-lg">
