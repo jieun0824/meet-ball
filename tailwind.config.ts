@@ -17,6 +17,8 @@ const config: Config = {
         bgColor: '#1E1E1E',
         pointColor: '#20ECC7',
         cardColor: '#3C3F45',
+        selectColor: '#3C3F45',
+        textColor: '#20ECC7',
       },
     },
   },
