@@ -10,7 +10,7 @@ export default function ModeComponent() {
     setMode(newMode);
   };
   return (
-    <div className="mt-8">
+    <div className="mt-8 w-80">
       <ModeButton
         title="정기"
         mode={mode}

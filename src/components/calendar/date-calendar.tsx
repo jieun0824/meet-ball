@@ -12,7 +12,7 @@ export default function DateCalender() {
     currentDay.format('YYYY-MM-DD')
   );
   const { selected: selectedDate, handleSelected: handleSelectedDate } =
-    useMultiSelect<string[]>([]);
+    useMultiSelect<string>([]);
 
   useEffect(() => {
     console.log(nowDate);
@@ -36,7 +36,7 @@ export default function DateCalender() {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <div className="flex justify-between pb-7 pt-2 items-center">
         <span className="text-2xl font-bold">
           {dayjs(nowDate).format('YYYY년 MM월')}

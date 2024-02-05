@@ -7,9 +7,12 @@ export default function MainCard({
   description,
   meetTime,
   peopleInfo,
+  num,
 }: any) {
   return (
-    <div className="bg-pointColor p-8 w-80 rounded-2xl text-black shadow-2xl">
+    <div
+      className={`bg-pointColor p-8 w-80 rounded-2xl text-black shadow-2xl mr-10 ml-10`}
+    >
       <div className="flex justify-between items-center mb-3">
         <h1 className="text-lg font-semibold">{meetName}</h1>
         <MoreIcon size={24} />

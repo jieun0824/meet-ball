@@ -10,7 +10,7 @@ export default function WeekCalendar() {
     useMultiSelect<string>([]);
 
   return (
-    <div className="bg-cardColor w-full p-6 rounded-lg flex mt-8">
+    <div className="bg-cardColor w-full p-6 rounded-lg flex mt-8 justify-evenly">
       {day.map((a, i) => (
         <div key={a} className="" onClick={() => handleSelectedDate(a)}>
           <WeekCalenderBtn day={a} isSelected={selectedDate.includes(a)} />

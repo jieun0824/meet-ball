@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 export default function useCarousel(totalSlides: number) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mouseDownClientX, setMouseDownClientX] = useState(0);
   const [mouseDownClientY, setMouseDownClientY] = useState(0);
   const [mouseUpClientX, setMouseUpClientX] = useState(0);
   const [mouseUpClientY, setMouseUpClientY] = useState(0);
+  const cardRef = useRef<HTMLDivElement>(null);
+
   const onMouseDown = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     setMouseDownClientX(e.clientX);
     setMouseDownClientY(e.clientY);
@@ -24,6 +26,14 @@ export default function useCarousel(totalSlides: number) {
     }
   };
 
+  const pageTransform: number[] = [0, 400, 800];
+
+  useEffect(() => {
+    cardRef.current!.style.transition = 'all 0.5s ease-in-out';
+    cardRef.current!.style.transform = `translateX(-${pageTransform[currentSlide]}px)`;
+    console.log(pageTransform[currentSlide]);
+  }, [currentSlide]);
+
   useEffect(() => {
     const dragSpaceX = Math.abs(mouseDownClientX - mouseUpClientX);
     const dragSpaceY = Math.abs(mouseDownClientY - mouseUpClientY);
@@ -37,5 +47,5 @@ export default function useCarousel(totalSlides: number) {
       }
     }
   }, [mouseUpClientX]);
-  return { currentSlide, onMouseDown, onMouseUp };
+  return { currentSlide, onMouseDown, onMouseUp, cardRef };
 }
