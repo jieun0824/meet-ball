@@ -1,7 +1,7 @@
-import NextAuth from "next-auth";
-import Google from "@auth/core/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "@/lib/prisma";
+import NextAuth from 'next-auth';
+import Google from '@auth/core/providers/google';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import prisma from '@/lib/prisma';
 
 export const {
   handlers: { GET, POST },
