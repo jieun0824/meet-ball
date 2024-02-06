@@ -9,4 +9,15 @@ export const {
 } = NextAuth({
   providers: [Google],
   adapter: PrismaAdapter(prisma),
+  callbacks: {
+    session: async ({ session, user }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: user.id,
+        },
+      };
+    },
+  },
 });
