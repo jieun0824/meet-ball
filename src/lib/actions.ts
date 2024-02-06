@@ -2,14 +2,12 @@
 
 import prisma from '@/lib/prisma';
 import { auth } from '@/auth';
-import { filterUserId } from '@/lib/security';
 
 export async function getMyInfo() {
   const session = await auth();
   if (!session) return null;
   const { user } = session;
   if (!user) return null;
-  filterUserId(user);
   return user;
 }
 
