@@ -5,7 +5,7 @@ import { ClockIcon, MoreIcon, PeopleIcon } from '../icon';
 type mainCardProps = {
   meetName: string;
   description: string;
-  meetTime: string;
+  meetTime: string[];
   participants: string[];
   num: number;
 };
@@ -17,6 +17,17 @@ export default function MainCard({
   participants,
   num,
 }: mainCardProps) {
+  function formatTimeRangeWithPeriod(timeRange: string[]) {
+    const formattedHour = (hour: string) =>
+      (parseInt(hour) % 12 || 12).toString();
+    const period = (hour: string) => (parseInt(hour) >= 12 ? 'pm' : 'am');
+    const [startHour, startMin, endHour, endMin] = timeRange;
+    const startTime = `${formattedHour(startHour)}:${startMin} ${period(startHour)}`;
+    const endTime = `${formattedHour(endHour)}:${endMin} ${period(endHour)}`;
+
+    return `${startTime}-${endTime}`;
+  }
+
   return (
     <div className={`bg-pointColor p-8 w-80 rounded-2xl text-black shadow-2xl`}>
       <div className="flex justify-between items-center mb-3">
@@ -27,7 +38,7 @@ export default function MainCard({
       <div>
         <div className="flex items-center mb-2">
           <ClockIcon color="black" className="mr-1" />
-          {meetTime}
+          <span>{formatTimeRangeWithPeriod(meetTime)}</span>
         </div>
         <div className="flex items-center">
           <PeopleIcon color="black" className="mr-1" />

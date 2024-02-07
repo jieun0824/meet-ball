@@ -6,12 +6,7 @@
     "manager_id": 1,
     "participants": ["홍권", "박태곤", "박지은"],
     "description": "회의입니다",
-    "time_range": {
-      "start-hour": 9,
-      "start-min": 30,
-      "end-hour": 17,
-      "end-min": 0
-    }
+    "time_range": ["9", "30", "17", "00"]
   },
   {
     "meet_id": 2,
@@ -20,12 +15,7 @@
     "manager_id": 1,
     "participants": ["홍권", "박태곤", "박지은"],
     "description": "회의입니다",
-    "time_range": {
-      "start-hour": 8,
-      "start-min": 30,
-      "end-hour": 17,
-      "end-min": 30
-    }
+    "time_range": ["8", "30", "17", "30"]
   },
   {
     "meet_id": 3,
@@ -34,12 +24,7 @@
     "manager_id": 1,
     "participants": ["홍권", "박태곤", "박지은"],
     "description": "회의입니다",
-    "time_range": {
-      "start-hour": 6,
-      "start-min": 0,
-      "end-hour": 21,
-      "end-min": 0
-    }
+    "time_range": ["6", "0", "21", "0"]
   },
   {
     "meet_id": 4,
@@ -48,11 +33,6 @@
     "manager_id": 1,
     "participants": ["홍권", "박태곤", "박지은"],
     "description": "회의입니다",
-    "time_range": {
-      "start-hour": 9,
-      "start-min": 30,
-      "end-hour": 5,
-      "end-min": 0
-    }
+    "time_range": ["9", "30", "5", "0"]
   }
 ]

@@ -11,8 +11,9 @@ type scheduleData = {
   manager_id: number;
   participants: string[];
   description: string;
-  time_range: object;
+  time_range: string[];
 };
+
 export default function MainCarousel({
   title,
   data,
@@ -40,7 +41,7 @@ export default function MainCarousel({
               key={`side_num_${i}`}
               meetName={schedule.title}
               description={schedule.description}
-              meetTime=""
+              meetTime={schedule.time_range}
               participants={schedule.participants}
               num={i}
             />

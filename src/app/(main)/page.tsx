@@ -3,7 +3,7 @@ import EventButton from '@/components/button/event-button';
 import MainCarousel from '@/components/card/main-carousel';
 
 async function fetchData() {
-  const res = await fetch('http://localhost:3001/api/meets', {
+  const res = await fetch('http://localhost:3000/api/meets', {
     next: { tags: ['schedules'] }, //for revalidating
   });
   const { schedules } = await res.json();
