@@ -15,7 +15,7 @@ export async function getMyInfo(): Promise<User> {
   }
 }
 
-export async function getMyManagingMeets(): Promise<Meet[] | null> {
+export async function getMyManagingMeets(): Promise<Meet[]> {
   try {
     const currentUser = await getCurrentUser();
     const meets = await prisma.meet.findMany({
@@ -30,7 +30,7 @@ export async function getMyManagingMeets(): Promise<Meet[] | null> {
   }
 }
 
-export async function getMyParticipatingMeets(): Promise<Meet[] | null> {
+export async function getMyParticipatingMeets(): Promise<Meet[]> {
   try {
     const currentUser = await getCurrentUser();
     const meets = (
@@ -58,7 +58,7 @@ export async function createMeet(
   name: string,
   description: string,
   dates: string[]
-): Promise<Meet | null> {
+): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
     const meet = await prisma.meet.create({
