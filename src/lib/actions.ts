@@ -8,7 +8,7 @@ export async function getMyInfo() {
   const session = await auth();
   if (!session) return null;
   const { user } = session;
-  if (!user) return null;
+  if (!user || !user.id) return null;
   return user;
 }
 
@@ -16,7 +16,7 @@ export async function getMyManagingMeets(): Promise<Meet[] | null> {
   const session = await auth();
   if (!session) return null;
   const { user } = session;
-  if (!user) return null;
+  if (!user || !user.id) return null;
   const meets = await prisma.meet.findMany({
     where: {
       managerId: user.id,
@@ -29,7 +29,7 @@ export async function getMyParticipatingMeets(): Promise<Meet[] | null> {
   const session = await auth();
   if (!session) return null;
   const { user } = session;
-  if (!user) return null;
+  if (!user || !user.id) return null;
   //   const meets = await prisma.meet.findMany({
   //     where: {
   //       participants: {
