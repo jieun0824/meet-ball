@@ -1,77 +1,82 @@
 'use server';
 
+import type { User } from 'next-auth';
 import type { Meet } from '@prisma/client';
 import prisma from '@/lib/prisma';
-import { auth } from '@/auth';
+import { getCurrentUser } from '@/lib/authentication';
 
-export async function getMyInfo() {
-  const session = await auth();
-  if (!session) return null;
-  const { user } = session;
-  if (!user || !user.id) return null;
-  return user;
+export async function getMyInfo(): Promise<User> {
+  try {
+    const currentUser = await getCurrentUser();
+    return currentUser;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 export async function getMyManagingMeets(): Promise<Meet[] | null> {
-  const session = await auth();
-  if (!session) return null;
-  const { user } = session;
-  if (!user || !user.id) return null;
-  const meets = await prisma.meet.findMany({
-    where: {
-      managerId: user.id,
-    },
-  });
-  return meets;
+  try {
+    const currentUser = await getCurrentUser();
+    const meets = await prisma.meet.findMany({
+      where: {
+        managerId: currentUser.id,
+      },
+    });
+    return meets;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 export async function getMyParticipatingMeets(): Promise<Meet[] | null> {
-  const session = await auth();
-  if (!session) return null;
-  const { user } = session;
-  if (!user || !user.id) return null;
-  //   const meets = await prisma.meet.findMany({
-  //     where: {
-  //       participants: {
-  //         some: {
-  //           userId: user.id,
-  //         },
-  //       },
-  //     },
-  //   });
-  const meets = (
-    await prisma.user.findUniqueOrThrow({
-      where: {
-        id: user.id,
-      },
-      include: {
-        participatingMeets: {
-          include: {
-            meet: true,
+  try {
+    const currentUser = await getCurrentUser();
+    const meets = (
+      await prisma.user.findUniqueOrThrow({
+        where: {
+          id: currentUser.id,
+        },
+        include: {
+          participatingMeets: {
+            include: {
+              meet: true,
+            },
           },
         },
-      },
-    })
-  ).participatingMeets.map(participatingMeet => participatingMeet.meet);
-  return meets;
+      })
+    ).participatingMeets.map(participatingMeet => participatingMeet.meet);
+    return meets;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 export async function createMeet(
   name: string,
   description: string,
   dates: string[]
-) {
-  const session = await auth();
-  if (!session) return null;
-  const { user } = session;
-  if (!user || !user.id) return null;
-  const meet = await prisma.meet.create({
-    data: {
-      name,
-      description,
-      dates,
-      managerId: user.id,
-    },
-  });
-  return meet;
+): Promise<Meet | null> {
+  try {
+    const currentUser = await getCurrentUser();
+    const meet = await prisma.meet.create({
+      data: {
+        name,
+        description,
+        dates,
+        managerId: currentUser.id,
+        participants: { // should involve itself as participant at first
+            create: {
+                userId: currentUser.id
+            }
+        }
+      },
+    });
+    return meet;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
