@@ -67,11 +67,13 @@ export async function createMeet(
         description,
         dates,
         managerId: currentUser.id,
-        participants: { // should involve itself as participant at first
-            create: {
-                userId: currentUser.id
-            }
-        }
+        participants: {
+          // should involve itself as participant at first
+          create: {
+            userId: currentUser.id,
+            hasAccepted: true, // should be true for this user by default
+          },
+        },
       },
     });
     return meet;
