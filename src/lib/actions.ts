@@ -1,5 +1,6 @@
 'use server';
 
+import type { Meet } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import { auth } from '@/auth';
 
@@ -11,7 +12,7 @@ export async function getMyInfo() {
   return user;
 }
 
-export async function getMyManagingMeets() {
+export async function getMyManagingMeets(): Promise<Meet[] | null> {
   const session = await auth();
   if (!session) return null;
   const { user } = session;
@@ -24,7 +25,7 @@ export async function getMyManagingMeets() {
   return meets;
 }
 
-export async function getMyParticipatingMeets() {
+export async function getMyParticipatingMeets(): Promise<Meet[] | null> {
   const session = await auth();
   if (!session) return null;
   const { user } = session;
@@ -38,11 +39,20 @@ export async function getMyParticipatingMeets() {
   //       },
   //     },
   //   });
-  const meets = await prisma.participantsOnMeets.findMany({
-    where: {
-      userId: user.id,
-    },
-  });
+  const meets = (
+    await prisma.user.findUniqueOrThrow({
+      where: {
+        id: user.id,
+      },
+      include: {
+        participatingMeets: {
+          include: {
+            meet: true,
+          },
+        },
+      },
+    })
+  ).participatingMeets.map(participatingMeet => participatingMeet.meet);
   return meets;
 }
 
