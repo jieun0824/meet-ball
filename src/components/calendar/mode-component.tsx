@@ -22,6 +22,7 @@ export default function ModeComponent() {
         modeChange={() => handleModeChange('일반')}
       />
       {mode == '정기' ? <WeekCalendar /> : <DateCalendar />}
+      {/* <Calendar /> */}
     </div>
   );
 }

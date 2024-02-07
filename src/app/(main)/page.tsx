@@ -1,5 +1,5 @@
 import ModeComponent from '@/components/calendar/mode-component';
-import EventButton from '@/components/button/button';
+import EventButton from '@/components/button/event-button';
 import MainCarousel from '@/components/card/main-carousel';
 
 export default function MainPage() {
