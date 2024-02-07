@@ -6,7 +6,7 @@ type mainCardProps = {
   meetName: string;
   description: string;
   meetTime: string;
-  peopleInfo: string;
+  participants: string[];
   num: number;
 };
 
@@ -14,7 +14,7 @@ export default function MainCard({
   meetName,
   description,
   meetTime,
-  peopleInfo,
+  participants,
   num,
 }: mainCardProps) {
   return (
@@ -31,7 +31,7 @@ export default function MainCard({
         </div>
         <div className="flex items-center">
           <PeopleIcon color="black" className="mr-1" />
-          {peopleInfo}
+          {participants.join(', ')}
         </div>
       </div>
     </div>

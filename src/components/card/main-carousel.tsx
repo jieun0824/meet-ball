@@ -4,28 +4,22 @@ import MainCard from './main-card';
 import useCarousel from '@/hooks/useCarousel';
 import { CarouselIndexIcon } from '../icon';
 
-export default function MainCarousel({ title }: { title: string }) {
-  const data = [
-    {
-      meetName: '회의1',
-      description: '회의1',
-      meetTime: '2023-01-23 - 2023-02-24',
-      peopleInfo: '홍권, 박지은, 박태곤',
-    },
-    {
-      meetName: '회의2',
-      description: '회의2',
-      meetTime: '2023-01-23 - 2023-02-24',
-      peopleInfo: '홍권, 박지은, 박태곤',
-    },
-    {
-      meetName: '회의3',
-      description: '회의3',
-      meetTime: '2023-01-23 - 2023-02-24',
-      peopleInfo: '홍권, 박지은, 박태곤',
-    },
-  ];
-
+type scheduleData = {
+  meet_id: number;
+  title: string;
+  manager: string;
+  manager_id: number;
+  participants: string[];
+  description: string;
+  time_range: object;
+};
+export default function MainCarousel({
+  title,
+  data,
+}: {
+  title: string;
+  data: [];
+}) {
   const { currentSlide, onMouseDown, onMouseUp, cardRef } = useCarousel(3);
   useEffect(() => {
     console.log(currentSlide);
@@ -40,14 +34,14 @@ export default function MainCarousel({ title }: { title: string }) {
         onMouseUp={onMouseUp}
         ref={cardRef}
       >
-        {data.map((a, i) => {
+        {data.map((schedule: scheduleData, i: number) => {
           return (
             <MainCard
               key={`side_num_${i}`}
-              meetName={a.meetName}
-              description={a.description}
-              meetTime={a.meetTime}
-              peopleInfo={a.peopleInfo}
+              meetName={schedule.title}
+              description={schedule.description}
+              meetTime=""
+              participants={schedule.participants}
               num={i}
             />
           );
