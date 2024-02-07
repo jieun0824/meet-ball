@@ -29,13 +29,18 @@ export async function getMyParticipatingMeets() {
   if (!session) return null;
   const { user } = session;
   if (!user) return null;
-  const meets = await prisma.meet.findMany({
+  //   const meets = await prisma.meet.findMany({
+  //     where: {
+  //       participants: {
+  //         some: {
+  //           userId: user.id,
+  //         },
+  //       },
+  //     },
+  //   });
+  const meets = await prisma.participantsOnMeets.findMany({
     where: {
-      participants: {
-        some: {
-          userId: user.id,
-        },
-      },
+      userId: user.id,
     },
   });
   return meets;
