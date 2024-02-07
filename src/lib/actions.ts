@@ -55,7 +55,7 @@ export async function createMeet(
   if (!session) return null;
   const { user } = session;
   if (!user || !user.id) return null;
-  const meets = await prisma.meet.create({
+  const meet = await prisma.meet.create({
     data: {
       name,
       description,
@@ -63,5 +63,5 @@ export async function createMeet(
       managerId: user.id,
     },
   });
-  return meets;
+  return meet;
 }
