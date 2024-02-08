@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { DayPicker } from 'react-day-picker';
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/button/button';
 import { LeftIcon, RightIcon } from '../icon';
 import { ko } from 'date-fns/locale';
 
@@ -29,18 +28,12 @@ function Calendar({
         caption: 'flex justify-between pt-1 relative items-center mb-8 z-12',
         caption_label: 'text-2xl font-bold',
         nav: 'space-x-1 flex items-center relative',
-        nav_button: '',
-        nav_button_previous: '',
-        nav_button_next: '',
         table: 'w-full border-collapse space-y-1',
         head_row: 'flex',
         head_cell: 'text-pointColor rounded-md w-9 font-bold text-[0.8rem]',
         row: 'flex w-full mt-2',
         cell: 'h-9 w-9 text-center text-sm p-0 relative',
-        day: cn(
-          buttonVariants({ variant: 'ghost' }),
-          'h-8 w-8 p-0 font-normal aria-selected:opacity-100 rounded-[50%]'
-        ),
+        day: 'h-8 w-8 p-0 font-normal aria-selected:opacity-100 rounded-[50%] hover:bg-gray-400',
         day_range_end: 'day-range-end',
         day_selected: '!bg-pointColor text-black hover:text-gray-50',
         day_today: 'bg-gray-500 text-gray-900',
