@@ -5,16 +5,16 @@ export default function Layout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
-      <header className="relative flex justify-around items-center top-0 left-0 w-screen h-[10%] bg-[#1E1E1E] shadow-2xl">
+      <header className="relative flex justify-around items-center top-0 left-0 w-dvw h-[10%] bg-[#1E1E1E] shadow-2xl">
         <div className="relative w-2/5 h-full mr-[40%]">
           <Image
             src="/icon/logo.png"
             alt="main logo"
-            layout="fill"
-            objectFit="cover"
+            fill
+            className="object-cover"
           />
         </div>
-        <div className="relative w-1/10 ">
+        <div className="relative w-1/10">
           <Image
             src="/icon/profile.svg"
             alt="profile logo"
@@ -23,7 +23,7 @@ export default function Layout({
           />
         </div>
       </header>
-      <div className="relative w-screen h-screen">{children}</div>
+      <div className="w-dvw h-dvh bg-bgColor">{children}</div>
     </>
   );
 }
