@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { SWRConfig } from 'swr';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,9 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="w-dvw h-[100vh] bg-bgColor p-2 overflow-hidden">
-          {children}
-        </div>
+        <div className="w-dvw h-dvh bg-bgColor p-2">{children}</div>
       </body>
     </html>
   );
