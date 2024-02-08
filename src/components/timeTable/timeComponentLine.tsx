@@ -1,17 +1,24 @@
 import TimeComponent from './timeComponent';
 
+type timeObjectOfDateType = {
+  [name: string]: Array<number>;
+};
+
+type timeOpacityType = {
+  [time: string]: number;
+};
 type timeComponentLineProps = {
-  Key: number;
-  isCheckedList: number[];
-  time: number;
-  startDate: Date;
+  timeObjectOfDate: timeObjectOfDateType;
+  date: Date;
+  startTimeNum: number;
+  endTimeNum: number;
 };
 
 export default function TimeComponentLine({
-  Key,
-  isCheckedList,
-  time,
-  startDate,
+  timeObjectOfDate,
+  date,
+  startTimeNum,
+  endTimeNum,
 }: timeComponentLineProps) {
   const dayStringList: Array<String> = [
     'Mon',
@@ -22,33 +29,41 @@ export default function TimeComponentLine({
     'Sat',
     'Sun',
   ];
-  const times: Array<number> = Array.from(
-    { length: time },
-    (_, index) => index + 1
-  );
 
-  const componentDate = new Date();
-  componentDate.setDate(startDate.getDate() + Key);
-  const componentDateNum: number = componentDate.getDate();
-  const dayString: String = dayStringList[componentDate.getDay()];
+  const componentDateNum: number = date.getDate();
+  const dayString: String = dayStringList[date.getDay()];
+
+  const scheduleOpacityOfTimeObject: timeOpacityType = {};
+  for (let i: number = startTimeNum; i < endTimeNum; i++) {
+    let count = 0;
+    for (const key in timeObjectOfDate) {
+      if (timeObjectOfDate[key].includes(i)) {
+        count++;
+      }
+    }
+    scheduleOpacityOfTimeObject[String(i)] = count;
+  }
 
   return (
     <div className="">
-      <div className="grid text-white w-[30px] place-items-center mb-2">
-        <p>{componentDateNum}</p>
-        <p>{dayString}</p>
+      <div className="grid text-white h-[48px] place-items-center mb-2">
+        <p className="text-sm">{componentDateNum}</p>
+        <p className="text-sm">{dayString}</p>
       </div>
-      {times.map(item => {
-        return (
-          <div key={item} className="">
-            <TimeComponent
-              Key={item}
-              isChecked={isCheckedList.includes(item)}
-              time={time}
-            ></TimeComponent>
-          </div>
-        );
-      })}
+      {Object.keys(scheduleOpacityOfTimeObject).map(
+        (timeIndex: string, index: number) => {
+          const opacity = scheduleOpacityOfTimeObject[timeIndex];
+          return (
+            <div key={index} className="">
+              <TimeComponent
+                timeIndex={parseInt(timeIndex)}
+                opacity={opacity}
+                endTimeNum={endTimeNum}
+              ></TimeComponent>
+            </div>
+          );
+        }
+      )}
     </div>
   );
 }

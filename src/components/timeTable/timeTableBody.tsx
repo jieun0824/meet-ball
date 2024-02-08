@@ -1,75 +1,69 @@
 import TimeComponentLine from './timeComponentLine';
 
+type timeObjectOfDateType = {
+  [name: string]: Array<number>;
+};
+type scheduledObjectType = {
+  [date: string]: timeObjectOfDateType;
+};
+
 type timeTableProps = {
-  startDate: Date;
-  endDate: Date;
-  time: number;
-  checkedList: number[];
+  scheduledObject: scheduledObjectType;
+  startTime: number;
+  endTime: number;
 };
-
-type resolvedCheckedListType = {
-  dateIndex: number;
-  timeIndex: number;
-};
-
-type indexedCheckedListType = {
-  dateIndex: number;
-  timeIndexList: Array<number>;
-};
-
 export default function TimeTableBody({
-  startDate,
-  endDate,
-  time,
-  checkedList,
+  scheduledObject,
+  startTime,
+  endTime,
 }: timeTableProps) {
-  // const resolvedCheckedList: Array<number>[] = Array.from(
-  //   { length: date },
-  //   () => Array(0)
-  // );
-  // for (const item of checkedList) {
-  //   const itemRow: number = item % time;
-  //   const itemCol: number = Math.floor(item / time);
-  //   resolvedCheckedList[itemCol].push(itemRow);
-  // }
-  const startDateNum = startDate.getDate();
-  const endDateNum = endDate.getDate();
-  const date = endDateNum - startDateNum + 1;
-  const resolvedCheckedList: Array<resolvedCheckedListType> = checkedList.map(
-    (item: number) => {
-      const itemRow: number = item % time;
-      const itemCol: number = Math.floor(item / time);
-      return { dateIndex: itemCol, timeIndex: itemRow };
-    }
+  const timeList = Array.from(
+    { length: endTime - startTime + 1 },
+    (_, index) => startTime + index
   );
 
-  const indexedCheckedList: Array<indexedCheckedListType> = [];
+  const dateKeys: Array<string> = scheduledObject
+    ? Object.keys(scheduledObject)
+    : [];
+  const dateLength = dateKeys.length;
 
-  for (let i: number = 0; i < date; i++) {
-    const temp: Array<number> = resolvedCheckedList
-      .filter((item: resolvedCheckedListType) => {
-        return item.dateIndex === i;
-      })
-      .map((item: resolvedCheckedListType) => {
-        return item.timeIndex;
-      });
-
-    indexedCheckedList.push({ dateIndex: i, timeIndexList: temp });
-  }
   return (
-    <div className="flex">
-      {indexedCheckedList.map((item: indexedCheckedListType, index: number) => {
-        return (
-          <div key={index}>
-            <TimeComponentLine
-              Key={item.dateIndex}
-              isCheckedList={item.timeIndexList}
-              time={time}
-              startDate={startDate}
-            ></TimeComponentLine>
-          </div>
-        );
-      })}
+    <div className="text-white flex">
+      <div className="w-[49px]">
+        <div className="h-[40px] mb-2">
+          <p>Week</p>
+        </div>
+        {timeList.map((time: number, index: number) => {
+          const tempHour = Math.floor(time / 2);
+          return (
+            <div key={index} className="h-[20px]">
+              {time % 2 === 0 && <p className="text-xs">{`${tempHour}:00`}</p>}
+            </div>
+          );
+        })}
+      </div>
+      <div className="flex">
+        {dateKeys.map((dateString: string, index: number) => {
+          const parts: Array<string> = dateString.split('-');
+          const tempDate: Date = new Date(
+            parseInt(parts[0]),
+            parseInt(parts[1]) - 1,
+            parseInt(parts[2])
+          );
+          const timeObjectOfDate: timeObjectOfDateType =
+            scheduledObject[dateString];
+          return (
+            <div key={index}>
+              <TimeComponentLine
+                timeObjectOfDate={timeObjectOfDate}
+                date={tempDate}
+                startTimeNum={startTime}
+                endTimeNum={endTime}
+              ></TimeComponentLine>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

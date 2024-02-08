@@ -1,43 +1,38 @@
 import TimeTableBody from '@/components/timeTable/timeTableBody';
 
 export default function MeetPage({ params }: { params: { meetId: string } }) {
-  // dummy date
-  const startDate = new Date();
-  const endDate = new Date();
-  endDate.setDate(startDate.getDate() + 2);
-
   // dummy time
-  const startTime: number = 14;
-  const endTime: number = 20;
-  const time: number = (endTime - startTime) / 0.5;
+  const dummyTimeTableDate = {
+    '2023-11-12': {
+      Taegon: [1, 2, 3, 5, 7, 8],
+      Kim: [2, 3, 4, 5, 6, 8],
+      John: [1, 2, 3, 4],
+      Tae: [2, 3],
+      Gon: [3],
+    },
+    '2023-11-13': {
+      Taegon: [1, 2, 3],
+      Kim: [2, 3, 4],
+    },
+  };
 
-  const timeList: Array<number> = Array.from(
-    { length: time },
-    (_, index) => index
-  );
+  const startTime: number = 0;
+  const endTime: number = 10;
   return (
-    <div className="flex text-white">
-      <div className="w-[50px]">
-        <div className="h-[48px] mb-2">
-          <p>Week</p>
+    <div className="grid place-items-center">
+      <div className="w-[301px] text-white mt-5 ">
+        <p className="text-2xl">회의 이름</p>
+        <div className="w-[301px] h-[48px] mt-4 items-center border-2 rounded-lg border-white">
+          <p className="">회의 설명 </p>
         </div>
-        {timeList.map((item: number, index: number) => {
-          const tempTime: number = startTime + 0.5 * item;
-          const tempHour: String = String(Math.floor(tempTime));
-          const tempMin: String = tempTime % 1 === 0.5 ? '30' : '00';
-          return (
-            <p className=" text-sm" key={index}>
-              {tempHour + ':' + tempMin}
-            </p>
-          );
-        })}
       </div>
-      <TimeTableBody
-        startDate={startDate}
-        endDate={endDate}
-        time={time}
-        checkedList={[1, 2, 10, 15]}
-      ></TimeTableBody>
+      <div className="">
+        <TimeTableBody
+          scheduledObject={dummyTimeTableDate}
+          startTime={startTime}
+          endTime={endTime}
+        ></TimeTableBody>
+      </div>
     </div>
   );
 }
