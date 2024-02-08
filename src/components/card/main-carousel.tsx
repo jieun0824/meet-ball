@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import MainCard from './main-card';
 import useCarousel from '@/hooks/useCarousel';
 import { CarouselIndexIcon } from '../icon';
+import { FaCircle } from 'react-icons/fa6';
 
 type scheduleData = {
   meet_id: number;
@@ -27,10 +28,10 @@ export default function MainCarousel({
   }, [currentSlide]);
 
   return (
-    <div className="mt-8 w-80 h-72 overflow-hidden relative">
+    <div className="mt-8 w-80 mb-4 overflow-hidden relative">
       <div className="mb-[20px]">{title}</div>
       <div
-        className="grid grid-cols-3 gap-[400px]"
+        className="grid grid-cols-3 gap-[400px] h-52"
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         ref={cardRef}
@@ -50,7 +51,7 @@ export default function MainCarousel({
       </div>
       <div className="flex justify-center p-4">
         <CarouselIndexIcon
-          className={`mr-2 ${currentSlide == 0 ? 'text-gray-400' : 'text-gray-700'}`}
+          className={`mr-2 top-2 ${currentSlide == 0 ? 'text-gray-400' : 'text-gray-700'}`}
           size={8}
         />
         <CarouselIndexIcon
