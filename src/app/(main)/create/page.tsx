@@ -1,3 +1,5 @@
+'use client';
+
 export default function CreatePage() {
   async function createMeet(formData: FormData) {
     'use server';
