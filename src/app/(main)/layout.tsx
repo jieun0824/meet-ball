@@ -23,7 +23,7 @@ export default function Layout({
           />
         </div>
       </header>
-      <div className="w-dvw h-dvh bg-bgColor">{children}</div>
+      <div className="w-dvw bg-bgColor">{children}</div>
     </>
   );
 }

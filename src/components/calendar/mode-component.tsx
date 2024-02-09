@@ -4,6 +4,7 @@ import ModeButton from '../button/mode-button';
 import DateCalendar from './date-calendar';
 import WeekCalendar from './week-calendar';
 import EventButton from '../button/event-button';
+import Link from 'next/link';
 
 export default function ModeComponent() {
   const [mode, setMode] = useState<string>('일반');
@@ -25,7 +26,7 @@ export default function ModeComponent() {
         />
       </div>
       {mode == '정기' ? <WeekCalendar /> : <DateCalendar />}
-      <EventButton title={'🧆 미트볼 굴리기'} />
+      <EventButton title={'🧆 미트볼 굴리기'} link={'/create'} />
     </div>
   );
 }
