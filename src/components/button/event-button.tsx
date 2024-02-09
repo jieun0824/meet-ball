@@ -1,18 +1,25 @@
-import Link from 'next/link';
+import { createDaysCookies } from '@/lib/actions';
+import { useTransition } from 'react';
 
 export default function EventButton({
   title,
-  link,
+  meetingDays,
 }: {
   title: string;
-  link: string;
+  meetingDays: string[] | Date[] | undefined;
 }) {
+  const [isPending, startTransition] = useTransition();
+
   return (
-    <Link
-      href={link}
-      className="pr-10 pl-10 pt-2 pb-2 m-4 rounded-lg bg-pointColor text-black flex justify-center active:bg-[#05957B] active:text-white"
+    <button
+      onClick={() => {
+        if (meetingDays != undefined) {
+          startTransition(() => createDaysCookies(meetingDays));
+        }
+      }}
+      className="cursor-pointer pr-10 pl-10 pt-2 pb-2 m-4 rounded-lg bg-pointColor text-black flex justify-center active:bg-[#05957B] active:text-white"
     >
       {title}
-    </Link>
+    </button>
   );
 }

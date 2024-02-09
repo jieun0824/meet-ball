@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers';
+
 export default function CreatePage() {
   async function createMeet(formData: FormData) {
     'use server';
@@ -11,6 +13,9 @@ export default function CreatePage() {
     const meetingStartMin = formData.get('meetingStartMin');
     const meetingEndHour = formData.get('meetingEndHour');
     const meetingEndMin = formData.get('meetingEndMin');
+    const meetingDays = cookies().get('days')
+      ? JSON.parse(cookies().get('days')!.value)
+      : [];
 
     console.log({
       meetingEndHour,
@@ -22,6 +27,7 @@ export default function CreatePage() {
       scheduleEndDate,
       scheduleEndHour,
       scheduleEndMin,
+      meetingDays,
     });
   }
 

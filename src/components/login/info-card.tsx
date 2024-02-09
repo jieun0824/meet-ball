@@ -1,8 +1,8 @@
 export default function InfoCard() {
   return (
     <>
-      <div className="w-80 flex flex-col justify-center items-center">
-        <div>
+      <div className="w-72 flex flex-col justify-center items-center bg-cardColor rounded-xl">
+        <div className="mb-4">
           <img
             draggable={false}
             src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Exploding%20Head.png"
@@ -13,8 +13,8 @@ export default function InfoCard() {
         </div>
         <span>언제 만나지? 머리 아픈 고민은 끝!</span>
       </div>
-      <div className="w-80 flex flex-col justify-center items-center">
-        <div>
+      <div className="w-72 flex flex-col justify-center items-center bg-cardColor rounded-xl">
+        <div className="mb-4">
           <img
             draggable={false}
             src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Eyes.png"
@@ -25,8 +25,8 @@ export default function InfoCard() {
         </div>
         <span>언제 만나지? 머리 아픈 고민은 끝!</span>
       </div>
-      <div className="w-80 flex flex-col justify-center items-center">
-        <div>
+      <div className="w-72 flex flex-col justify-center items-center bg-cardColor rounded-xl">
+        <div className="mb-4">
           <img
             draggable={false}
             src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Backhand%20Index%20Pointing%20Down.png"
