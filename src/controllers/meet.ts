@@ -51,6 +51,7 @@ export type CreateMeetArguments = {
 };
 
 export async function createMeet(args: CreateMeetArguments): Promise<Meet> {
+  const currentUser = await getCurrentUser();
   try {
     const meet = await prisma.meet.create({
       data: {
@@ -95,9 +96,10 @@ export async function getMeet(meetId: string): Promise<Meet> {
         participant => participant.userId === currentUser.id
       )
     ) {
+      return meet;
+    } else {
       throw Error('not authorized');
     }
-    return meet;
   } catch (error) {
     console.error(error);
     throw error;
