@@ -2,10 +2,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator json {
-  provider = "prisma-json-types-generator"
-}
-
 datasource db {
   provider  = "postgresql"
   url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
@@ -65,7 +61,7 @@ model Meet {
   datesOrDays  String[]
   confirmTime  DateTime?
   isConfirmed  Boolean               @default(false)
-  password     String?
+  password     String? // hashed value
   // one-to-many
   manager      User                  @relation("Manage", fields: [managerId], references: [id])
   managerId    String
