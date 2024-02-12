@@ -75,7 +75,7 @@ model ParticipantsOnMeets {
   meetId      String
   user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
-  pickedTimes Json?
+  timeTable   Json?
   hasAccepted Boolean @default(false)
 
   @@id([meetId, userId])
