@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createMeet, deleteMeet } from '@/controllers/meet';
+import { createMeet, deleteMeet, updateMeet } from '@/controllers/meet';
 import { MeetType } from '@prisma/client';
 
 export default function TemporaryPage() {
@@ -42,6 +42,16 @@ export default function TemporaryPage() {
           }}
         >
           Delete Meet
+        </button>
+        <button
+          onClick={async () => {
+            await updateMeet(inputId, {
+                description: "updated!"
+            });
+            setResult('update success.');
+          }}
+        >
+          Update Meet
         </button>
       </section>
 
