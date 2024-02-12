@@ -22,7 +22,11 @@ export default function MainCarousel({
   title: string;
   data: [];
 }) {
-  const { currentSlide, onMouseDown, onMouseUp, cardRef } = useCarousel(3, 400);
+  const { currentSlide, onMouseDown, onMouseUp, cardRef } = useCarousel(
+    3,
+    400,
+    false
+  );
   useEffect(() => {
     console.log(currentSlide);
   }, [currentSlide]);

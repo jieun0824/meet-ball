@@ -8,10 +8,6 @@ import { signIn } from 'next-auth/react';
 
 export default async function LoginPage() {
   const session = await auth();
-  if (session) redirect('/'); // means already logged in
-  return (
-    <div className="flex flex-col justify-center items-center h-[80dvh]">
-      <InfoCarousel />
-    </div>
-  );
+  //if (session) redirect('/'); // means already logged in
+  return <InfoCarousel session={session} />;
 }

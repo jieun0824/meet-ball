@@ -1,4 +1,5 @@
 import { createDaysCookies } from '@/lib/actions';
+import { getSession } from 'next-auth/react';
 import { useTransition } from 'react';
 
 export default function EventButton({
@@ -9,6 +10,7 @@ export default function EventButton({
   meetingDays: string[] | Date[] | undefined;
 }) {
   const [isPending, startTransition] = useTransition();
+  const session = getSession();
 
   return (
     <button
