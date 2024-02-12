@@ -155,3 +155,67 @@ export async function deleteMeet(meetId: string): Promise<Meet> {
     throw error;
   }
 }
+
+export type TimeTable = {
+  [key: string]: number[];
+};
+
+export async function acceptMeetInvitation(meetId: string) {
+  try {
+    const currentUser = await getCurrentUser();
+    const meet = await prisma.participantsOnMeets.update({
+      where: {
+        meetId_userId: {
+          meetId: meetId,
+          userId: currentUser.id,
+        },
+      },
+      data: {
+        hasAccepted: true,
+      },
+    });
+    return meet;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getTimeTable(meetId: string) {
+  try {
+    const currentUser = await getCurrentUser();
+    const meet = await prisma.participantsOnMeets.findUniqueOrThrow({
+      where: {
+        meetId_userId: {
+          meetId: meetId,
+          userId: currentUser.id,
+        },
+      },
+    });
+    return meet;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function updateTimeTable(meetId: string, timeTable: TimeTable) {
+  try {
+    const currentUser = await getCurrentUser();
+    const meet = await prisma.participantsOnMeets.update({
+      where: {
+        meetId_userId: {
+          meetId: meetId,
+          userId: currentUser.id,
+        },
+      },
+      data: {
+        timeTable,
+      },
+    });
+    return meet;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
