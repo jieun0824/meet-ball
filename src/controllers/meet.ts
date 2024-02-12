@@ -51,8 +51,8 @@ export type CreateMeetArguments = {
 };
 
 export async function createMeet(args: CreateMeetArguments): Promise<Meet> {
-  const currentUser = await getCurrentUser();
   try {
+    const currentUser = await getCurrentUser();
     const meet = await prisma.meet.create({
       data: {
         managerId: currentUser.id,
@@ -79,8 +79,8 @@ export async function createMeet(args: CreateMeetArguments): Promise<Meet> {
 }
 
 export async function getMeet(meetId: string): Promise<Meet> {
-  const currentUser = await getCurrentUser();
   try {
+    const currentUser = await getCurrentUser();
     const meet = await prisma.meet.findUniqueOrThrow({
       where: {
         id: meetId,
@@ -100,6 +100,54 @@ export async function getMeet(meetId: string): Promise<Meet> {
     } else {
       throw Error('not authorized');
     }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export type UpdateMeetArguments = {
+  name?: string;
+  description?: string;
+  meetType?: MeetType;
+  dateOrDays?: string[];
+  confirmTime?: Date;
+  isConfirmed?: boolean;
+  password?: string;
+};
+
+export async function updateMeet(
+  meetId: string,
+  args: UpdateMeetArguments
+): Promise<Meet> {
+  try {
+    const currentUser = await getCurrentUser();
+    const meet = await prisma.meet.update({
+      where: {
+        id: meetId,
+        managerId: currentUser.id, // only authorized for manager
+      },
+      data: {
+        ...args,
+      },
+    });
+    return meet;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function deleteMeet(meetId: string): Promise<Meet> {
+  const currentUser = await getCurrentUser();
+  try {
+    const meet = await prisma.meet.delete({
+      where: {
+        id: meetId,
+        managerId: currentUser.id, // only authorized for manager
+      },
+    });
+    return meet;
   } catch (error) {
     console.error(error);
     throw error;
