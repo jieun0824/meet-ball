@@ -75,7 +75,7 @@ model ParticipantsOnMeets {
   meetId      String
   user        User    @relation(fields: [userId], references: [id])
   userId      String
-  pickedTimes Json
+  pickedTimes Json?
   hasAccepted Boolean @default(false)
 
   @@id([meetId, userId])
