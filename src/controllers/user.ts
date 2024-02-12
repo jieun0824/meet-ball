@@ -1,3 +1,5 @@
+'use server';
+
 import type { User } from 'next-auth';
 import { getCurrentUser } from '@/lib/authentication';
 

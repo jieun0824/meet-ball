@@ -1,3 +1,5 @@
+'use server';
+
 import type { Meet, MeetType } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/authentication';
@@ -45,7 +47,7 @@ export type CreateMeetArguments = {
   name: string;
   description?: string;
   meetType: MeetType;
-  dateOrDays: string[];
+  datesOrDays: string[];
   confirmTime?: Date;
   password?: string;
 };
