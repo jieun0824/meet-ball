@@ -1,13 +1,10 @@
 import ModeComponent from '@/components/calendar/mode-component';
 import MainCarousel from '@/components/card/main-carousel';
+import mockupSchedules from '@/scheduleData.json';
 import { auth } from '@/auth';
 
 async function fetchData() {
-  const res = await fetch('http://localhost:3000/api/meets', {
-    next: { tags: ['schedules'] }, //for revalidating
-  });
-  const { schedules } = await res.json();
-  return schedules;
+  return mockupSchedules;
 }
 
 export default async function MainPage() {

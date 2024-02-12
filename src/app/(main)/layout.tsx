@@ -20,12 +20,14 @@ export default function Layout({
           </Link>
         </div>
         <div className="relative w-1/10">
-          <Image
-            src="/icon/profile.svg"
-            alt="profile logo"
-            width={35}
-            height={35}
-          />
+          <Link href="/mypage">
+            <Image
+              src="/icon/profile.svg"
+              alt="profile logo"
+              width={35}
+              height={35}
+            />
+          </Link>
         </div>
       </header>
       {modal}

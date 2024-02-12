@@ -20,7 +20,7 @@ export default function MainCarousel({
   data,
 }: {
   title: string;
-  data: [];
+  data: scheduleData[];
 }) {
   const { currentSlide, onMouseDown, onMouseUp, cardRef } = useCarousel(
     3,
