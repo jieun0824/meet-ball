@@ -1,8 +1,8 @@
+import { getMyInfo } from '@/controllers/user';
 import {
-  getMyInfo,
   getMyManagingMeets,
   getMyParticipatingMeets,
-} from '@/lib/actions';
+} from '@/controllers/meet';
 
 export default async function MyPage() {
   const myInfo = await getMyInfo();
