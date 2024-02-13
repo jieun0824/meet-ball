@@ -49,8 +49,10 @@ export type CreateMeetArguments = {
   name: string;
   description?: string;
   meetType: MeetType;
+  startTime: number; // 0-47
+  endTime: number; // 0-47
   datesOrDays: string[];
-  confirmTime?: Date;
+  confirmTime: Date;
   password?: string;
 };
 
@@ -60,12 +62,6 @@ export async function createMeet(args: CreateMeetArguments): Promise<Meet> {
     const meet = await prisma.meet.create({
       data: {
         managerId: currentUser.id,
-        // name: args.name,
-        // description: args.description,
-        // meetType: args.meetType,
-        // datesOrDays: args.dateOrDays,
-        // confirmTime: args.confirmTime,
-        // password: args.password,
         ...args,
         participants: {
           create: {
