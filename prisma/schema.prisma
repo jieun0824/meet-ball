@@ -54,19 +54,21 @@ model User {
 }
 
 model Meet {
-  id           String                @id @default(cuid())
-  name         String
-  description  String?
-  meetType     MeetType
-  datesOrDays  String[]
-  confirmTime  DateTime?
-  isConfirmed  Boolean               @default(false)
-  password     String? // hashed value
+  id                 String                @id @default(cuid())
+  name               String
+  description        String?
+  meetType           MeetType
+  startTime          Int // 0 - 47
+  endTime            Int // 0 - 47
+  datesOrDays        String[]
+  confirmTime        DateTime
+  confirmedTimeTable Json?
+  password           String? // hashed value
   // one-to-many
-  manager      User                  @relation("Manage", fields: [managerId], references: [id], onDelete: Cascade)
-  managerId    String
+  manager            User                  @relation("Manage", fields: [managerId], references: [id], onDelete: Cascade)
+  managerId          String
   // many-to-many
-  participants ParticipantsOnMeets[]
+  participants       ParticipantsOnMeets[]
 }
 
 // junction table between User - participates - Meet
