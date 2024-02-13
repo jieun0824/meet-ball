@@ -1,4 +1,4 @@
-import { createDaysCookies } from '@/lib/actions';
+import { createDaysCookies } from '@/controllers/meet';
 import { getSession } from 'next-auth/react';
 import { useTransition } from 'react';
 

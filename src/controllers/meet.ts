@@ -3,6 +3,8 @@
 import type { Meet, MeetType } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/authentication';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export async function getMyManagingMeets(): Promise<Meet[]> {
   try {
@@ -218,4 +220,20 @@ export async function updateTimeTable(meetId: string, timeTable: TimeTable) {
     console.error(error);
     throw error;
   }
+}
+
+//save days as cookies
+export async function createDaysCookies(data: string[] | Date[]) {
+  try {
+    cookies().set('days', JSON.stringify(data));
+    const dayCookie = cookies().get('days');
+    if (dayCookie != undefined) {
+      console.log(dayCookie);
+    } else {
+      console.log('cookie isundefined');
+    }
+  } catch (err) {
+    console.error('error', err);
+  }
+  redirect('/create');
 }
