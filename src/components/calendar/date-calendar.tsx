@@ -15,7 +15,11 @@ export default function DateCalendar() {
         onSelect={setDays}
         className="rounded-md border"
       />
-      <EventButton title={'🧆 미트볼 굴리기'} meetingDays={days} />
+      <EventButton
+        title={'🧆 미트볼 굴리기'}
+        meetingDays={days?.map(a => a.toISOString().split('T')[0])} //change to iso
+        type={'DATES'}
+      />
     </>
   );
 }

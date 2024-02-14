@@ -46,7 +46,7 @@ export default function TemporaryPage() {
         <button
           onClick={async () => {
             await updateMeet(inputId, {
-                description: "updated!"
+              description: 'updated!',
             });
             setResult('update success.');
           }}

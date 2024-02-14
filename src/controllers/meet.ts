@@ -48,20 +48,23 @@ export async function getMyParticipatingMeets(): Promise<Meet[]> {
 export type CreateMeetArguments = {
   name: string;
   description?: string;
-  meetType: MeetType;
+  //meetType: MeetType;
   startTime: number; // 0-47
   endTime: number; // 0-47
-  datesOrDays: string[];
-  confirmTime: Date;
+  //datesOrDays: string[];
+  confirmTime: Date | string;
   password?: string;
 };
 
 export async function createMeet(args: CreateMeetArguments): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
+    const { type, meetingDays } = JSON.parse(cookies().get('days')!.value);
     const meet = await prisma.meet.create({
       data: {
         managerId: currentUser.id,
+        datesOrDays: meetingDays,
+        meetType: type,
         ...args,
         participants: {
           create: {
@@ -219,9 +222,15 @@ export async function updateTimeTable(meetId: string, timeTable: TimeTable) {
 }
 
 //save days as cookies
-export async function createDaysCookies(data: string[] | Date[]) {
+export async function createDaysCookies(data: {
+  type: 'DAYS' | 'DATES';
+  meetingDays: string[];
+}) {
   try {
-    cookies().set('days', JSON.stringify(data));
+    cookies().set(
+      'days',
+      JSON.stringify({ type: data.type, meetingDays: data.meetingDays })
+    );
     const dayCookie = cookies().get('days');
     if (dayCookie != undefined) {
       console.log(dayCookie);

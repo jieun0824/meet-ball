@@ -19,7 +19,11 @@ export default function WeekCalendar() {
           </div>
         ))}
       </div>
-      <EventButton title={'🧆 미트볼 굴리기'} meetingDays={selectedDate} />
+      <EventButton
+        title={'🧆 미트볼 굴리기'}
+        meetingDays={selectedDate}
+        type={'DAYS'}
+      />
     </>
   );
 }

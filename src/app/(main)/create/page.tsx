@@ -1,33 +1,28 @@
-import { cookies } from 'next/headers';
+import { createMeet } from '@/controllers/meet';
 
 export default function CreatePage() {
-  async function createMeet(formData: FormData) {
+  async function handleSubmit(formData: FormData) {
     'use server';
 
-    const meetingName = formData.get('meetingName');
-    const meetingDescription = formData.get('meetingDescription');
-    const scheduleEndDate = formData.get('endDate');
-    const scheduleEndHour = formData.get('scheduleEndHour');
-    const scheduleEndMin = formData.get('scheduleEndMin');
-    const meetingStartHour = formData.get('meetingStartHour');
-    const meetingStartMin = formData.get('meetingStartMin');
-    const meetingEndHour = formData.get('meetingEndHour');
-    const meetingEndMin = formData.get('meetingEndMin');
-    const meetingDays = cookies().get('days')
-      ? JSON.parse(cookies().get('days')!.value)
-      : [];
+    const meetingName = formData.get('meetingName') as string;
+    const meetingDescription = formData.get('meetingDescription') as string;
 
-    console.log({
-      meetingEndHour,
-      meetingEndMin,
-      meetingStartHour,
-      meetingStartMin,
-      meetingName,
-      meetingDescription,
-      scheduleEndDate,
-      scheduleEndHour,
-      scheduleEndMin,
-      meetingDays,
+    const scheduleEndDate = new Date(formData.get('scheduleEndDate') as string);
+    // const scheduleEndHour = Number(formData.get('scheduleEndHour'));
+    // const scheduleEndMin = formData.get('scheduleEndMin') == '0' ? 0 : 0.5;
+
+    const meetingStartHour = Number(formData.get('meetingStartHour'));
+    const meetingStartMin = formData.get('meetingStartMin') == '0' ? 0 : 0.5;
+    const meetingEndHour = Number(formData.get('meetingEndHour'));
+    const meetingEndMin = formData.get('meetingEndMin') == '0' ? 0 : 0.5;
+    const password = formData.get('password') as string;
+    await createMeet({
+      name: meetingName,
+      description: meetingDescription,
+      startTime: 2 * (meetingStartHour + meetingStartMin), // 0-47
+      endTime: 2 * (meetingEndHour + meetingEndMin), // 0-47
+      confirmTime: scheduleEndDate,
+      password: password,
     });
   }
 
@@ -36,7 +31,10 @@ export default function CreatePage() {
 
   return (
     <>
-      <form action={createMeet} className="grid text-white place-items-center">
+      <form
+        action={handleSubmit}
+        className="grid text-white place-items-center"
+      >
         <div className="grid-1 w-[301px] h-[40px] border-b-2 mt-3 ">
           <input
             id="meetingName"
@@ -82,7 +80,7 @@ export default function CreatePage() {
             <p>-</p>
             <select
               name="meetingEndHour"
-              className="bg-[#3C3F45] w-[60px] rounded-md text-[#20ECC7] "
+              className="bg-[#3C3F45] w-[60px] rounded-md text-[#20ECC7]"
             >
               {hours.map(hour => (
                 <option key={hour} value={hour} className="rounded-md">
@@ -110,9 +108,9 @@ export default function CreatePage() {
               <p>날짜</p>
               <input
                 type="date"
-                id="endDate"
+                id="scheduleEndDate"
                 name="scheduleEndDate"
-                value="2024-01-01"
+                value={new Date().toISOString().split('T')[0]}
                 className="bg-[#3C3F45] rounded-md text-[#20ECC7]"
               />
             </div>
@@ -122,7 +120,6 @@ export default function CreatePage() {
                 <select
                   name="scheduleEndHour"
                   className="bg-selectColor rounded-md w-[60px]"
-                  value="8"
                 >
                   {hours.map(hour => {
                     return (
@@ -136,7 +133,6 @@ export default function CreatePage() {
                 <select
                   name="scheduleEndMin"
                   className="bg-selectColor rounded-md w-[60px]"
-                  value="00"
                 >
                   {mins.map(min => {
                     return (
@@ -151,7 +147,7 @@ export default function CreatePage() {
           </div>
         </div>
         <div className="mt-[50px] w-[301px]">
-          <p className="text-white">비밀번호(선택)</p>
+          <p className="text-white">비밀번호 (선택)</p>
           <div className="h-[40px] border-2 rounded-md">
             <input
               type="text"
