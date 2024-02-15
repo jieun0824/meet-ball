@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
-import { WeekCalenderBtn } from './calendar-btn';
+import { WeekCalenderBtn } from '@/components/calendar/calendar-btn';
 import useMultiSelect from '@/hooks/useMultiSelect';
-import EventButton from '../button/event-button';
+import EventButton from '@/components/button/event-button';
 
 export default function WeekCalendar() {
   const day = ['월', '화', '수', '목', '금', '토', '일'];

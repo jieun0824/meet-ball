@@ -1,4 +1,4 @@
-import { CarouselIndexIcon } from './icon';
+import { CarouselIndexIcon } from '@/components/icon';
 
 export default function CarouselIndex({
   currentSlide,

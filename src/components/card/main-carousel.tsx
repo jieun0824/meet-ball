@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import MainCard from './main-card';
+import MainCard from '@/components/card/main-card';
 import useCarousel from '@/hooks/useCarousel';
-import { CarouselIndexIcon } from '../icon';
+import { CarouselIndexIcon } from '@/components/icon';
 import { FaCircle } from 'react-icons/fa6';
 
 type scheduleData = {

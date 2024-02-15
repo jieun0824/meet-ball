@@ -1,7 +1,7 @@
 import { Calendar } from '@/components/calendar/calendar';
 import { cookies } from 'next/headers';
 import { useState } from 'react';
-import EventButton from '../button/event-button';
+import EventButton from '@/components/button/event-button';
 
 export default function DateCalendar() {
   const initialDays: Date[] = [];

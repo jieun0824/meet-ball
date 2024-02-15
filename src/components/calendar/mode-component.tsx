@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
-import ModeButton from '../button/mode-button';
-import DateCalendar from './date-calendar';
-import WeekCalendar from './week-calendar';
+import ModeButton from '@/components/button/mode-button';
+import DateCalendar from '@/components/calendar/date-calendar';
+import WeekCalendar from '@/components/calendar/week-calendar';
 
 export default function ModeComponent() {
   const [mode, setMode] = useState<string>('일반');
@@ -14,12 +14,12 @@ export default function ModeComponent() {
     <div className="mt-8 w-80 flex flex-col">
       <div>
         <ModeButton
-          title="정기"
+          title="요일"
           mode={mode}
           modeChange={() => handleModeChange('정기')}
         />
         <ModeButton
-          title="일반"
+          title="날짜"
           mode={mode}
           modeChange={() => handleModeChange('일반')}
         />
