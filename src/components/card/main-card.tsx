@@ -1,6 +1,6 @@
 'use client';
 import { useRef } from 'react';
-import { ClockIcon, MoreIcon, PeopleIcon } from '../icon';
+import { ClockIcon, MoreIcon, PeopleIcon } from '@/components/icon';
 
 type mainCardProps = {
   meetName: string;

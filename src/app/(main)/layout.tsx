@@ -3,17 +3,19 @@ import Link from 'next/link';
 
 export default function Layout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  modal,
+}: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   return (
     <>
       <header className="relative flex justify-around items-center top-0 left-0 w-dvw h-[10%] bg-[#1E1E1E] shadow-2xl">
         <div className="relative w-2/5 h-full mr-[40%]">
           <Link href="/">
             <Image
-              src="/icon/logo.png"
+              src="/icon/logo.svg"
               alt="main logo"
-              fill
-              className="object-cover"
+              width={200}
+              height={100}
+              className="relative -top-6 cursor-pointer"
             />
           </Link>
         </div>
@@ -28,7 +30,8 @@ export default function Layout({
           </Link>
         </div>
       </header>
-      <div className="w-dvw h-dvh bg-bgColor">{children}</div>
+      {modal}
+      <div className="w-dvw bg-bgColor">{children}</div>
     </>
   );
 }

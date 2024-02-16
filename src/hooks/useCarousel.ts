@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-export default function useCarousel(totalSlides: number) {
+export default function useCarousel(
+  totalSlides: number,
+  width: number,
+  useTimer: boolean
+) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mouseDownClientX, setMouseDownClientX] = useState(0);
   const [mouseDownClientY, setMouseDownClientY] = useState(0);
@@ -26,7 +30,7 @@ export default function useCarousel(totalSlides: number) {
     }
   };
 
-  const pageTransform: number[] = [0, 400, 800];
+  const pageTransform: number[] = [0, width, width * 2];
 
   useEffect(() => {
     cardRef.current!.style.transition = 'all 0.5s ease-in-out';
@@ -47,5 +51,15 @@ export default function useCarousel(totalSlides: number) {
       }
     }
   }, [mouseUpClientX]);
+
+  useEffect(() => {
+    if (useTimer) {
+      const timer = setInterval(() => {
+        handleNextBtn();
+      }, 5000);
+      return () => clearInterval(timer);
+    }
+  });
+
   return { currentSlide, onMouseDown, onMouseUp, cardRef };
 }
