@@ -19,7 +19,7 @@ export default function TimeComponent({
   };
   return (
     <div
-      className={`h-[20px] border-white ${time % 2 === 0 ? 'border-t-[1px]' : ''} ${selected && 'bg-pointColor'}`}
+      className={`h-[20px] border-white ${time % 2 === 0 ? 'border-t-[0.3px]' : ''} ${selected && 'bg-pointColor'}`}
       onClick={clickHandler}
     ></div>
   );
