@@ -1,9 +1,9 @@
 'use server';
 
-import type { User } from 'next-auth';
+import type { AuthenticatedUser } from 'next-auth';
 import { getCurrentUser } from '@/lib/authentication';
 
-export async function getMyInfo(): Promise<User> {
+export async function getMyInfo(): Promise<AuthenticatedUser> {
   try {
     const currentUser = await getCurrentUser();
     return currentUser;
