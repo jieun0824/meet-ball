@@ -5,7 +5,7 @@ import DateCalendar from '@/components/calendar/date-calendar';
 import WeekCalendar from '@/components/calendar/week-calendar';
 
 export default function ModeComponent() {
-  const [mode, setMode] = useState<string>('일반');
+  const [mode, setMode] = useState<string>('요일');
   const handleModeChange = (newMode: string) => {
     setMode(newMode);
   };
@@ -16,15 +16,15 @@ export default function ModeComponent() {
         <ModeButton
           title="요일"
           mode={mode}
-          modeChange={() => handleModeChange('정기')}
+          modeChange={() => handleModeChange('요일')}
         />
         <ModeButton
           title="날짜"
           mode={mode}
-          modeChange={() => handleModeChange('일반')}
+          modeChange={() => handleModeChange('날짜')}
         />
       </div>
-      {mode == '정기' ? <WeekCalendar /> : <DateCalendar />}
+      {mode == '날짜' ? <WeekCalendar /> : <DateCalendar />}
     </div>
   );
 }
