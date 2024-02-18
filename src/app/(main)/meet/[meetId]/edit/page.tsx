@@ -1,11 +1,17 @@
 import TimeTable from '@/components/timetable/timetable';
+import { getMeet } from '@/controllers/meet';
+import { Meet } from '@prisma/client';
 
-export default function CreateTimetable() {
-  const daysOrDates = ['2023-11-12', '2023-11-13', '2023-11-17'];
-  const type = 'DATES';
-
-  const startTime: number = 17;
-  const endTime: number = 37;
+export default async function CreateTimetable({
+  params,
+}: {
+  params: { meetId: string };
+}) {
+  const meetData: Meet = await getMeet(params.meetId);
+  const datesOrDays = meetData.datesOrDays;
+  const type = meetData.meetType;
+  const startTime = meetData.startTime;
+  const endTime = meetData.endTime;
 
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
@@ -27,7 +33,7 @@ export default function CreateTimetable() {
 
   return (
     <div className="flex justify-center items-center text-xs mt-16">
-      <div className={gridSetList[daysOrDates.length % 7]}>
+      <div className={gridSetList[datesOrDays.length % 7]}>
         <div className="flex flex-col items-end">
           <div className="min-h-[30px] mr-2 -mt-2">
             <p>week</p>
@@ -50,7 +56,7 @@ export default function CreateTimetable() {
         <TimeTable
           startTime={startTime}
           endTime={endTime}
-          daysOrDates={daysOrDates}
+          daysOrDates={datesOrDays}
           type={type}
         />
       </div>
