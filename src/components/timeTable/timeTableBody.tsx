@@ -25,7 +25,6 @@ export default function TimeTableBody({
   const dateKeys: Array<string> = scheduledObject
     ? Object.keys(scheduledObject)
     : [];
-  const dateLength = dateKeys.length;
 
   return (
     <div className="text-white flex">

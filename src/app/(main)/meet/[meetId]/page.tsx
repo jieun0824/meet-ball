@@ -4,7 +4,7 @@ export default function MeetPage({ params }: { params: { meetId: string } }) {
   // dummy time
   const dummyTimeTableDate = {
     '2023-11-12': {
-      Taegon: [1, 2, 3, 5, 7, 8],
+      Taegon: [0, 1, 2, 3, 5, 7, 8],
       Kim: [2, 3, 4, 5, 6, 8],
       John: [1, 2, 3, 4],
       Tae: [2, 3],

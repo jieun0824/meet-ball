@@ -3,15 +3,15 @@ import TimeComponent from './timeComponent';
 type timeObjectOfDateType = {
   [name: string]: Array<number>;
 };
-
-type timeOpacityType = {
-  [time: string]: number;
-};
 type timeComponentLineProps = {
   timeObjectOfDate: timeObjectOfDateType;
   date: Date;
   startTimeNum: number;
   endTimeNum: number;
+};
+
+type timeOpacityType = {
+  [name: string]: number;
 };
 
 export default function TimeComponentLine({
@@ -45,19 +45,42 @@ export default function TimeComponentLine({
   }
 
   return (
-    <div className="">
-      <div className="grid text-white h-[48px] place-items-center mb-2">
+    <div className="w-[29px]">
+      <div className="grid h-[48px] place-items-center mb-2">
         <p className="text-sm">{componentDateNum}</p>
         <p className="text-sm">{dayString}</p>
       </div>
       {Object.keys(scheduleOpacityOfTimeObject).map(
         (timeIndex: string, index: number) => {
+          let previousOpacity = 0;
+          let nextOpacity = 0;
           const opacity = scheduleOpacityOfTimeObject[timeIndex];
+
+          if (
+            parseInt(timeIndex) !== startTimeNum &&
+            parseInt(timeIndex) !== endTimeNum - 1
+          ) {
+            previousOpacity =
+              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) - 1)];
+            nextOpacity =
+              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) + 1)];
+          } else if (parseInt(timeIndex) === startTimeNum) {
+            nextOpacity =
+              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) + 1)];
+            previousOpacity = 0;
+          } else if (parseInt(timeIndex) === endTimeNum - 1) {
+            previousOpacity =
+              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) - 1)];
+            nextOpacity = 0;
+          }
+
           return (
             <div key={index} className="">
               <TimeComponent
                 timeIndex={parseInt(timeIndex)}
                 opacity={opacity}
+                previousOpacity={previousOpacity}
+                nextOpacity={nextOpacity}
                 endTimeNum={endTimeNum}
               ></TimeComponent>
             </div>
