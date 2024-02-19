@@ -29,7 +29,7 @@ function TimeComponent({
 
   return (
     <div
-      className={`h-[20px] border-white ${time % 2 === 0 ? 'border-t-[0.3px]' : ''} ${clicked && 'bg-pointColor'}`}
+      className={`h-[20px] border-white ${time % 2 === 0 ? 'border-t-[0.3px]' : ''} ${clicked && 'bg-pointColor bg-opacity-35'}`}
       onClick={clickHandler}
     ></div>
   );

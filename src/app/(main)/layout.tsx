@@ -16,6 +16,7 @@ export default function Layout({
               width={200}
               height={100}
               className="relative -top-6 cursor-pointer"
+              priority={false}
             />
           </Link>
         </div>

@@ -35,7 +35,7 @@ export default function useCarousel(
   useEffect(() => {
     cardRef.current!.style.transition = 'all 0.5s ease-in-out';
     cardRef.current!.style.transform = `translateX(-${pageTransform[currentSlide]}px)`;
-    console.log(pageTransform[currentSlide]);
+    //console.log(pageTransform[currentSlide]);
   }, [currentSlide]);
 
   useEffect(() => {
