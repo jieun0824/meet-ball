@@ -1,15 +1,16 @@
 'use client';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { WeekCalenderBtn } from '@/components/calendar/calendar-btn';
 import useMultiSelect from '@/hooks/useMultiSelect';
-import EventButton from '@/components/button/event-button';
+import Button from '../button/button';
+import { createDaysCookies } from '@/controllers/meet';
 
 export default function WeekCalendar() {
   const day = ['월', '화', '수', '목', '금', '토', '일'];
 
   const { selected: selectedDate, handleSelected: handleSelectedDate } =
     useMultiSelect<string>([]);
-
+  const [isPending, startTransition] = useTransition();
   return (
     <>
       <div className="bg-cardColor w-full p-6 rounded-lg flex mt-8 justify-evenly">
@@ -19,10 +20,16 @@ export default function WeekCalendar() {
           </div>
         ))}
       </div>
-      <EventButton
+      <Button
+        type="button"
         title={'🧆 미트볼 굴리기'}
-        meetingDays={selectedDate}
-        type={'DAYS'}
+        onClick={() => {
+          if (selectedDate != undefined) {
+            startTransition(() =>
+              createDaysCookies({ type: 'DAYS', meetingDays: selectedDate })
+            );
+          }
+        }}
       />
     </>
   );

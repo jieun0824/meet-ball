@@ -1,17 +1,26 @@
+import Button from '@/components/button/button';
 import TimeTable from '@/components/timetable/timetable';
-import { getMeet } from '@/controllers/meet';
-import { Meet } from '@prisma/client';
+import { getMeet, getTimeTable, updateTimeTable } from '@/controllers/meet';
+import { getCurrentUser } from '@/lib/authentication';
+import { Meet, ParticipantsOnMeets } from '@prisma/client';
 
 export default async function CreateTimetable({
   params,
 }: {
   params: { meetId: string };
 }) {
-  const meetData: Meet = await getMeet(params.meetId);
-  const datesOrDays = meetData.datesOrDays;
-  const type = meetData.meetType;
-  const startTime = meetData.startTime;
-  const endTime = meetData.endTime;
+  const { datesOrDays, meetType, startTime, endTime } = await getMeet(
+    params.meetId
+  );
+  const userTimetable = (await getTimeTable(params.meetId)).timeTable;
+
+  // if user create new timetable (userTimetable == null)
+  const newTimetable: { [key: string]: [] } = {};
+  if (userTimetable == null) {
+    datesOrDays.forEach((date: string, i: number) => {
+      newTimetable[date] = [];
+    });
+  }
 
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
@@ -21,6 +30,7 @@ export default async function CreateTimetable({
   type gridColumnsType = {
     [key: number]: string;
   };
+
   const gridSetList: gridColumnsType = {
     1: `grid grid-cols-table1 w-3/4`,
     2: `grid grid-cols-table2 w-3/4`,
@@ -32,7 +42,7 @@ export default async function CreateTimetable({
   };
 
   return (
-    <div className="flex justify-center items-center text-xs mt-16">
+    <div className="flex flex-col justify-center items-center text-xs mt-16">
       <div className={gridSetList[datesOrDays.length % 7]}>
         <div className="flex flex-col items-end">
           <div className="min-h-[30px] mr-2 -mt-2">
@@ -57,7 +67,8 @@ export default async function CreateTimetable({
           startTime={startTime}
           endTime={endTime}
           daysOrDates={datesOrDays}
-          type={type}
+          type={meetType}
+          userTimetable={userTimetable == null ? newTimetable : userTimetable}
         />
       </div>
     </div>
