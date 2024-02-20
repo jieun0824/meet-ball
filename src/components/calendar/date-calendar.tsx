@@ -9,7 +9,7 @@ export default function DateCalendar() {
   const [isPending, startTransition] = useTransition();
 
   return (
-    <>
+    <div className="flex flex-col items-center">
       <Calendar
         mode="multiple"
         selected={days}
@@ -28,6 +28,6 @@ export default function DateCalendar() {
           }
         }}
       />
-    </>
+    </div>
   );
 }

@@ -11,7 +11,7 @@ export default function ModeComponent() {
   };
 
   return (
-    <div className="mt-8 w-80 flex flex-col">
+    <div className="mt-8 flex flex-col w-full max-w-[730px] mobile:max-w-[500px]">
       <div>
         <ModeButton
           title="요일"

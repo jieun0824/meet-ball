@@ -22,7 +22,7 @@ const config: Config = {
         textColor: '#20ECC7',
       },
       gridTemplateColumns: {
-        // Simple 16 column grid
+        // Simple column grid
         table1: '44px repeat(1, minmax(0, 1fr))',
         table2: '44px repeat(2, minmax(0, 1fr))',
         table3: '44px repeat(3, minmax(0, 1fr))',
@@ -30,6 +30,11 @@ const config: Config = {
         table5: '44px repeat(5, minmax(0, 1fr))',
         table6: '44px repeat(6, minmax(0, 1fr))',
         table7: '44px repeat(7, minmax(0, 1fr))',
+      },
+      screens: {
+        mobile: { max: '768px' }, //for low resolution tablets, mobiles
+        laptop: { min: '769px', max: '1024px' }, //for low resolution laptops
+        desktop: { min: '1025px' },
       },
     },
     fontFamily: {
