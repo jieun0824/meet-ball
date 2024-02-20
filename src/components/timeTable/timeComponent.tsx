@@ -29,116 +29,116 @@ export default function TimeComponent({
         case 1:
           if (previousOpacity < i && nextOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-md bg-teal-100 z-1"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-md bg-teal-100 bg-opacity-10 z-1"></div>
             );
             break;
           }
           if (previousOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-t-md bg-teal-100 z-1"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-t-md bg-teal-100 bg-opacity-10 z-1"></div>
             );
             break;
           }
           if (nextOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-b-md bg-teal-100 z-1"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-b-md bg-teal-100 bg-opacity-10 z-1"></div>
             );
             break;
           }
           returnedDiv.push(
-            <div className="absolute w-[29px] h-[20px] bg-teal-100 z-1"></div>
+            <div className="absolute w-[29px] h-[20px] bg-teal-100 bg-opacity-10 z-1"></div>
           );
           break;
         case 2:
           if (previousOpacity < i && nextOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-md bg-teal-200 z-2"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-md bg-teal-300 bg-opacity-40 z-2"></div>
             );
             break;
           }
           if (previousOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-t-md bg-teal-200 z-2"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-t-md bg-teal-300 bg-opacity-40 z-2"></div>
             );
             break;
           }
           if (nextOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-b-md bg-teal-200 z-2"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-b-md bg-teal-300 bg-opacity-40 z-2"></div>
             );
             break;
           }
           returnedDiv.push(
-            <div className="absolute w-[29px] h-[20px] bg-teal-200 z-2"></div>
+            <div className="absolute w-[29px] h-[20px] bg-teal-300 bg-opacity-40 z-2"></div>
           );
           break;
         case 3:
           if (previousOpacity < i && nextOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-md bg-teal-300 z-3"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-md bg-teal-300 bg-opacity-60 z-3"></div>
             );
             break;
           }
           if (previousOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-t-md bg-teal-300 z-3"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-t-md bg-teal-300 bg-opacity-60 z-3"></div>
             );
             break;
           }
           if (nextOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-b-md bg-teal-300 z-3"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-b-md bg-teal-300 bg-opacity-60 z-3"></div>
             );
             break;
           }
           returnedDiv.push(
-            <div className="absolute w-[29px] h-[20px] bg-teal-300 z-3"></div>
+            <div className="absolute w-[29px] h-[20px] bg-teal-300 bg-opacity-60 z-3"></div>
           );
           break;
         case 4:
           if (previousOpacity < i && nextOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-md bg-teal-400 z-4"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-md bg-teal-400 bg-opacity-80 z-4"></div>
             );
             break;
           }
           if (previousOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-t-md bg-teal-400 z-4"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-t-md bg-teal-400 bg-opacity-80 z-4"></div>
             );
             break;
           }
           if (nextOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-b-md bg-teal-400 z-4"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-b-md bg-teal-400 bg-opacity-80 z-4"></div>
             );
             break;
           }
           returnedDiv.push(
-            <div className="absolute w-[29px] h-[20px] bg-teal-400 z-4"></div>
+            <div className="absolute w-[29px] h-[20px] bg-teal-400 bg-opacity-80 z-4"></div>
           );
           break;
         case 5:
           if (previousOpacity < i && nextOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-md bg-teal-500 z-5"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-md bg-teal-300 bg-opacity-100 z-5"></div>
             );
             break;
           }
           if (previousOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-t-md bg-teal-500 z-5"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-t-md bg-teal-300 bg-opacity-100 z-5"></div>
             );
             break;
           }
           if (nextOpacity < i) {
             returnedDiv.push(
-              <div className="absolute w-[29px] h-[20px] rounded-b-md bg-teal-500 z-5"></div>
+              <div className="absolute w-[29px] h-[20px] rounded-b-md bg-teal-300 bg-opacity-100 z-5"></div>
             );
             break;
           }
           returnedDiv.push(
-            <div className="absolute w-[29px] h-[20px] bg-teal-500 z-5"></div>
+            <div className="absolute w-[29px] h-[20px] bg-teal-300 bg-opacity-100 z-5"></div>
           );
           break;
       }
@@ -170,16 +170,16 @@ export default function TimeComponent({
     <>
       {timeIndex % 2 === 1 &&
         (timeIndex === endTimeNum - 1 ? (
-          <div className="relative h-[20px] border-b-2 border-white">
+          <div className="relative h-[20px] border-b-2 border-[#B1B1B1]">
             {backgroundColorByOpcity(opacity, previousOpacity, nextOpacity)}
           </div>
         ) : (
-          <div className="relative h-[20px] border-white">
+          <div className="relative h-[20px] border-[#B1B1B1]">
             {backgroundColorByOpcity(opacity, previousOpacity, nextOpacity)}
           </div>
         ))}
       {timeIndex % 2 === 0 && (
-        <div className="relative h-[20px] border-t-2 border-white">
+        <div className="relative h-[20px] border-t-2 border-[#B1B1B1]">
           {backgroundColorByOpcity(opacity, previousOpacity, nextOpacity)}
         </div>
       )}

@@ -21,6 +21,9 @@ const config: Config = {
         textColor: '#20ECC7',
       },
     },
+    fontFamily: {
+      montserrat: ['var(--font-montserrat)'],
+    },
   },
   plugins: [],
 };

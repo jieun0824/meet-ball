@@ -27,9 +27,9 @@ export default function TimeTableBody({
     : [];
 
   return (
-    <div className="text-white flex">
+    <div className="text-[#B1B1B1] font-montserrat text-xs flex">
       <div className="w-[49px]">
-        <div className="h-[40px] mb-2">
+        <div className="h-[40px] mb-2 flex items-center">
           <p>Week</p>
         </div>
         {timeList.map((time: number, index: number) => {
