@@ -1,4 +1,5 @@
 import { createMeet } from '@/controllers/meet';
+import { redirect } from 'next/navigation';
 
 export default function CreatePage() {
   async function handleSubmit(formData: FormData) {
@@ -23,6 +24,8 @@ export default function CreatePage() {
       endTime: 2 * (meetingEndHour + meetingEndMin), // 0-47
       confirmTime: scheduleEndDate,
       password: password,
+    }).then(() => {
+      redirect;
     });
   }
 

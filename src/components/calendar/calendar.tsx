@@ -17,23 +17,22 @@ function Calendar({
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn(
-        'p-4 flex justify-center items-center border-none relative',
+        'p-4 border-none relative flex w-full',
         'before:absolute before:inset-0 before:top-16 before:bg-cardColor before:rounded-xl',
         className
       )}
       classNames={{
-        months:
-          'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 z-10',
+        months: 'flex flex-col space-y-4 z-10 w-full min-w-80',
         month: 'space-y-4',
         caption: 'flex justify-between pt-1 relative items-center mb-8 z-12',
-        caption_label: 'text-2xl font-bold',
-        nav: 'space-x-1 flex items-center relative',
-        table: 'w-full border-collapse space-y-1',
-        head_row: 'flex',
-        head_cell: 'text-pointColor rounded-md w-9 font-bold text-[0.8rem]',
-        row: 'flex w-full mt-2',
-        cell: 'h-9 w-9 text-center text-sm p-0 relative',
-        day: 'h-8 w-8 p-0 font-normal aria-selected:opacity-100 rounded-[50%] hover:bg-gray-400',
+        caption_label: 'text-2xl font-bold ',
+        nav: 'space-x-1 flex items-center relative ',
+        table: 'w-full border-collapse space-y-1 ',
+        head_row: 'flex  justify-evenly',
+        head_cell: 'text-pointColor rounded-md min-w-9 font-bold text-[0.8rem]',
+        row: 'flex w-full mt-2 justify-evenly',
+        cell: 'min-h-9 min-w-9 text-center text-sm relative',
+        day: 'min-h-8 min-w-8 font-normal aria-selected:opacity-100 rounded-[50%] hover:bg-gray-400',
         day_range_end: 'day-range-end',
         day_selected: '!bg-pointColor text-black hover:text-gray-50',
         day_today: 'bg-gray-500 text-gray-900',

@@ -74,6 +74,8 @@ export async function createMeet(args: CreateMeetArguments): Promise<Meet> {
         },
       },
     });
+    const meetId = meet.id;
+    redirect(`/meet/${meetId}/edit`);
     return meet;
   } catch (error) {
     console.error(error);
