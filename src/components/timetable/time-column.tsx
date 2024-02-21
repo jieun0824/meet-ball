@@ -1,20 +1,25 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { ReactElement, useEffect, useRef, useState } from 'react';
+
+// type selectedArea = {
+//   start: [startCol: number, startRow: number] | [];
+//   end: [endCol: number, endRow: number] | [];
+// };
 
 type timeComponentProps = {
   time: number;
-  length: number;
   selected: boolean;
   addHandler: () => void;
   deleteHandler: () => void;
+  index: [number, number];
 };
 
-function TimeComponent({
+function TimeCell({
   time,
-  length,
   selected,
   addHandler,
   deleteHandler,
+  index,
 }: timeComponentProps) {
   const [clicked, setClicked] = useState(selected);
   const clickHandler = () => {
@@ -29,18 +34,21 @@ function TimeComponent({
 
   return (
     <div
-      className={`h-[20px] border-white ${time % 2 === 0 ? 'border-t-[0.3px]' : ''} ${clicked && 'bg-pointColor bg-opacity-35'}`}
+      className={`h-[20px] cursor-pointer border-white ${time % 2 === 0 ? 'border-t-[0.3px]' : ''} ${clicked && 'bg-pointColor bg-opacity-35'}`}
       onClick={clickHandler}
-    ></div>
+    >
+      {/* {'col:' + index[0] + ' row:' + index[1]} */}
+    </div>
   );
 }
 
-export default function TimeLine({
+export default function TimeColumn({
   date,
   startTime,
   endTime,
   type,
   timeTable,
+  colIdx,
 }: {
   date: string;
   startTime: number;
@@ -51,6 +59,7 @@ export default function TimeLine({
       [key: string]: number[];
     };
   };
+  colIdx: number;
 }) {
   const timeList = Array.from(
     { length: endTime - startTime },
@@ -74,16 +83,24 @@ export default function TimeLine({
   useEffect(() => {
     console.log(timeTable.current);
   }, [timeTable.current]);
+
+  // const [selectedAreaCollection, setSelectedAreaCollection] = useState<
+  //   selectedArea[]
+  // >([]);
+
+  // useEffect(() => {
+  //   console.log(selectedAreaCollection);
+  // }, [selectedAreaCollection]);
+
   return (
     <div>
       <p className="flex justify-center whitespace-pre-wrap h-[30px]">
         {label.current}
       </p>
-      {timeList.map((time: number, index: number) => (
-        <TimeComponent
-          key={time}
+      {timeList.map((time: number, rowIdx: number) => (
+        <TimeCell
+          key={rowIdx}
           time={time}
-          length={endTime - startTime + 1}
           selected={timeTable.current[date].includes(time)}
           addHandler={() => timeTable.current[date].push(time)}
           deleteHandler={() =>
@@ -92,6 +109,7 @@ export default function TimeLine({
               1
             )
           }
+          index={[colIdx, rowIdx]}
         />
       ))}
     </div>

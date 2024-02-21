@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import Button from '../button/button';
-import TimeLine from './time-line';
+import TimeColumn from './time-column';
 import { useParams } from 'next/navigation';
 import { updateTimeTable } from '@/controllers/meet';
 
@@ -68,13 +68,14 @@ export default function TimeTable({
           })}
         </div>
         {datesOrDays.map((date: string, i: number) => (
-          <TimeLine
+          <TimeColumn
             key={date}
             date={date}
             startTime={startTime}
             endTime={endTime}
             type={type}
             timeTable={timeTable}
+            colIdx={datesOrDays.indexOf(date)}
           />
         ))}
       </div>
