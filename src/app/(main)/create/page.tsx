@@ -1,5 +1,5 @@
 import { createMeet } from '@/controllers/meet';
-import { redirect } from 'next/dist/server/api-utils';
+import { redirect } from 'next/navigation';
 
 export default function CreatePage() {
   async function handleSubmit(formData: FormData) {
