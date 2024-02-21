@@ -5,6 +5,7 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/***/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -23,6 +24,17 @@ const config: Config = {
     },
     fontFamily: {
       montserrat: ['var(--font-montserrat)'],
+      roboto: ['Roboto', 'sans-serif'],
+    },
+    gridTemplateColumns: {
+      // Simple 16 column grid
+      table1: '44px repeat(1, minmax(0, 1fr))',
+      table2: '44px repeat(2, minmax(0, 1fr))',
+      table3: '44px repeat(3, minmax(0, 1fr))',
+      table4: '44px repeat(4, minmax(0, 1fr))',
+      table5: '44px repeat(5, minmax(0, 1fr))',
+      table6: '44px repeat(6, minmax(0, 1fr))',
+      table7: '44px repeat(7, minmax(0, 1fr))',
     },
   },
   plugins: [],

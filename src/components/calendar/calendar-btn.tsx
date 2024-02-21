@@ -1,17 +1,17 @@
-export default function CalenderBtn({
+export function WeekCalenderBtn({
   isSelected,
-  date,
+  day,
 }: {
   isSelected: boolean;
-  date: number;
+  day: string;
 }) {
   return (
     <div
-      className={`cursor-pointer flex justify-center items-center w-8 h-8 rounded-2xl ${
-        isSelected && 'bg-pointColor'
+      className={`cursor-pointer flex justify-center items-center rounded-2xl w-8 h-8 hover:bg-gray-400 ${
+        isSelected && '!bg-pointColor text-black'
       }`}
     >
-      {date}
+      {day}
     </div>
   );
 }
