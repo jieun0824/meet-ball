@@ -4,7 +4,7 @@ import type { Meet, MeetType } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/authentication';
 import { cookies } from 'next/headers';
-import { redirect, useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export async function getMyManagingMeets(): Promise<Meet[]> {
   try {
