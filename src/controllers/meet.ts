@@ -1,5 +1,6 @@
 'use server';
 
+import { Prisma } from '@prisma/client';
 import type { Meet, MeetType } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/authentication';
@@ -83,7 +84,15 @@ export async function createMeet(args: CreateMeetArguments): Promise<Meet> {
   }
 }
 
-export async function getMeet(meetId: string): Promise<Meet> {
+const meetWithParticipants = Prisma.validator<Prisma.MeetDefaultArgs>()({
+  include: { participants: true },
+});
+
+export type MeetWithParticipants = Prisma.MeetGetPayload<
+  typeof meetWithParticipants
+>;
+
+export async function getMeet(meetId: string): Promise<MeetWithParticipants> {
   try {
     const currentUser = await getCurrentUser();
     const meet = await prisma.meet.findUniqueOrThrow({
