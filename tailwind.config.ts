@@ -38,6 +38,7 @@ const config: Config = {
       },
     },
     fontFamily: {
+      montserrat: ['var(--font-montserrat)'],
       roboto: ['Roboto', 'sans-serif'],
     },
   },
