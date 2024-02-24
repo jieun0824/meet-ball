@@ -45,7 +45,7 @@ export async function getMyParticipatingMeets(): Promise<Meet[]> {
   }
 }
 
-export type CreateMeetArguments = {
+export type CreateMeetParams = {
   name: string;
   description?: string;
   //meetType: MeetType;
@@ -56,7 +56,7 @@ export type CreateMeetArguments = {
   password?: string;
 };
 
-export async function createMeet(args: CreateMeetArguments): Promise<Meet> {
+export async function createMeet(args: CreateMeetParams): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
     const { type, meetingDays } = JSON.parse(cookies().get('days')!.value);
@@ -111,7 +111,7 @@ export async function getMeet(meetId: string): Promise<Meet> {
   }
 }
 
-export type UpdateMeetArguments = {
+export type UpdateMeetParams = {
   name?: string;
   description?: string;
   meetType?: MeetType;
@@ -123,7 +123,7 @@ export type UpdateMeetArguments = {
 
 export async function updateMeet(
   meetId: string,
-  args: UpdateMeetArguments
+  args: UpdateMeetParams
 ): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
