@@ -1,9 +1,12 @@
 'use client';
 import { useEffect, useRef, useState, useTransition } from 'react';
-import Button from '../button/button';
-import TimeColumn from './time-column';
+import Button from '@/components/button/button';
+import TimeColumn from '@/components/timetable/time-column';
 import { useParams } from 'next/navigation';
 import { updateTimeTable } from '@/controllers/meet';
+import useSelectedCollection from '@/hooks/useSelectedCollection';
+
+export type draggedArea = number[][];
 
 interface TimeTable {
   current: {
@@ -22,16 +25,18 @@ export default function TimeTable({
   endTime: number;
   datesOrDays: string[];
   type: 'DAYS' | 'DATES';
+
   userTimetable: {};
 }) {
   const [isPending, startTransition] = useTransition();
-  const timeTable: TimeTable = useRef(userTimetable);
+  const { selectedCollection, setSelectedCollection } = useSelectedCollection();
+
   const meetId = useParams().meetId as string;
+
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
     (_, index) => startTime + index
   );
-
   type gridColumnsType = {
     [key: number]: string;
   };
@@ -45,6 +50,11 @@ export default function TimeTable({
     6: `grid grid-cols-table6 w-3/4`,
     7: `grid grid-cols-table7 w-3/4`,
   };
+  useEffect(() => {
+    setSelectedCollection({ ...selectedCollection, ...userTimetable });
+    console.log(selectedCollection);
+  }, []);
+
   return (
     <>
       <div className={gridSetList[datesOrDays.length % 7]}>
@@ -72,10 +82,10 @@ export default function TimeTable({
             key={date}
             date={date}
             startTime={startTime}
-            endTime={endTime}
+            length={endTime - startTime + 1}
             type={type}
-            timeTable={timeTable}
-            colIdx={datesOrDays.indexOf(date)}
+            colIdx={i}
+            userTimetable={userTimetable}
           />
         ))}
       </div>
@@ -83,7 +93,7 @@ export default function TimeTable({
         title="저장하기"
         type="submit"
         onClick={async () => {
-          await updateTimeTable(meetId, timeTable.current);
+          await updateTimeTable(meetId, selectedCollection);
         }}
       />
     </>
