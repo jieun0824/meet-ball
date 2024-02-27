@@ -2,19 +2,15 @@
 import { useEffect, useState, useTransition } from 'react';
 import useMultiSelect from '@/hooks/useMultiSelect';
 import Button from '../button/button';
-import { createDaysCookies } from '@/controllers/meet';
-import { Calendar } from './calendar';
+import { setSelectionCookie } from '@/controllers/meet';
+import { Calendar, WeekCalendar } from './calendar';
 import { MeetType } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
 type ModeButtonProps = {
   isSelected: boolean;
   title: string;
   modeChange: () => void;
-};
-
-type WeekDaysProps = {
-  selectedDays: string[];
-  handleSelectedDays: (s: string) => void;
 };
 
 function ModeButton({ isSelected, title, modeChange }: ModeButtonProps) {
@@ -51,39 +47,17 @@ function ModeSelector({
   );
 }
 
-function WeekCalendar({ selectedDays, handleSelectedDays }: WeekDaysProps) {
-  const days = ['월', '화', '수', '목', '금', '토', '일'];
-  return (
-    <div className="bg-cardColor p-6 rounded-lg flex mt-8 justify-evenly">
-      {days.map((day, i) => (
-        <div key={i} className="" onClick={() => handleSelectedDays(day)}>
-          <div
-            className={`cursor-pointer flex justify-center items-center rounded-2xl w-8 h-8 hover:bg-gray-400 ${
-              selectedDays.includes(day) && '!bg-pointColor text-black'
-            }`}
-          >
-            {day}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export default function DatesSelector() {
-  const [mode, setMode] = useState<MeetType>('DATES');
-  const handleModeChange = (newMode: MeetType) => {
-    setMode(newMode);
-  };
+  const [mode, setMode] = useState<MeetType>(MeetType.DATES);
   const [selectedDates, setSelectedDates] = useState<Date[] | undefined>([]);
   const { selected: selectedDays, handleSelected: handleSelectedDays } =
     useMultiSelect<string>([]);
-  const [isPending, startTransition] = useTransition();
-  useEffect(() => {
-    console.log(selectedDays);
-  }, [selectedDays]);
+  // const [isPending, startTransition] = useTransition();
+  // useEffect(() => {
+  //   console.log(selectedDays);
+  // }, [selectedDays]);
 
-  const DaysOrder: { [key: string]: number } = {
+  const daysSortOrder: { [key: string]: number } = {
     월: 1,
     화: 2,
     수: 3,
@@ -92,29 +66,36 @@ export default function DatesSelector() {
     토: 6,
     일: 7,
   };
+  const router = useRouter();
 
-  const cookieHandler = () => {
-    let meetingDays: string[] = [];
-    if (selectedDates != undefined && mode == 'DATES') {
-      meetingDays = selectedDates
-        .sort((a: any, b: any) => a - b)
+  async function cookieHandler() {
+    let selections: string[] = [];
+
+    if (mode == MeetType.DATES) {
+      if (selectedDates == undefined || selectedDates.length == 0) {
+        alert('You should select at least 1 date.');
+        return;
+      }
+      selections = selectedDates
+        .sort((a, b) => a.getTime() - b.getTime())
         .map(a => a.toISOString().split('T')[0]);
-    }
-    if (selectedDays != undefined && mode == 'DAYS') {
-      meetingDays = selectedDays.sort(
-        (a: string, b: string) => DaysOrder[a] - DaysOrder[b]
+    } else if (mode == MeetType.DAYS) {
+      if (selectedDays.length == 0) {
+        alert('You should select at least 1 day.');
+        return;
+      }
+      selections = selectedDays.sort(
+        (a: string, b: string) => daysSortOrder[a] - daysSortOrder[b]
       );
     }
-    startTransition(() =>
-      createDaysCookies({ type: mode, meetingDays: meetingDays })
-    );
-  };
+    await setSelectionCookie({ mode, selections });
+  }
 
   return (
     <div className="mt-8 flex flex-col w-full max-w-[730px] mobile:max-w-[500px]">
-      <ModeSelector mode={mode} handleModeChange={handleModeChange} />
+      <ModeSelector mode={mode} handleModeChange={setMode} />
       <div className="flex flex-col items-center">
-        {mode == 'DAYS' ? (
+        {mode == MeetType.DAYS ? (
           <WeekCalendar
             selectedDays={selectedDays}
             handleSelectedDays={handleSelectedDays}
@@ -132,7 +113,10 @@ export default function DatesSelector() {
         <Button
           type="button"
           title={'🧆 미트볼 굴리기'}
-          onClick={cookieHandler}
+          onClick={async () => {
+            await cookieHandler();
+            router.push('/create');
+          }}
         />
       </div>
     </div>

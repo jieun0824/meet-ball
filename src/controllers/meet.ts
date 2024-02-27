@@ -59,12 +59,12 @@ export type CreateMeetParams = {
 export async function createMeet(args: CreateMeetParams): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
-    const { type, meetingDays } = JSON.parse(cookies().get('days')!.value);
+    const { mode, selection } = JSON.parse(cookies().get('selection')!.value);
     const meet = await prisma.meet.create({
       data: {
         managerId: currentUser.id,
-        datesOrDays: meetingDays,
-        meetType: type,
+        datesOrDays: selection,
+        meetType: mode,
         ...args,
         participants: {
           create: {
@@ -224,23 +224,20 @@ export async function updateTimeTable(meetId: string, timeTable: TimeTable) {
 }
 
 //save days as cookies
-export async function createDaysCookies(data: {
-  type: 'DAYS' | 'DATES';
-  meetingDays: string[];
+export async function setSelectionCookie(data: {
+  mode: MeetType;
+  selections: string[];
 }) {
   try {
-    cookies().set(
-      'days',
-      JSON.stringify({ type: data.type, meetingDays: data.meetingDays })
-    );
-    const dayCookie = cookies().get('days');
-    if (dayCookie != undefined) {
-      console.log(dayCookie);
-    } else {
-      console.log('cookie isundefined');
-    }
-  } catch (err) {
-    console.error('error', err);
+    cookies().set('selection', JSON.stringify(data));
+    // const dayCookie = cookies().get('days');
+    // if (dayCookie != undefined) {
+    //   console.log(dayCookie);
+    // } else {
+    //   console.log('cookie is undefined');
+    // }
+  } catch (error) {
+    console.error(error);
   }
-  redirect('/create');
+  // redirect('/create');
 }

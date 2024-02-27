@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { LeftIcon, RightIcon } from '@/components/icon';
 import { ko } from 'date-fns/locale';
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 function Calendar({
   className,
@@ -55,4 +55,28 @@ function Calendar({
 }
 Calendar.displayName = 'Calendar';
 
-export { Calendar };
+type WeekDaysProps = {
+  selectedDays: string[];
+  handleSelectedDays: (s: string) => void;
+};
+
+function WeekCalendar({ selectedDays, handleSelectedDays }: WeekDaysProps) {
+  const days = ['월', '화', '수', '목', '금', '토', '일'];
+  return (
+    <div className="bg-cardColor p-6 rounded-lg flex mt-8 justify-evenly">
+      {days.map((day, i) => (
+        <div key={i} className="" onClick={() => handleSelectedDays(day)}>
+          <div
+            className={`cursor-pointer flex justify-center items-center rounded-2xl w-8 h-8 hover:bg-gray-400 ${
+              selectedDays.includes(day) && '!bg-pointColor text-black'
+            }`}
+          >
+            {day}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export { Calendar, WeekCalendar };
