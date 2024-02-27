@@ -1,9 +1,12 @@
 import { createMeet } from '@/controllers/meet';
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export default function CreatePage() {
   async function handleSubmit(formData: FormData) {
     'use server';
+
+    const { mode, selection } = JSON.parse(cookies().get('selection')!.value);
 
     const meetingName = formData.get('meetingName') as string;
     const meetingDescription = formData.get('meetingDescription') as string;
@@ -20,8 +23,10 @@ export default function CreatePage() {
     await createMeet({
       name: meetingName,
       description: meetingDescription,
+      meetType: mode,
       startTime: 2 * (meetingStartHour + meetingStartMin), // 0-47
       endTime: 2 * (meetingEndHour + meetingEndMin), // 0-47
+      datesOrDays: selection,
       confirmTime: scheduleEndDate,
       password: password,
     }).then(() => {

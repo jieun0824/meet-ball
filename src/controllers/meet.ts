@@ -48,10 +48,10 @@ export async function getMyParticipatingMeets(): Promise<Meet[]> {
 export type CreateMeetParams = {
   name: string;
   description?: string;
-  //meetType: MeetType;
+  meetType: MeetType;
   startTime: number; // 0-47
   endTime: number; // 0-47
-  //datesOrDays: string[];
+  datesOrDays: string[];
   confirmTime: Date | string;
   password?: string;
 };
@@ -59,12 +59,10 @@ export type CreateMeetParams = {
 export async function createMeet(args: CreateMeetParams): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
-    const { mode, selection } = JSON.parse(cookies().get('selection')!.value);
+    
     const meet = await prisma.meet.create({
       data: {
         managerId: currentUser.id,
-        datesOrDays: selection,
-        meetType: mode,
         ...args,
         participants: {
           create: {
