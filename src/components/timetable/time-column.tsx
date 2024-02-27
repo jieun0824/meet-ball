@@ -23,76 +23,78 @@ function TimeCell({
   length,
   startTime,
 }: timeComponentProps) {
-  const {
-    selectedCollection,
-    setSelectedCollection,
-    addHandler,
-    deleteHandler,
-  } = useSelectedCollection();
+  // const {
+  //   selectedCollection,
+  //   setSelectedCollection,
+  //   addHandler,
+  //   deleteHandler,
+  // } = useSelectedCollection();
   const [clicked, setClicked] = useState(selected);
 
-  const clickHandler = () => {
-    if (clicked) {
-      setClicked(false);
-      deleteHandler(date, time);
-    } else {
-      setClicked(true);
-      addHandler(date, time);
-    }
-  };
+  // const clickHandler = () => {
+  //   if (clicked) {
+  //     setClicked(false);
+  //     deleteHandler(date, time);
+  //   } else {
+  //     setClicked(true);
+  //     addHandler(date, time);
+  //   }
+  // };
 
   //store dragged Area([[startCol, startRow], [endCol, endRow]]) by swr (global state)
   const [draggedArea, setDraggedArea] = useDraggedArea();
 
-  const onMouseDownHandler = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    await setDraggedArea([[date, time]]);
-  };
+  // const onMouseDownHandler = async (event: React.MouseEvent) => {
+  //   event.preventDefault();
+  //   await setDraggedArea([[date, time]]);
+  // };
 
-  const onMouseUpHandler = async (event: React.MouseEvent) => {
-    event.preventDefault();
-    let newDraggedArea = [...draggedArea, [date, time]];
-    await setDraggedArea(newDraggedArea).then(() => {
-      const startCol = Object.keys(selectedCollection).indexOf(
-        draggedArea[0][0]
-      );
-      const endCol = Object.keys(selectedCollection).indexOf(
-        newDraggedArea[1][0]
-      );
-      if (selectedCollection[draggedArea[0][0]].includes(draggedArea[0][1])) {
-        //deleteMode
-        Object.keys(selectedCollection).forEach((date, i) => {
-          if (i >= startCol && i <= endCol) {
-            selectedCollection[date].forEach((time: number, i: number) => {
-              if (time >= draggedArea[0][1] && time <= newDraggedArea[1][1]) {
-                deleteHandler(date, time);
-              }
-            });
-          }
-        });
-      } else {
-        //addMode
-        Object.keys(selectedCollection).forEach((date, i) => {
-          if (i >= startCol && i <= endCol) {
-            selectedCollection[date].forEach((time: number, i: number) => {
-              if (time >= draggedArea[0][1] && time <= draggedArea[1][1]) {
-                addHandler(date, time);
-              }
-            });
-          }
-        });
-      }
-    });
-  };
+  // const onMouseUpHandler = async (event: React.MouseEvent) => {
+  //   event.preventDefault();
+  //   let newDraggedArea = [...draggedArea, [date, time]];
+  //   await setDraggedArea(newDraggedArea).then(() => {
+  //     const startCol = Object.keys(selectedCollection).indexOf(
+  //       draggedArea[0][0]
+  //     );
+  //     const endCol = Object.keys(selectedCollection).indexOf(
+  //       newDraggedArea[1][0]
+  //     );
+  //     if (selectedCollection[draggedArea[0][0]].includes(draggedArea[0][1])) {
+  //       //deleteMode
+  //       Object.keys(selectedCollection).forEach((date, i) => {
+  //         if (i >= startCol && i <= endCol) {
+  //           selectedCollection[date].forEach((time: number, i: number) => {
+  //             if (time >= draggedArea[0][1] && time <= newDraggedArea[1][1]) {
+  //               deleteHandler(date, time);
+  //             }
+  //           });
+  //         }
+  //       });
+  //     } else {
+  //       //addMode
+  //       Object.keys(selectedCollection).forEach((date, i) => {
+  //         if (i >= startCol && i <= endCol) {
+  //           selectedCollection[date].forEach((time: number, i: number) => {
+  //             if (time >= draggedArea[0][1] && time <= draggedArea[1][1]) {
+  //               addHandler(date, time);
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  // };
 
   return (
     <div
-      className={`h-[20px] cursor-pointer border-white ${time % 2 === 0 ? 'border-t-[0.3px]' : ''} ${clicked && 'bg-pointColor bg-opacity-35'}`}
-      onClick={clickHandler}
-      onMouseDown={onMouseDownHandler}
-      onMouseUp={onMouseUpHandler}
+      data-time={time}
+      data-date={date}
+      className={`cell h-[20px] cursor-pointer border-white ${time % 2 === 0 ? 'border-t-[0.3px]' : ''} ${clicked && 'bg-pointColor bg-opacity-35'}`}
+      // onClick={clickHandler}
+      // onMouseDown={onMouseDownHandler}
+      // onMouseUp={onMouseUpHandler}
     >
-      {cellNum}
+      {time}
     </div>
   );
 }
@@ -139,7 +141,7 @@ export default function TimeColumn({
       </p>
       {timeList.map((time: number, rowIdx: number) => (
         <TimeCell
-          key={rowIdx}
+          key={time}
           time={time}
           index={[colIdx, rowIdx]}
           startTime={startTime}

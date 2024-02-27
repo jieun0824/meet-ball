@@ -10,19 +10,24 @@ export default function useSelectedCollection() {
     });
 
   const addHandler = (date: string, time: number) => {
-    setSelectedCollection({
-      ...selectedCollection,
-      [date]: [...selectedCollection[date], time],
-    });
+    if (!selectedCollection[date].includes(time)) {
+      setSelectedCollection({
+        ...selectedCollection,
+        [date]: [...selectedCollection[date], time],
+      });
+    }
   };
 
   const deleteHandler = (date: string, time: number) => {
-    setSelectedCollection({
-      ...selectedCollection,
-      [date]: selectedCollection[date].filter(
+    if (selectedCollection[date].includes(time)) {
+      const newArray = selectedCollection[date].filter(
         (element: number) => element != time
-      ),
-    });
+      );
+      setSelectedCollection({
+        ...selectedCollection,
+        [date]: newArray,
+      });
+    }
   };
 
   useEffect(() => {
