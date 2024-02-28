@@ -60,7 +60,7 @@ export type CreateMeetParams = {
 export async function createMeet(args: CreateMeetParams): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
-    
+
     const meet = await prisma.meet.create({
       data: {
         managerId: currentUser.id,
@@ -166,9 +166,43 @@ export async function deleteMeet(meetId: string): Promise<Meet> {
   }
 }
 
-export type TimeTable = {
-  [key: string]: number[];
-};
+// add users to a specific meet
+export async function addParticipantsToMeet(
+  meetId: string,
+  userIds: string[]
+): Promise<Meet> {
+  try {
+    const currentUser = await getCurrentUser();
+    const meet = await prisma.meet.update({
+      where: {
+        id: meetId,
+        managerId: currentUser.id, // only authorized for manager
+      },
+      data: {
+        participants: {
+          create: userIds.map(userId => ({
+            userId,
+          })),
+        },
+      },
+    });
+    return meet;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+  // // Create an array of ParticipantsOnMeets objects
+  // const participants = userIds.map(userId => ({
+  //   meetId,
+  //   userId,
+  // }));
+
+  // // Use the createMany method on the ParticipantsOnMeets model to add all participants at once
+  // await prisma.participantsOnMeets.createMany({
+  //   data: participants,
+  //   skipDuplicates: true, // This ensures users are not added twice
+  // });
+}
 
 export async function acceptMeetInvitation(meetId: string) {
   try {
@@ -190,6 +224,10 @@ export async function acceptMeetInvitation(meetId: string) {
     throw error;
   }
 }
+
+export type TimeTable = {
+  [key: string]: number[];
+};
 
 export async function getTimeTable(meetId: string) {
   try {
