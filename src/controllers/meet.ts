@@ -45,26 +45,24 @@ export async function getMyParticipatingMeets(): Promise<Meet[]> {
   }
 }
 
-export type CreateMeetArguments = {
+export type CreateMeetParams = {
   name: string;
   description?: string;
-  //meetType: MeetType;
+  meetType: MeetType;
   startTime: number; // 0-47
   endTime: number; // 0-47
-  //datesOrDays: string[];
+  datesOrDays: string[];
   confirmTime: Date | string;
   password?: string;
 };
 
-export async function createMeet(args: CreateMeetArguments): Promise<Meet> {
+export async function createMeet(args: CreateMeetParams): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
-    const { type, meetingDays } = JSON.parse(cookies().get('days')!.value);
+    
     const meet = await prisma.meet.create({
       data: {
         managerId: currentUser.id,
-        datesOrDays: meetingDays,
-        meetType: type,
         ...args,
         participants: {
           create: {
@@ -111,7 +109,7 @@ export async function getMeet(meetId: string): Promise<Meet> {
   }
 }
 
-export type UpdateMeetArguments = {
+export type UpdateMeetParams = {
   name?: string;
   description?: string;
   meetType?: MeetType;
@@ -123,7 +121,7 @@ export type UpdateMeetArguments = {
 
 export async function updateMeet(
   meetId: string,
-  args: UpdateMeetArguments
+  args: UpdateMeetParams
 ): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
@@ -224,23 +222,20 @@ export async function updateTimeTable(meetId: string, timeTable: TimeTable) {
 }
 
 //save days as cookies
-export async function createDaysCookies(data: {
-  type: 'DAYS' | 'DATES';
-  meetingDays: string[];
+export async function setSelectionCookie(data: {
+  mode: MeetType;
+  selections: string[];
 }) {
   try {
-    cookies().set(
-      'days',
-      JSON.stringify({ type: data.type, meetingDays: data.meetingDays })
-    );
-    const dayCookie = cookies().get('days');
-    if (dayCookie != undefined) {
-      console.log(dayCookie);
-    } else {
-      console.log('cookie isundefined');
-    }
-  } catch (err) {
-    console.error('error', err);
+    cookies().set('selection', JSON.stringify(data));
+    // const dayCookie = cookies().get('days');
+    // if (dayCookie != undefined) {
+    //   console.log(dayCookie);
+    // } else {
+    //   console.log('cookie is undefined');
+    // }
+  } catch (error) {
+    console.error(error);
   }
-  redirect('/create');
+  // redirect('/create');
 }
