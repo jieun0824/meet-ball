@@ -9,9 +9,9 @@ export default function useDraggedArea() {
     }
   );
 
-  // useEffect(() => {
-  //   console.log(draggedArea);
-  // }, [draggedArea]);
+  useEffect(() => {
+    console.log(draggedArea);
+  }, [draggedArea]);
 
   return [draggedArea, setDraggedArea];
 }

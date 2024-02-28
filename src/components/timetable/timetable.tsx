@@ -7,6 +7,7 @@ import { updateTimeTable } from '@/controllers/meet';
 import useSelectedCollection from '@/hooks/useSelectedCollection';
 import { SelectableGroup } from 'react-selectable-fast';
 import Selecto from 'react-selecto';
+import useDraggedArea from '@/hooks/useDraggedArea';
 
 export type draggedArea = number[][];
 
@@ -31,15 +32,62 @@ export default function TimeTable({
   userTimetable: {};
 }) {
   const [isPending, startTransition] = useTransition();
-  const [dragType, setDragType] = useState<'DELETE' | 'ADD' | undefined>(
-    undefined
-  );
+  const [draggedArea, setDraggedArea] = useDraggedArea();
   const {
     selectedCollection,
     setSelectedCollection,
     addHandler,
     deleteHandler,
   } = useSelectedCollection();
+
+  const [dragType, setDragType] = useState<'ADD' | 'DELETE' | undefined>(
+    undefined
+  );
+
+  async function determineAddDragType(e) {
+    return new Promise(resolve => {
+      if (
+        e.added[0] == e.startAdded[0] &&
+        e.startAdded[0].classList.contains('bg-pointColor')
+      ) {
+        setDragType('DELETE');
+        console.log('DELETE');
+        resolve('DELETE');
+      } else if (
+        e.added[0] == e.startAdded[0] &&
+        !e.startAdded[0].classList.contains('bg-pointColor')
+      ) {
+        setDragType('ADD');
+        console.log('ADD');
+        resolve('ADD');
+      } else {
+        // Handle other cases or add a default value
+        resolve(dragType);
+      }
+    });
+  }
+  async function determineRemoveDragType(e) {
+    return new Promise(resolve => {
+      if (
+        e.removed[0] == e.startRemoved[0] &&
+        e.startRemoved[0].classList.contains('bg-pointColor')
+      ) {
+        setDragType('DELETE');
+        console.log('DELETE');
+        resolve('DELETE');
+      } else if (
+        e.removed[0] == e.startRemoved[0] &&
+        !e.startRemoved[0].classList.contains('bg-pointColor')
+      ) {
+        setDragType('ADD');
+        console.log('ADD');
+        resolve('ADD');
+      } else {
+        // Handle other cases or add a default value
+        resolve(dragType);
+      }
+    });
+  }
 
   const meetId = useParams().meetId as string;
 
@@ -95,53 +143,104 @@ export default function TimeTable({
           selectFromInside={true}
           continueSelect={true}
           ratio={0}
+          // onDragStart={e => {
+          //   startTransition(() => {
+          //     console.log(e.inputEvent.srcElement);
+          //     if (e.inputEvent.srcElement.classList.contains['bg-pointColor']) {
+          //       setDragType('DELETE');
+          //     } else if (
+          //       !e.inputEvent.srcElement.classList.contains['bg-pointColor']
+          //     ) {
+          //       setDragType('ADD');
+          //     }
+          //   });
+          // }}
+
           onSelect={e => {
-            console.log(e.selected[0]);
-
-            e.added.forEach(el => {
-              if (
-                e.added[0] == e.startAdded[0] &&
-                selectedCollection[
-                  e.startAdded[0].dataset.date as string
-                ].includes(parseInt(e.added[0].dataset.time!))
-              ) {
-                setDragType('DELETE');
-                console.log('DELETE');
-              } else if (
-                e.added[0] == e.startAdded[0] &&
-                !selectedCollection[
-                  e.startAdded[0].dataset.date as string
-                ].includes(parseInt(e.added[0].dataset.time!))
-              ) {
-                setDragType('ADD');
-                console.log('ADD');
-              }
-
-              if (dragType == 'DELETE') {
-                console.log('delete mode');
-                el.classList.remove('bg-pointColor', 'bg-opacity-35');
-                deleteHandler(
-                  el.dataset.date as string,
-                  parseInt(el.dataset.time!)
-                );
-              } else {
-                console.log('add mode');
-                el.classList.add('bg-pointColor', 'bg-opacity-35');
-                addHandler(
-                  el.dataset.date as string,
-                  parseInt(el.dataset.time!)
-                );
-              }
-            });
-
-            e.removed.forEach(el => {
-              el.classList.remove('bg-pointColor', 'bg-opacity-35');
-              deleteHandler(
-                el.dataset.date as string,
-                parseInt(el.dataset.time!)
-              );
-            });
+            setDraggedArea(e.selected);
+            console.log(draggedArea);
           }}
+          // onSelect={async e => {
+          //   if (dragType === 'ADD') {
+          //     e.added.forEach(el => {
+          //       el.classList.add('bg-pointColor', 'bg-opacity-35');
+          //     });
+          //     e.removed.forEach(el => {
+          //       el.classList.add('bg-pointColor', 'bg-opacity-35');
+          //     });
+          //   } else if (dragType === 'DELETE') {
+          //     e.added.forEach(el => {
+          //       el.classList.remove('bg-pointColor', 'bg-opacity-35');
+          //     });
+          //     e.removed.forEach(el => {
+          //       el.classList.remove('bg-pointColor', 'bg-opacity-35');
+          //     });
+          //   }
+          // e.startAdded[0] != undefined &&
+          //   (await determineAddDragType(e).then(async res => {
+          //     console.log('add', res);
+          //     for (const el of e.added) {
+          //       if (
+          //         res === 'DELETE' &&
+          //         selectedCollection[el.dataset.date as string].includes(
+          //           parseInt(el.dataset.time!)
+          //         )
+          //       ) {
+          //         await deleteHandler(
+          //           el.dataset.date as string,
+          //           parseInt(el.dataset.time!)
+          //         ).then(() => {
+          //           el.classList.remove('bg-pointColor', 'bg-opacity-35');
+          //         });
+          //       } else if (
+          //         res === 'ADD' &&
+          //         !selectedCollection[el.dataset.date as string].includes(
+          //           parseInt(el.dataset.time!)
+          //         )
+          //       ) {
+          //         await addHandler(
+          //           el.dataset.date as string,
+          //           parseInt(el.dataset.time!)
+          //         ).then(() => {
+          //           el.classList.add('bg-pointColor', 'bg-opacity-35');
+          //         });
+          //       }
+          //     }
+          //   }));
+          // e.startRemoved[0] != undefined &&
+          //   (await determineRemoveDragType(e).then(async res => {
+          //     console.log('remove', res);
+          //     for (const el of e.removed) {
+          //       if (
+          //         res === 'DELETE' &&
+          //         selectedCollection[el.dataset.date as string].includes(
+          //           parseInt(el.dataset.time!)
+          //         )
+          //       ) {
+          //         await deleteHandler(
+          //           el.dataset.date as string,
+          //           parseInt(el.dataset.time!)
+          //         ).then(() => {
+          //           el.classList.remove('bg-pointColor', 'bg-opacity-35');
+          //         });
+          //       } else if (
+          //         res === 'ADD' &&
+          //         !selectedCollection[el.dataset.date as string].includes(
+          //           parseInt(el.dataset.time!)
+          //         )
+          //       ) {
+          //         await addHandler(
+          //           el.dataset.date as string,
+          //           parseInt(el.dataset.time!)
+          //         ).then(() => {
+          //           el.classList.add('bg-pointColor', 'bg-opacity-35');
+          //         });
+          //       } else {
+          //         console.log('remove else');
+          //       }
+          //     }
+          //   }));
+          //}}
         />
         <div className={gridSetList[datesOrDays.length % 7]}>
           {datesOrDays.map((date: string, i: number) => (
