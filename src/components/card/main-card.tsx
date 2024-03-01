@@ -2,7 +2,7 @@ import { ClockIcon, MoreIcon, PeopleIcon } from '@/components/icon';
 
 type mainCardProps = {
   meetName: string;
-  description: string;
+  description: string | null;
   startTime: number;
   endTime: number;
   participants: string[];
@@ -15,12 +15,11 @@ export default function MainCard({
   endTime,
   participants,
 }: mainCardProps) {
-
   function timeIntegerToTimeString(time: number) {
     const hour = Math.floor(time / 2);
-    const minute = (time % 2) * 30;
-    if (hour >= 12) return `${hour - 12}:${minute} PM`;
-    else return `${hour}:${minute} AM`;
+    const minuteString = ((time % 2) * 30).toString().padStart(2, '0');
+    if (hour >= 12) return `${hour - 12}:${minuteString} PM`;
+    else return `${hour}:${minuteString} AM`;
   }
 
   return (
@@ -33,7 +32,7 @@ export default function MainCard({
       <div>
         <div className="flex items-center mb-2">
           <ClockIcon color="black" className="mr-1" />
-          <span>{`${timeIntegerToTimeString(startTime)}-${timeIntegerToTimeString(endTime)}`}</span>
+          <span>{`${timeIntegerToTimeString(startTime)} - ${timeIntegerToTimeString(endTime)}`}</span>
         </div>
         <div className="flex items-center">
           <PeopleIcon color="black" className="mr-1" />
