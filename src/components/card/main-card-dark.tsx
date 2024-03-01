@@ -31,11 +31,11 @@ export default function MainCardDark({
       <h3 className="mb-2">{description}</h3>
       <div>
         <div className="flex items-center mb-2">
-          <ClockIcon color="black" className="mr-1" />
+          <ClockIcon color="white" className="mr-1" />
           <span>{`${timeIntegerToTimeString(startTime)} - ${timeIntegerToTimeString(endTime)}`}</span>
         </div>
         <div className="flex items-center">
-          <PeopleIcon color="black" className="mr-1" />
+          <PeopleIcon color="white" className="mr-1" />
           {participants.join(', ')}
         </div>
       </div>
