@@ -7,7 +7,7 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import PanelLayout from './PanelLayout';
-import { Meet } from '@prisma/client';
+import type { Meet } from '@prisma/client';
 
 function ProfileIcon({ src }: { src: string }) {
   return (
