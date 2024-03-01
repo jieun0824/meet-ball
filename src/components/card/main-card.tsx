@@ -1,31 +1,26 @@
-'use client';
-import { useRef } from 'react';
 import { ClockIcon, MoreIcon, PeopleIcon } from '@/components/icon';
 
 type mainCardProps = {
   meetName: string;
   description: string;
-  meetTime: string[];
+  startTime: number;
+  endTime: number;
   participants: string[];
-  num: number;
 };
 
 export default function MainCard({
   meetName,
   description,
-  meetTime,
+  startTime,
+  endTime,
   participants,
-  num,
 }: mainCardProps) {
-  function formatTimeRangeWithPeriod(timeRange: string[]) {
-    const formattedHour = (hour: string) =>
-      (parseInt(hour) % 12 || 12).toString();
-    const period = (hour: string) => (parseInt(hour) >= 12 ? 'pm' : 'am');
-    const [startHour, startMin, endHour, endMin] = timeRange;
-    const startTime = `${formattedHour(startHour)}:${startMin} ${period(startHour)}`;
-    const endTime = `${formattedHour(endHour)}:${endMin} ${period(endHour)}`;
 
-    return `${startTime}-${endTime}`;
+  function timeIntegerToTimeString(time: number) {
+    const hour = Math.floor(time / 2);
+    const minute = (time % 2) * 30;
+    if (hour >= 12) return `${hour - 12}:${minute} PM`;
+    else return `${hour}:${minute} AM`;
   }
 
   return (
@@ -38,7 +33,7 @@ export default function MainCard({
       <div>
         <div className="flex items-center mb-2">
           <ClockIcon color="black" className="mr-1" />
-          <span>{formatTimeRangeWithPeriod(meetTime)}</span>
+          <span>{`${timeIntegerToTimeString(startTime)}-${timeIntegerToTimeString(endTime)}`}</span>
         </div>
         <div className="flex items-center">
           <PeopleIcon color="black" className="mr-1" />
