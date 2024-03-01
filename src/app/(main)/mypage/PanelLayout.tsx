@@ -12,13 +12,13 @@ export default function PanelLayout({
   const [currentPanel, setCurrentPanel] = useState(0);
   function Navigator() {
     return (
-      <div className="flex px-0.5 py-0.5 rounded-lg bg-gray-600 justify-center">
+      <div className="flex px-0.5 py-0.5 rounded-lg bg-cardColor justify-center">
         {titles.map((title, index) => (
           <button
             key={index}
             onClick={() => setCurrentPanel(index)}
-            className={`cursor-pointer px-10 py-2 m-2 rounded-lg text-black flex justify-center ${
-              currentPanel === index ? 'bg-pointColor' : ''
+            className={`cursor-pointer px-10 py-2 m-2 rounded-lg flex justify-center ${
+              currentPanel === index ? 'bg-pointColor text-black' : 'text-white'
             }`}
           >
             {title}
