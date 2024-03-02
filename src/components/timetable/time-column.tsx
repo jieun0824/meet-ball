@@ -2,17 +2,12 @@
 import { transformedParticipantsType } from '@/app/(main)/meet/[meetId]/page';
 import { ReactElement, useEffect, useRef, useState } from 'react';
 
-type timeComponentProps = {
-  time: number;
-  index: [number, number];
-};
-
 type dateParticipantsType = {
   [name: string]: Array<number>;
 };
 
 type timeOpacityType = {
-  [name: string]: number;
+  [name: string]: string[];
 };
 
 type timeCellProps = {
@@ -21,6 +16,8 @@ type timeCellProps = {
   previousOpacity: number;
   nextOpacity: number;
   endTime: number;
+  setHoverData: (data: string[]) => void;
+  participants: string[];
 };
 
 function TimeCell({
@@ -29,12 +26,15 @@ function TimeCell({
   previousOpacity,
   nextOpacity,
   endTime,
+  setHoverData,
+  participants,
 }: timeCellProps) {
   return (
     <div
       style={{
         backgroundColor: `rgba(32, 236, 199, ${opacity})`,
       }}
+      onMouseOver={() => setHoverData(participants)}
       className={`h-[20px] cursor-pointer border-white ${timeIndex % 2 === 0 ? 'border-t-[0.3px]' : ''}
       ${previousOpacity === 0 && opacity != 0 && 'rounded-t-lg'} ${nextOpacity === 0 && opacity != 0 && 'rounded-b-lg'} `}
     ></div>
@@ -48,6 +48,7 @@ export default function TimeColumn({
   type,
   dateParticipants,
   colIdx,
+  setHoverData,
 }: {
   date: string;
   startTime: number;
@@ -55,12 +56,8 @@ export default function TimeColumn({
   type: 'DAYS' | 'DATES';
   dateParticipants: dateParticipantsType;
   colIdx: number;
+  setHoverData: (data: string[]) => void;
 }) {
-  console.log(dateParticipants);
-  const timeList = Array.from(
-    { length: endTime - startTime },
-    (_, index) => startTime + index
-  );
   const label = useRef('');
   const days = ['월', '화', '수', '목', '금', '토', '일'];
   if (type == 'DATES') {
@@ -78,13 +75,13 @@ export default function TimeColumn({
 
   const scheduleOpacityOfTimeObject: timeOpacityType = {};
   for (let i: number = startTime; i < endTime; i++) {
-    let count = 0;
+    let participant: string[] = [];
     for (const key in dateParticipants) {
       if (dateParticipants[key].includes(i)) {
-        count++;
+        participant = [...participant, key];
       }
     }
-    scheduleOpacityOfTimeObject[String(i)] = count;
+    scheduleOpacityOfTimeObject[String(i)] = participant;
   }
 
   return (
@@ -92,30 +89,31 @@ export default function TimeColumn({
       <p className="flex justify-center whitespace-pre-wrap h-[30px]">
         {label.current}
       </p>
-      {/* {timeList.map((time: number, rowIdx: number) => {
-        return <TimeCell key={rowIdx} time={time} index={[colIdx, rowIdx]} />;
-      })} */}
       {Object.keys(scheduleOpacityOfTimeObject).map(
         (timeIndex: string, index: number) => {
           let previousOpacity = 0;
           let nextOpacity = 0;
-          const opacity = scheduleOpacityOfTimeObject[timeIndex];
+          const opacity = scheduleOpacityOfTimeObject[timeIndex].length;
 
           if (
             parseInt(timeIndex) !== startTime &&
             parseInt(timeIndex) !== endTime - 1
           ) {
             previousOpacity =
-              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) - 1)];
+              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) - 1)]
+                .length;
             nextOpacity =
-              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) + 1)];
+              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) + 1)]
+                .length;
           } else if (parseInt(timeIndex) === startTime) {
             nextOpacity =
-              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) + 1)];
+              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) + 1)]
+                .length;
             previousOpacity = 0;
           } else if (parseInt(timeIndex) === endTime - 1) {
             previousOpacity =
-              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) - 1)];
+              scheduleOpacityOfTimeObject[String(parseInt(timeIndex) - 1)]
+                .length;
             nextOpacity = 0;
           }
 
@@ -129,6 +127,8 @@ export default function TimeColumn({
               previousOpacity={previousOpacity}
               nextOpacity={nextOpacity}
               endTime={endTime}
+              setHoverData={(data: string[]) => setHoverData(data)}
+              participants={scheduleOpacityOfTimeObject[timeIndex]}
             />
           );
         }

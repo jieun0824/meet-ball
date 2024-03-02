@@ -81,25 +81,24 @@ export default async function MeetPage({
   }
 
   const transformedParticipants = transformData(participants);
-  console.log(transformedParticipants);
 
   return (
-    <div>
+    <div className="pb-8">
       <div className="flex flex-col items-center justify-center">
         <p className="text-xl mt-3 w-3/4">{name}</p>
         <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-3/4">
           {description}
         </p>
       </div>
-      <div className="flex flex-col justify-center items-center text-xs mt-16">
-        <TimeTable
-          startTime={startTime}
-          endTime={endTime}
-          datesOrDays={datesOrDays}
-          type={meetType}
-          participants={transformedParticipants}
-        />
-      </div>
+
+      <TimeTable
+        startTime={startTime}
+        endTime={endTime}
+        datesOrDays={datesOrDays}
+        type={meetType}
+        participants={transformedParticipants}
+        participantsNum={participants.length}
+      />
     </div>
   );
 }

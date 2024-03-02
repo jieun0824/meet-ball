@@ -18,6 +18,7 @@ type TimeTableProps = {
   datesOrDays: string[];
   type: 'DAYS' | 'DATES';
   participants: transformedParticipantsType;
+  participantsNum: number;
 };
 
 export default function TimeTable({
@@ -26,13 +27,13 @@ export default function TimeTable({
   datesOrDays,
   type,
   participants,
+  participantsNum,
 }: TimeTableProps) {
-  const [isPending, startTransition] = useTransition();
-  const meetId = useParams().meetId as string;
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
     (_, index) => startTime + index
   );
+  const [hoverData, setHoverData] = useState<string[]>([]);
 
   type gridColumnsType = {
     [key: number]: string;
@@ -49,7 +50,7 @@ export default function TimeTable({
   };
 
   return (
-    <>
+    <div className="flex flex-col justify-center items-center text-xs mt-16 mb-16">
       <div className={gridSetList[datesOrDays.length % 7]}>
         <div className="flex flex-col items-end">
           <div className="min-h-[30px] mr-2 -mt-2">
@@ -70,6 +71,7 @@ export default function TimeTable({
             );
           })}
         </div>
+
         {datesOrDays.map((date: string, i: number) => (
           <TimeColumn
             key={date}
@@ -79,9 +81,18 @@ export default function TimeTable({
             type={type}
             dateParticipants={participants[date]}
             colIdx={datesOrDays.indexOf(date)}
+            setHoverData={(data: string[]) => setHoverData(data)}
           />
         ))}
       </div>
-    </>
+      <div className="bg-cardColor w-3/5 rounded-lg p-6 mt-8 text-[16px] flex flex-col gap-4">
+        <p>
+          응답자: {hoverData.length}/{participantsNum}
+        </p>
+        {hoverData.map(data => (
+          <p>{data}</p>
+        ))}
+      </div>
+    </div>
   );
 }
