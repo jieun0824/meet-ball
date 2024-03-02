@@ -46,7 +46,7 @@ export default function TimeColumn({
   startTime,
   endTime,
   type,
-  dateParticipants,
+  dateTimetable,
   colIdx,
   setHoverData,
 }: {
@@ -54,7 +54,7 @@ export default function TimeColumn({
   startTime: number;
   endTime: number;
   type: 'DAYS' | 'DATES';
-  dateParticipants: dateParticipantsType;
+  dateTimetable: dateParticipantsType;
   colIdx: number;
   setHoverData: (data: string[]) => void;
 }) {
@@ -76,8 +76,8 @@ export default function TimeColumn({
   const scheduleOpacityOfTimeObject: timeOpacityType = {};
   for (let i: number = startTime; i < endTime; i++) {
     let participant: string[] = [];
-    for (const key in dateParticipants) {
-      if (dateParticipants[key].includes(i)) {
+    for (const key in dateTimetable) {
+      if (dateTimetable[key].includes(i)) {
         participant = [...participant, key];
       }
     }
@@ -122,7 +122,7 @@ export default function TimeColumn({
               key={index}
               timeIndex={parseInt(timeIndex)}
               opacity={
-                +(opacity / Object.keys(dateParticipants).length).toFixed(2)
+                +(opacity / Object.keys(dateTimetable).length).toFixed(2)
               }
               previousOpacity={previousOpacity}
               nextOpacity={nextOpacity}

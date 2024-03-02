@@ -22,22 +22,20 @@ export default async function CreateTimetable({
   }
 
   return (
-    <div>
+    <div className="pb-8 px-20">
       <div className="flex flex-col items-center justify-center">
-        <p className="text-xl mt-3 w-3/4">{name}</p>
-        <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-3/4">
+        <p className="text-xl mt-3 w-full">{name}</p>
+        <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-full">
           {description}
         </p>
       </div>
-      <div className="flex flex-col justify-center items-center text-xs mt-16">
-        <TimeTable
-          startTime={startTime}
-          endTime={endTime}
-          datesOrDays={datesOrDays}
-          type={meetType}
-          userTimetable={userTimetable == null ? newTimetable : userTimetable}
-        />
-      </div>
+      <TimeTable
+        startTime={startTime}
+        endTime={endTime}
+        datesOrDays={datesOrDays}
+        type={meetType}
+        userTimetable={userTimetable == null ? newTimetable : userTimetable}
+      />
     </div>
   );
 }
