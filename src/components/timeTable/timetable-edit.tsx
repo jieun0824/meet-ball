@@ -1,10 +1,9 @@
 'use client';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import Button from '../button/button';
-import TimeColumn from '@/components/timeTable/time-column';
+import TimeColumn from '@/components/timeTable/time-column-edit';
 import { useParams } from 'next/navigation';
 import { updateTimeTable } from '@/controllers/meet';
-import { transformedParticipantsType } from '@/app/(main)/meet/[meetId]/page';
 
 interface TimeTable {
   current: {
@@ -12,22 +11,21 @@ interface TimeTable {
   };
 }
 
-type TimeTableProps = {
-  startTime: number;
-  endTime: number;
-  datesOrDays: string[];
-  type: 'DAYS' | 'DATES';
-  participants: transformedParticipantsType;
-};
-
 export default function TimeTable({
   startTime,
   endTime,
   datesOrDays,
   type,
-  participants,
-}: TimeTableProps) {
+  userTimetable,
+}: {
+  startTime: number;
+  endTime: number;
+  datesOrDays: string[];
+  type: 'DAYS' | 'DATES';
+  userTimetable: {};
+}) {
   const [isPending, startTransition] = useTransition();
+  const timeTable: TimeTable = useRef(userTimetable);
   const meetId = useParams().meetId as string;
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
@@ -47,7 +45,6 @@ export default function TimeTable({
     6: `grid grid-cols-table6 w-3/4`,
     7: `grid grid-cols-table7 w-3/4`,
   };
-
   return (
     <>
       <div className={gridSetList[datesOrDays.length % 7]}>
@@ -77,11 +74,18 @@ export default function TimeTable({
             startTime={startTime}
             endTime={endTime}
             type={type}
-            dateParticipants={participants[date]}
+            timeTable={timeTable}
             colIdx={datesOrDays.indexOf(date)}
           />
         ))}
       </div>
+      <Button
+        title="저장하기"
+        type="submit"
+        onClick={async () => {
+          await updateTimeTable(meetId, timeTable.current);
+        }}
+      />
     </>
   );
 }

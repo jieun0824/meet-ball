@@ -1,71 +1,104 @@
-import TimeTableBody from '@/components/timeTable/timeTableBody';
+import TimeTable from '@/components/timeTable/timetable';
+import { MeetWithParticipants, getMeet } from '@/controllers/meet';
+import { ParticipantsOnMeets } from '@prisma/client';
 
-export default function MeetPage({ params }: { params: { meetId: string } }) {
-  // dummy time
-  const dummyTimeTableDate = {
-    '2023-11-12': {
-      Taegon: [0, 1, 2, 3, 5, 7, 8],
-      Kim: [2, 3, 4, 5, 6, 8],
-      John: [1, 2, 3, 4],
-      Tae: [2, 3],
-      Gon: [3],
-    },
-    '2023-11-13': {
-      Taegon: [1, 2, 3],
-      Kim: [3, 4, 5],
-    },
-    // '2023-11-13': {
-    //   Taegon: [1, 2, 3],
-    //   Kim: [2, 3, 4],
-    // },
-    // '2023-11-15': {
-    //   Taegon: [1, 3, 5],
-    //   Kim: [4, 5, 7],
-    //   Tae: [1, 2, 3, 4],
-    //   Gon: [3, 4, 5],
-    // },
-    // '2023-11-16': {
-    //   Taegon: [1, 3, 5],
-    //   Kim: [4, 5, 7],
-    //   Tae: [1, 2, 3, 4],
-    //   Gon: [3, 4, 5],
-    // },
-    // '2023-11-17': {
-    //   Taegon: [1, 3, 5],
-    //   Kim: [4, 5, 7],
-    //   Tae: [1, 2, 3, 4],
-    //   Gon: [3, 4, 5],
-    // },
-    // '2023-11-18': {
-    //   Taegon: [1, 3, 5],
-    //   Kim: [4, 5, 7],
-    //   Tae: [1, 2, 3, 4],
-    //   Gon: [3, 4, 5],
-    // },
-    // '2023-11-19': {
-    //   Taegon: [1, 3, 5],
-    //   Kim: [4, 5, 7],
-    //   Tae: [1, 2, 3, 4],
-    //   Gon: [3, 4, 5],
-    // },
+export type participantsType = {
+  userId: string;
+  timeTable: {
+    [key: string]: number[];
   };
+}[];
 
-  const startTime: number = 0;
-  const endTime: number = 10;
+export type transformedParticipantsType = {
+  [key: string]: { [key: string]: number[] };
+};
+
+export default async function MeetPage({
+  params,
+}: {
+  params: { meetId: string };
+}) {
+  const {
+    name,
+    description,
+    datesOrDays,
+    meetType,
+    startTime,
+    endTime,
+    //participants,
+  } = await getMeet(params.meetId);
+
+  // dummy time
+  const participants: participantsType = [
+    {
+      userId: 'Taegon',
+      timeTable: {
+        '2024-02-12': [28, 29, 30],
+        '2024-02-13': [],
+        '2024-02-15': [],
+        '2024-02-16': [],
+        '2024-02-17': [],
+      },
+    },
+    {
+      userId: 'Jieun',
+      timeTable: {
+        '2024-02-12': [28, 29, 30, 31, 32, 33],
+        '2024-02-13': [],
+        '2024-02-15': [28, 29, 30, 31, 32],
+        '2024-02-16': [],
+        '2024-02-17': [],
+      },
+    },
+    {
+      userId: 'Gwon',
+      timeTable: {
+        '2024-02-12': [28, 29, 30],
+        '2024-02-13': [],
+        '2024-02-15': [27, 28, 29],
+        '2024-02-16': [],
+        '2024-02-17': [],
+      },
+    },
+  ];
+
+  function transformData(participants: participantsType) {
+    const transformedData: transformedParticipantsType = {};
+
+    participants.forEach(participant => {
+      const userId = participant.userId;
+
+      Object.keys(participant.timeTable).forEach(date => {
+        if (!transformedData[date]) {
+          transformedData[date] = {};
+        }
+
+        transformedData[date][userId] = participant.timeTable[date];
+      });
+    });
+
+    return transformedData;
+  }
+
+  const transformedParticipants = transformData(participants);
+  console.log(transformedParticipants);
+
   return (
-    <div className="ml-[35px]">
-      <div className="w-[301px] text-white mt-5 ">
-        <p className="text-2xl">회의 이름</p>
-        <div className="w-[301px] h-[48px] mt-4 items-center border-2 rounded-lg border-white">
-          <p className="">회의 설명 </p>
-        </div>
+    <div>
+      <div className="flex flex-col items-center justify-center">
+        <p className="text-xl mt-3 w-3/4">{name}</p>
+        <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-3/4">
+          {description}
+        </p>
       </div>
-      <div className="">
-        <TimeTableBody
-          scheduledObject={dummyTimeTableDate}
+      <div className="flex flex-col justify-center items-center text-xs mt-16">
+        <TimeTable
           startTime={startTime}
           endTime={endTime}
-        ></TimeTableBody>
+          datesOrDays={datesOrDays}
+          type={meetType}
+          participants={transformedParticipants}
+        />
       </div>
     </div>
   );
