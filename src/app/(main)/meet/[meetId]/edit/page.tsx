@@ -1,5 +1,5 @@
 import Button from '@/components/button/button';
-import TimeTable from '@/components/timeTable/timetable-edit';
+import TimeTable from '@/components/timeTable-edit/timetable-edit';
 import { getMeet, getTimeTable, updateTimeTable } from '@/controllers/meet';
 import { getCurrentUser } from '@/lib/authentication';
 import { Meet, ParticipantsOnMeets } from '@prisma/client';

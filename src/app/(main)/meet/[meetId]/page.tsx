@@ -25,55 +25,56 @@ export default async function MeetPage({
     meetType,
     startTime,
     endTime,
-    //participants,
+    participants,
   } = await getMeet(params.meetId);
+  console.log(participants);
 
   // dummy time
-  const participants: participantsType = [
-    {
-      userId: 'Taegon',
-      timeTable: {
-        '2024-02-12': [28, 29, 30],
-        '2024-02-13': [],
-        '2024-02-15': [],
-        '2024-02-16': [],
-        '2024-02-17': [],
-      },
-    },
-    {
-      userId: 'Jieun',
-      timeTable: {
-        '2024-02-12': [28, 29, 30, 31, 32, 33],
-        '2024-02-13': [],
-        '2024-02-15': [28, 29, 30, 31, 32],
-        '2024-02-16': [],
-        '2024-02-17': [],
-      },
-    },
-    {
-      userId: 'Gwon',
-      timeTable: {
-        '2024-02-12': [28, 29, 30],
-        '2024-02-13': [],
-        '2024-02-15': [27, 28, 29],
-        '2024-02-16': [],
-        '2024-02-17': [],
-      },
-    },
-  ];
+  // const participants: participantsType = [
+  //   {
+  //     userId: 'Taegon',
+  //     timeTable: {
+  //       '2024-02-12': [28, 29, 30],
+  //       '2024-02-13': [],
+  //       '2024-02-15': [],
+  //       '2024-02-16': [],
+  //       '2024-02-17': [],
+  //     },
+  //   },
+  //   {
+  //     userId: 'Jieun',
+  //     timeTable: {
+  //       '2024-02-12': [28, 29, 30, 31, 32, 33],
+  //       '2024-02-13': [],
+  //       '2024-02-15': [28, 29, 30, 31, 32],
+  //       '2024-02-16': [],
+  //       '2024-02-17': [],
+  //     },
+  //   },
+  //   {
+  //     userId: 'Gwon',
+  //     timeTable: {
+  //       '2024-02-12': [28, 29, 30],
+  //       '2024-02-13': [],
+  //       '2024-02-15': [27, 28, 29],
+  //       '2024-02-16': [],
+  //       '2024-02-17': [],
+  //     },
+  //   },
+  // ];
 
-  function transformData(participants: participantsType) {
+  function transformData(participants: ParticipantsOnMeets[]) {
     const transformedData: transformedParticipantsType = {};
 
-    participants.forEach(participant => {
+    participants.forEach((participant: ParticipantsOnMeets) => {
       const userId = participant.userId;
 
-      Object.keys(participant.timeTable).forEach(date => {
+      Object.keys(participant.timeTable!).forEach((date: string) => {
         if (!transformedData[date]) {
           transformedData[date] = {};
         }
 
-        transformedData[date][userId] = participant.timeTable[date];
+        transformedData[date][userId] = participant.timeTable![date];
       });
     });
 

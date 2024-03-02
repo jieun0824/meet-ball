@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import Button from '../button/button';
-import TimeColumn from '@/components/timeTable/time-column-edit';
+import TimeColumn from '@/components/timeTable-edit/time-column-edit';
 import { useParams } from 'next/navigation';
 import { updateTimeTable } from '@/controllers/meet';
 
