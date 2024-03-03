@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, useTransition } from 'react';
 import Button from '../button/button';
 import TimeColumn from '@/components/timeTable-edit/time-column-edit';
-import { useParams } from 'next/navigation';
+import { redirect, useParams, useRouter } from 'next/navigation';
 import { updateTimeTable } from '@/controllers/meet';
 
 interface TimeTable {
@@ -24,7 +24,7 @@ export default function TimeTable({
   type: 'DAYS' | 'DATES';
   userTimetable: {};
 }) {
-  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const timeTable: TimeTable = useRef(userTimetable);
   const meetId = useParams().meetId as string;
   const timeList = Array.from(
@@ -83,7 +83,9 @@ export default function TimeTable({
         title="저장하기"
         type="submit"
         onClick={async () => {
-          await updateTimeTable(meetId, timeTable.current);
+          await updateTimeTable(meetId, timeTable.current).then(() => {
+            router.push(`/meet/${meetId}`);
+          });
         }}
       />
     </div>

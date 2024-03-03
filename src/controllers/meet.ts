@@ -60,7 +60,7 @@ export type CreateMeetParams = {
 export async function createMeet(args: CreateMeetParams): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
-    
+
     const meet = await prisma.meet.create({
       data: {
         managerId: currentUser.id,
