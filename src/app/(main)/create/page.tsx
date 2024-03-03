@@ -1,41 +1,39 @@
-import { createMeet } from '@/controllers/meet';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+'use client';
+
+import handleSubmit from './action';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function CreatePage() {
-  async function handleSubmit(formData: FormData) {
-    'use server';
-
-    const { mode, selection } = JSON.parse(cookies().get('selection')!.value);
-
-    const meetingName = formData.get('meetingName') as string;
-    const meetingDescription = formData.get('meetingDescription') as string;
-
-    const scheduleEndDate = new Date(formData.get('scheduleEndDate') as string);
-    // const scheduleEndHour = Number(formData.get('scheduleEndHour'));
-    // const scheduleEndMin = formData.get('scheduleEndMin') == '0' ? 0 : 0.5;
-
-    const meetingStartHour = Number(formData.get('meetingStartHour'));
-    const meetingStartMin = formData.get('meetingStartMin') == '0' ? 0 : 0.5;
-    const meetingEndHour = Number(formData.get('meetingEndHour'));
-    const meetingEndMin = formData.get('meetingEndMin') == '0' ? 0 : 0.5;
-    const password = formData.get('password') as string;
-    await createMeet({
-      name: meetingName,
-      description: meetingDescription,
-      meetType: mode,
-      startTime: 2 * (meetingStartHour + meetingStartMin), // 0-47
-      endTime: 2 * (meetingEndHour + meetingEndMin), // 0-47
-      datesOrDays: selection,
-      confirmTime: scheduleEndDate,
-      password: password,
-    }).then(() => {
-      redirect;
-    });
-  }
-
+  const router = useRouter();
   const hours = Array.from({ length: 24 }, (_, index) => index + 1);
   const mins = [0, 30];
+  useEffect(() => {
+    // extract data from localStorage
+    const selection = localStorage.getItem('selection');
+    if (!selection) {
+      alert('No selection');
+      router.push('/');
+    } else {
+      const { mode: meetingMode, selections: meetingSelections } =
+        JSON.parse(selection);
+      localStorage.removeItem('selection'); // remove once it's read
+
+      // set mode and selections to form
+      const modeInput = document.querySelector<HTMLInputElement>(
+        'input[name="meetingMode"]'
+      );
+      if (modeInput) {
+        modeInput.value = meetingMode;
+      }
+      const selectionsInput = document.querySelector<HTMLInputElement>(
+        'input[name="meetingSelections"]'
+      );
+      if (selectionsInput) {
+        selectionsInput.value = meetingSelections;
+      }
+    }
+  });
 
   return (
     <>
@@ -43,6 +41,8 @@ export default function CreatePage() {
         action={handleSubmit}
         className="grid text-white place-items-center"
       >
+        <input type="hidden" name="meetingMode"></input>
+        <input type="hidden" name="meetingSelections"></input>
         <div className="grid-1 w-[301px] h-[40px] border-b-2 mt-3 ">
           <input
             id="meetingName"

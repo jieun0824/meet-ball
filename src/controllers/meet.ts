@@ -4,7 +4,6 @@ import { Prisma } from '@prisma/client';
 import type { Meet, MeetType } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/authentication';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function getMyManagingMeets(): Promise<Meet[]> {
@@ -266,23 +265,4 @@ export async function updateTimeTable(meetId: string, timeTable: TimeTable) {
     console.error(error);
     throw error;
   }
-}
-
-//save days as cookies
-export async function setSelectionCookie(data: {
-  mode: MeetType;
-  selections: string[];
-}) {
-  try {
-    cookies().set('selection', JSON.stringify(data));
-    // const dayCookie = cookies().get('days');
-    // if (dayCookie != undefined) {
-    //   console.log(dayCookie);
-    // } else {
-    //   console.log('cookie is undefined');
-    // }
-  } catch (error) {
-    console.error(error);
-  }
-  // redirect('/create');
 }
