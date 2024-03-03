@@ -1,17 +1,8 @@
-import TimeTable from '@/components/timeTable/timetable';
-import { MeetWithParticipants, getMeet } from '@/controllers/meet';
-import { ParticipantsOnMeets } from '@prisma/client';
-
-export type participantsType = {
-  userId: string;
-  timeTable: {
-    [key: string]: number[];
-  };
-}[];
-
-export type transformedParticipantsType = {
-  [key: string]: { [key: string]: number[] };
-};
+import TimeTableComponent from '@/components/timeTable/timetable';
+import { getMeet } from '@/controllers/meet';
+import { Prisma } from '@prisma/client';
+import type { ParticipantsOnMeets } from '@prisma/client';
+import type TransformedParticipants from '../../../../../types/TransformedParticipants';
 
 export default async function MeetPage({
   params,
@@ -27,56 +18,21 @@ export default async function MeetPage({
     endTime,
     participants,
   } = await getMeet(params.meetId);
-  console.log(participants);
-
-  // dummy time
-  // const participants: participantsType = [
-  //   {
-  //     userId: 'Taegon',
-  //     timeTable: {
-  //       '2024-02-12': [28, 29, 30],
-  //       '2024-02-13': [],
-  //       '2024-02-15': [],
-  //       '2024-02-16': [],
-  //       '2024-02-17': [],
-  //     },
-  //   },
-  //   {
-  //     userId: 'Jieun',
-  //     timeTable: {
-  //       '2024-02-12': [28, 29, 30, 31, 32, 33],
-  //       '2024-02-13': [],
-  //       '2024-02-15': [28, 29, 30, 31, 32],
-  //       '2024-02-16': [],
-  //       '2024-02-17': [],
-  //     },
-  //   },
-  //   {
-  //     userId: 'Gwon',
-  //     timeTable: {
-  //       '2024-02-12': [28, 29, 30],
-  //       '2024-02-13': [],
-  //       '2024-02-15': [27, 28, 29],
-  //       '2024-02-16': [],
-  //       '2024-02-17': [],
-  //     },
-  //   },
-  // ];
+  // console.log(participants);
 
   function transformData(participants: ParticipantsOnMeets[]) {
-    const transformedData: transformedParticipantsType = {};
+    const transformedData: TransformedParticipants = {};
 
-    participants.forEach((participant: ParticipantsOnMeets) => {
+    for (const participant of participants) {
       const userId = participant.userId;
-
-      Object.keys(participant.timeTable!).forEach((date: string) => {
-        if (!transformedData[date]) {
+      const currentTimeTable = participant.timeTable as Prisma.JsonObject;
+      for (const date in currentTimeTable) {
+        if (!(date in transformedData)) {
           transformedData[date] = {};
         }
-
-        transformedData[date][userId] = participant.timeTable![date];
-      });
-    });
+        transformedData[date][userId] = currentTimeTable[date] as number[];
+      }
+    }
 
     return transformedData;
   }
@@ -92,7 +48,7 @@ export default async function MeetPage({
         </p>
       </div>
 
-      <TimeTable
+      <TimeTableComponent
         startTime={startTime}
         endTime={endTime}
         datesOrDays={datesOrDays}

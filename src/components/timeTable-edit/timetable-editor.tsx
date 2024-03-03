@@ -1,31 +1,25 @@
 'use client';
-import { useEffect, useRef, useState, useTransition } from 'react';
+import { useRef } from 'react';
 import Button from '../button/button';
-import TimeColumn from '@/components/timeTable-edit/time-column-edit';
+import TimeTableEditorColumn from '@/components/timeTable-edit/timetable-editor-column';
 import { useParams } from 'next/navigation';
 import { updateTimeTable } from '@/controllers/meet';
+import TimeTable from '../../../types/TimeTable';
 
-interface TimeTable {
-  current: {
-    [key: string]: number[];
-  };
-}
-
-export default function TimeTable({
+export default function TimeTableEditor({
   startTime,
   endTime,
   datesOrDays,
   type,
-  userTimetable,
+  timeTable,
 }: {
   startTime: number;
   endTime: number;
   datesOrDays: string[];
   type: 'DAYS' | 'DATES';
-  userTimetable: {};
+  timeTable: TimeTable;
 }) {
-  const [isPending, startTransition] = useTransition();
-  const timeTable: TimeTable = useRef(userTimetable);
+  const timeTableRef = useRef<TimeTable>(timeTable);
   const meetId = useParams().meetId as string;
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
@@ -45,6 +39,7 @@ export default function TimeTable({
     6: `grid grid-cols-table6 w-full`,
     7: `grid grid-cols-table7 w-full`,
   };
+  
   return (
     <div className="flex flex-col justify-center items-center text-xs mt-16">
       <div className={gridSetList[datesOrDays.length % 7]}>
@@ -67,14 +62,14 @@ export default function TimeTable({
             );
           })}
         </div>
-        {datesOrDays.map((date: string, i: number) => (
-          <TimeColumn
+        {datesOrDays.map((date: string) => (
+          <TimeTableEditorColumn
             key={date}
             date={date}
             startTime={startTime}
             endTime={endTime}
             type={type}
-            timeTable={timeTable}
+            timeTable={timeTableRef}
             colIdx={datesOrDays.indexOf(date)}
           />
         ))}
@@ -83,7 +78,7 @@ export default function TimeTable({
         title="저장하기"
         type="submit"
         onClick={async () => {
-          await updateTimeTable(meetId, timeTable.current);
+          await updateTimeTable(meetId, timeTableRef.current);
         }}
       />
     </div>

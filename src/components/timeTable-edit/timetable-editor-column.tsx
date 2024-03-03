@@ -1,12 +1,12 @@
 'use client';
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // type selectedArea = {
 //   start: [startCol: number, startRow: number] | [];
 //   end: [endCol: number, endRow: number] | [];
 // };
 
-type timeComponentProps = {
+type TimeTableEditorCellProps = {
   time: number;
   selected: boolean;
   addHandler: () => void;
@@ -14,13 +14,13 @@ type timeComponentProps = {
   index: [number, number];
 };
 
-function TimeCell({
+function TimeTableEditorCell({
   time,
   selected,
   addHandler,
   deleteHandler,
   index,
-}: timeComponentProps) {
+}: TimeTableEditorCellProps) {
   const [clicked, setClicked] = useState(selected);
   const clickHandler = () => {
     if (clicked) {
@@ -42,7 +42,7 @@ function TimeCell({
   );
 }
 
-export default function TimeColumn({
+export default function TimeTableEditorColumn({
   date,
   startTime,
   endTime,
@@ -98,7 +98,7 @@ export default function TimeColumn({
         {label.current}
       </p>
       {timeList.map((time: number, rowIdx: number) => (
-        <TimeCell
+        <TimeTableEditorCell
           key={rowIdx}
           time={time}
           selected={timeTable.current[date].includes(time)}

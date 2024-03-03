@@ -1,34 +1,25 @@
 'use client';
-import { useEffect, useRef, useState, useTransition } from 'react';
-import Button from '../button/button';
-import TimeColumn from '@/components/timeTable/time-column';
-import { useParams } from 'next/navigation';
-import { updateTimeTable } from '@/controllers/meet';
-import { transformedParticipantsType } from '@/app/(main)/meet/[meetId]/page';
+import { useState } from 'react';
+import TimeTableColumn from '@/components/timeTable/timetable-column';
+import type TransformedParticipants from '../../../types/TransformedParticipants';
 
-interface TimeTable {
-  current: {
-    [key: string]: number[];
-  };
-}
-
-type TimeTableProps = {
+type TimeTableComponentProps = {
   startTime: number;
   endTime: number;
   datesOrDays: string[];
   type: 'DAYS' | 'DATES';
-  timetable: transformedParticipantsType;
+  timetable: TransformedParticipants;
   participantsNum: number;
 };
 
-export default function TimeTable({
+export default function TimeTableComponent({
   startTime,
   endTime,
   datesOrDays,
   type,
   timetable,
   participantsNum,
-}: TimeTableProps) {
+}: TimeTableComponentProps) {
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
     (_, index) => startTime + index
@@ -72,8 +63,8 @@ export default function TimeTable({
           })}
         </div>
 
-        {datesOrDays.map((date: string, i: number) => (
-          <TimeColumn
+        {datesOrDays.map((date: string) => (
+          <TimeTableColumn
             key={date}
             date={date}
             startTime={startTime}
@@ -89,8 +80,8 @@ export default function TimeTable({
         <p>
           응답자: {hoverData.length}/{participantsNum}
         </p>
-        {hoverData.map(data => (
-          <p>{data}</p>
+        {hoverData.map((data, i) => (
+          <p key={i}>{data}</p>
         ))}
       </div>
     </div>

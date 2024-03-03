@@ -1,8 +1,6 @@
-import Button from '@/components/button/button';
-import TimeTable from '@/components/timeTable-edit/timetable-edit';
-import { getMeet, getTimeTable, updateTimeTable } from '@/controllers/meet';
-import { getCurrentUser } from '@/lib/authentication';
-import { Meet, ParticipantsOnMeets } from '@prisma/client';
+import TimeTableEditor from '@/components/timeTable-edit/timetable-editor';
+import { getMeet, getTimeTable } from '@/controllers/meet';
+import TimeTable from '../../../../../../types/TimeTable';
 
 export default async function CreateTimetable({
   params,
@@ -11,14 +9,15 @@ export default async function CreateTimetable({
 }) {
   const { name, description, datesOrDays, meetType, startTime, endTime } =
     await getMeet(params.meetId);
-  const userTimetable = (await getTimeTable(params.meetId)).timeTable;
+  const userTimeTable = (await getTimeTable(params.meetId))
+    .timeTable as unknown as TimeTable;
 
-  // if user create new timetable (userTimetable == null)
-  const newTimetable: { [key: string]: [] } = {};
-  if (userTimetable == null) {
-    datesOrDays.forEach((date: string, i: number) => {
-      newTimetable[date] = [];
-    });
+  // init user timeTable
+  const newTimeTable: TimeTable = {};
+  if (userTimeTable == null) {
+    for (const key in datesOrDays) {
+      newTimeTable[key] = [];
+    }
   }
 
   return (
@@ -29,12 +28,12 @@ export default async function CreateTimetable({
           {description}
         </p>
       </div>
-      <TimeTable
+      <TimeTableEditor
         startTime={startTime}
         endTime={endTime}
         datesOrDays={datesOrDays}
         type={meetType}
-        userTimetable={userTimetable == null ? newTimetable : userTimetable}
+        timeTable={userTimeTable == null ? newTimeTable : userTimeTable}
       />
     </div>
   );
