@@ -1,8 +1,7 @@
 'use client';
-import { useEffect, useState, useTransition } from 'react';
+import { useState } from 'react';
 import useMultiSelect from '@/hooks/useMultiSelect';
 import Button from '../button/button';
-import { setSelectionCookie } from '@/controllers/meet';
 import { Calendar, WeekCalendar } from './calendar';
 import { MeetType } from '@prisma/client';
 import { useRouter } from 'next/navigation';
@@ -68,7 +67,7 @@ export default function DatesSelector() {
   };
   const router = useRouter();
 
-  async function cookieHandler() {
+  async function saveSelection() {
     let selections: string[] = [];
 
     if (mode == MeetType.DATES) {
@@ -88,7 +87,11 @@ export default function DatesSelector() {
         (a: string, b: string) => daysSortOrder[a] - daysSortOrder[b]
       );
     }
-    await setSelectionCookie({ mode, selections });
+    try {
+      localStorage.setItem('selection', JSON.stringify({ mode, selections }));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -114,7 +117,7 @@ export default function DatesSelector() {
           type="button"
           title={'🧆 미트볼 굴리기'}
           onClick={async () => {
-            await cookieHandler();
+            await saveSelection();
             router.push('/create');
           }}
         />
