@@ -2,7 +2,7 @@
 import { useRef } from 'react';
 import Button from '../button/button';
 import TimeTableEditorColumn from '@/components/timeTable-edit/timetable-editor-column';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { updateTimeTable } from '@/controllers/meet';
 import TimeTable from '../../../types/TimeTable';
 
@@ -19,6 +19,7 @@ export default function TimeTableEditor({
   type: 'DAYS' | 'DATES';
   timeTable: TimeTable;
 }) {
+  const router = useRouter();
   const timeTableRef = useRef<TimeTable>(timeTable);
   const meetId = useParams().meetId as string;
   const timeList = Array.from(
@@ -79,6 +80,7 @@ export default function TimeTableEditor({
         type="submit"
         onClick={async () => {
           await updateTimeTable(meetId, timeTableRef.current);
+          router.push(`/meet/${meetId}`);
         }}
       />
     </div>
