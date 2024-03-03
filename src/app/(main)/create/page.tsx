@@ -17,6 +17,7 @@ export default function CreatePage() {
     } else {
       const { mode: meetingMode, selections: meetingSelections } =
         JSON.parse(selection);
+      localStorage.removeItem('selection'); // remove once it's read
 
       // set mode and selections to form
       const modeInput = document.querySelector<HTMLInputElement>(
