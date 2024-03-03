@@ -20,7 +20,7 @@ export default function CreatePage() {
     const meetingEndHour = Number(formData.get('meetingEndHour'));
     const meetingEndMin = formData.get('meetingEndMin') == '0' ? 0 : 0.5;
     const password = formData.get('password') as string;
-    await createMeet({
+    const createdMeet = await createMeet({
       name: meetingName,
       description: meetingDescription,
       meetType: mode,
@@ -29,9 +29,9 @@ export default function CreatePage() {
       datesOrDays: selection,
       confirmTime: scheduleEndDate,
       password: password,
-    }).then(() => {
-      redirect;
     });
+    
+    redirect(`/meet/${createdMeet.id}/edit`);
   }
 
   const hours = Array.from({ length: 24 }, (_, index) => index + 1);
