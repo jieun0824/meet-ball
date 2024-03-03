@@ -23,7 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, montserrat.variable)}>
+      <body
+        className={cn(
+          inter.className,
+          montserrat.variable,
+          'bg-bgColor text-white'
+        )}
+      >
         <div className="w-dvw h-dvh bg-bgColor p-2">{children}</div>
       </body>
     </html>
