@@ -1,8 +1,7 @@
 'use client';
-import { useEffect, useState, useTransition } from 'react';
+import { useState } from 'react';
 import useMultiSelect from '@/hooks/useMultiSelect';
 import Button from '../button/button';
-import { setSelectionCookie } from '@/controllers/meet';
 import { Calendar, WeekCalendar } from './calendar';
 import { MeetType } from '@prisma/client';
 import { useRouter } from 'next/navigation';
@@ -68,29 +67,6 @@ export default function DatesSelector() {
   };
   const router = useRouter();
 
-  async function cookieHandler() {
-    let selections: string[] = [];
-
-    if (mode == MeetType.DATES) {
-      if (selectedDates == undefined || selectedDates.length == 0) {
-        alert('You should select at least 1 date.');
-        return;
-      }
-      selections = selectedDates
-        .sort((a, b) => a.getTime() - b.getTime())
-        .map(a => a.toISOString().split('T')[0]);
-    } else if (mode == MeetType.DAYS) {
-      if (selectedDays.length == 0) {
-        alert('You should select at least 1 day.');
-        return;
-      }
-      selections = selectedDays.sort(
-        (a: string, b: string) => daysSortOrder[a] - daysSortOrder[b]
-      );
-    }
-    await setSelectionCookie({ mode, selections });
-  }
-
   return (
     <div className="mt-8 flex flex-col w-full max-w-[730px] mobile:max-w-[500px]">
       <ModeSelector mode={mode} handleModeChange={setMode} />
@@ -114,8 +90,34 @@ export default function DatesSelector() {
           type="button"
           title={'🧆 미트볼 굴리기'}
           onClick={async () => {
-            await cookieHandler();
-            router.push('/create');
+            let selections: string[] = [];
+
+            if (mode == MeetType.DATES) {
+              if (selectedDates == undefined || selectedDates.length == 0) {
+                alert('You should select at least 1 date.');
+                return;
+              }
+              selections = selectedDates
+                .sort((a, b) => a.getTime() - b.getTime())
+                .map(a => a.toISOString().split('T')[0]);
+            } else if (mode == MeetType.DAYS) {
+              if (selectedDays.length == 0) {
+                alert('You should select at least 1 day.');
+                return;
+              }
+              selections = selectedDays.sort(
+                (a: string, b: string) => daysSortOrder[a] - daysSortOrder[b]
+              );
+            }
+            try {
+              localStorage.setItem(
+                'selection',
+                JSON.stringify({ mode, selections })
+              );
+              router.push('/create');
+            } catch (error) {
+              console.error(error);
+            }
           }}
         />
       </div>

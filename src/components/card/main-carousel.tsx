@@ -1,9 +1,8 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import MainCard from '@/components/card/main-card';
 import useCarousel from '@/hooks/useCarousel';
 import { CarouselIndexIcon } from '@/components/icon';
-import { FaCircle } from 'react-icons/fa6';
 
 type scheduleData = {
   meet_id: number;
@@ -12,7 +11,8 @@ type scheduleData = {
   manager_id: number;
   participants: string[];
   description: string;
-  time_range: string[];
+  startTime: number;
+  endTime: number;
 };
 
 export default function MainCarousel({
@@ -46,9 +46,9 @@ export default function MainCarousel({
               key={`side_num_${i}`}
               meetName={schedule.title}
               description={schedule.description}
-              meetTime={schedule.time_range}
+              startTime={schedule.startTime}
+              endTime={schedule.endTime}
               participants={schedule.participants}
-              num={i}
             />
           );
         })}
