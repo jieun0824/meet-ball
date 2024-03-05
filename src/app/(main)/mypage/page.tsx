@@ -7,7 +7,7 @@ import {
   getMyManagingMeets,
   getMyParticipatingMeets,
 } from '@/controllers/meet';
-import MainCardDark from '@/components/card/main-card-dark';
+import MyMeetCard from './MyMeetCard';
 import PanelLayout from './PanelLayout';
 
 function ProfileIcon({ src }: { src: string }) {
@@ -50,8 +50,9 @@ function ManagingMeetsPanel({ managingMeets }: { managingMeets: Meet[] }) {
   return (
     <div className="space-y-4">
       {managingMeets.map(meet => (
-        <MainCardDark
+        <MyMeetCard
           key={meet.id}
+          meetId={meet.id}
           meetName={meet.name}
           description={meet.description}
           startTime={meet.startTime}
@@ -71,8 +72,9 @@ function ParticipatingMeetsPanel({
   return (
     <div className="space-y-4">
       {participatingMeets.map(meet => (
-        <MainCardDark
+        <MyMeetCard
           key={meet.id}
+          meetId={meet.id}
           meetName={meet.name}
           description={meet.description}
           startTime={meet.startTime}
