@@ -8,7 +8,7 @@ type mainCardProps = {
   participants: string[];
 };
 
-export default function MainCardDark({
+export default function MyMeetCard({
   meetName,
   description,
   startTime,
