@@ -51,10 +51,6 @@ export default function DatesSelector() {
   const [selectedDates, setSelectedDates] = useState<Date[] | undefined>([]);
   const { selected: selectedDays, handleSelected: handleSelectedDays } =
     useMultiSelect<string>([]);
-  // const [isPending, startTransition] = useTransition();
-  // useEffect(() => {
-  //   console.log(selectedDays);
-  // }, [selectedDays]);
 
   const daysSortOrder: { [key: string]: number } = {
     월: 1,
@@ -65,6 +61,7 @@ export default function DatesSelector() {
     토: 6,
     일: 7,
   };
+
   const router = useRouter();
 
   return (
@@ -109,11 +106,14 @@ export default function DatesSelector() {
                 (a: string, b: string) => daysSortOrder[a] - daysSortOrder[b]
               );
             }
+
             try {
+              // console.log(localStorage.getItem('selection'));
               localStorage.setItem(
                 'selection',
                 JSON.stringify({ mode, selections })
               );
+              // console.log(localStorage.getItem('selection'));
               router.push('/create');
             } catch (error) {
               console.error(error);
