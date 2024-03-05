@@ -8,15 +8,15 @@ export default function CreatePage() {
   const router = useRouter();
   const hours = Array.from({ length: 24 }, (_, index) => index + 1);
   const mins = [0, 30];
+
+  // extract data from localStorage
+  const selection = localStorage.getItem('selection');
   useEffect(() => {
-    // extract data from localStorage
-    const selection = localStorage.getItem('selection');
     if (!selection) {
       alert('No selection');
       router.push('/');
     } else {
-      const { mode: meetingMode, selections: meetingSelections } =
-        JSON.parse(selection);
+      const { mode, selections } = JSON.parse(selection);
       localStorage.removeItem('selection'); // remove once it's read
 
       // set mode and selections to form
@@ -24,13 +24,13 @@ export default function CreatePage() {
         'input[name="meetingMode"]'
       );
       if (modeInput) {
-        modeInput.value = meetingMode;
+        modeInput.value = mode;
       }
       const selectionsInput = document.querySelector<HTMLInputElement>(
         'input[name="meetingSelections"]'
       );
       if (selectionsInput) {
-        selectionsInput.value = meetingSelections;
+        selectionsInput.value = selections;
       }
     }
   });
@@ -41,8 +41,8 @@ export default function CreatePage() {
         action={handleSubmit}
         className="grid text-white place-items-center"
       >
-        <input type="hidden" name="meetingMode"></input>
-        <input type="hidden" name="meetingSelections"></input>
+        <input type="hidden" readOnly name="meetingMode"></input>
+        <input type="hidden" readOnly name="meetingSelections"></input>
         <div className="grid-1 w-[301px] h-[40px] border-b-2 mt-3 ">
           <input
             id="meetingName"
@@ -118,7 +118,7 @@ export default function CreatePage() {
                 type="date"
                 id="scheduleEndDate"
                 name="scheduleEndDate"
-                value={new Date().toISOString().split('T')[0]}
+                defaultValue={new Date().toISOString().split('T')[0]}
                 className="bg-[#3C3F45] rounded-md text-[#20ECC7]"
               />
             </div>
