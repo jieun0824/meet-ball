@@ -18,19 +18,18 @@ export default async function MeetPage({
     endTime,
     participants,
   } = await getMeet(params.meetId);
-  // console.log(participants);
 
   function transformData(participants: ParticipantsOnMeets[]) {
     const transformedData: TransformedParticipants = {};
+    for (const key of datesOrDays) {
+      transformedData[key] = {};
+    }
 
     for (const participant of participants) {
       const userId = participant.userId;
       const currentTimeTable = participant.timeTable as Prisma.JsonObject;
-      for (const date in currentTimeTable) {
-        if (!(date in transformedData)) {
-          transformedData[date] = {};
-        }
-        transformedData[date][userId] = currentTimeTable[date] as number[];
+      for (const key in currentTimeTable) {
+        transformedData[key][userId] = currentTimeTable[key] as number[];
       }
     }
 
