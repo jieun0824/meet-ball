@@ -2,7 +2,7 @@ import TimeTableEditor from '@/components/timeTable-edit/timetable-editor';
 import { getMeet, getTimeTable } from '@/controllers/meet';
 import TimeTable from '../../../../../../types/TimeTable';
 
-export default async function CreateTimetable({
+export default async function EditTimetable({
   params,
 }: {
   params: { meetId: string };
@@ -12,11 +12,10 @@ export default async function CreateTimetable({
   const userTimeTable = (await getTimeTable(params.meetId))
     .timeTable as unknown as TimeTable;
 
-  // init user timeTable
-  const newTimeTable: TimeTable = {};
-  if (userTimeTable == null) {
-    for (const key in datesOrDays) {
-      newTimeTable[key] = [];
+  const emptyTimeTable: TimeTable = {};
+  if (!userTimeTable) {
+    for (const key of datesOrDays) {
+      emptyTimeTable[key] = [];
     }
   }
 
@@ -33,7 +32,7 @@ export default async function CreateTimetable({
         endTime={endTime}
         datesOrDays={datesOrDays}
         type={meetType}
-        timeTable={userTimeTable == null ? newTimeTable : userTimeTable}
+        timeTable={userTimeTable ?? emptyTimeTable}
       />
     </div>
   );
