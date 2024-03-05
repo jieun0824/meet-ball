@@ -4,7 +4,7 @@ import { createMeet } from '@/controllers/meet';
 import { MeetType } from '@prisma/client';
 import { redirect } from 'next/navigation';
 
-export default async function handleSubmit(formData: FormData) {
+export default async function createMeetFromInput(formData: FormData) {
   const meetingName = formData.get('meetingName')?.toString();
   if (!meetingName || meetingName.length === 0) {
     throw new Error('이름을 입력해주세요.');

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import handleSubmit from './action';
+import createMeetFromInput from './createMeetFromInput';
 import { useEffect } from 'react';
 
 async function clientAction(formData: FormData) {
@@ -10,7 +10,7 @@ async function clientAction(formData: FormData) {
     // remove once it's used
     localStorage.removeItem('selection'); 
 
-    await handleSubmit(formData);
+    await createMeetFromInput(formData);
 }
 
 export default function MeetForm() {
