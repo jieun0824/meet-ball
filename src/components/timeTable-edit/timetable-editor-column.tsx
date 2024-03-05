@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import TimeTable from '../../../types/TimeTable';
 
 // type selectedArea = {
 //   start: [startCol: number, startRow: number] | [];
@@ -11,7 +12,7 @@ type TimeTableEditorCellProps = {
   selected: boolean;
   addHandler: () => void;
   deleteHandler: () => void;
-  index: [number, number];
+  //index: [number, number];
 };
 
 function TimeTableEditorCell({
@@ -19,7 +20,7 @@ function TimeTableEditorCell({
   selected,
   addHandler,
   deleteHandler,
-  index,
+  //index,
 }: TimeTableEditorCellProps) {
   const [clicked, setClicked] = useState(selected);
   const clickHandler = () => {
@@ -41,26 +42,24 @@ function TimeTableEditorCell({
     </div>
   );
 }
-
+type TimeTableEditorColumnProps = {
+  date: string;
+  startTime: number;
+  endTime: number;
+  type: 'DAYS' | 'DATES';
+  timeTableRef: {
+    current: TimeTable;
+  };
+  // colIdx: number;
+};
 export default function TimeTableEditorColumn({
   date,
   startTime,
   endTime,
   type,
-  timeTable,
-  colIdx,
-}: {
-  date: string;
-  startTime: number;
-  endTime: number;
-  type: 'DAYS' | 'DATES';
-  timeTable: {
-    current: {
-      [key: string]: number[];
-    };
-  };
-  colIdx: number;
-}) {
+  timeTableRef,
+  // colIdx,
+}: TimeTableEditorColumnProps) {
   const timeList = Array.from(
     { length: endTime - startTime },
     (_, index) => startTime + index
@@ -80,18 +79,6 @@ export default function TimeTableEditorColumn({
     label.current = date;
   }
 
-  useEffect(() => {
-    console.log(timeTable.current);
-  }, [timeTable.current]);
-
-  // const [selectedAreaCollection, setSelectedAreaCollection] = useState<
-  //   selectedArea[]
-  // >([]);
-
-  // useEffect(() => {
-  //   console.log(selectedAreaCollection);
-  // }, [selectedAreaCollection]);
-
   return (
     <div>
       <p className="flex justify-center whitespace-pre-wrap h-[30px]">
@@ -101,15 +88,15 @@ export default function TimeTableEditorColumn({
         <TimeTableEditorCell
           key={rowIdx}
           time={time}
-          selected={timeTable.current[date].includes(time)}
-          addHandler={() => timeTable.current[date].push(time)}
+          selected={timeTableRef.current[date].includes(time)}
+          addHandler={() => timeTableRef.current[date].push(time)}
           deleteHandler={() =>
-            timeTable.current[date].splice(
-              timeTable.current[date].indexOf(time),
+            timeTableRef.current[date].splice(
+              timeTableRef.current[date].indexOf(time),
               1
             )
           }
-          index={[colIdx, rowIdx]}
+          //index={[colIdx, rowIdx]}
         />
       ))}
     </div>

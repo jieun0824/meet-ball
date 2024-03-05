@@ -6,19 +6,21 @@ import { useParams, useRouter } from 'next/navigation';
 import { updateTimeTable } from '@/controllers/meet';
 import TimeTable from '../../../types/TimeTable';
 
+type TimeTableEditorProps = {
+  startTime: number;
+  endTime: number;
+  datesOrDays: string[];
+  type: 'DAYS' | 'DATES';
+  timeTable: TimeTable;
+};
+
 export default function TimeTableEditor({
   startTime,
   endTime,
   datesOrDays,
   type,
   timeTable,
-}: {
-  startTime: number;
-  endTime: number;
-  datesOrDays: string[];
-  type: 'DAYS' | 'DATES';
-  timeTable: TimeTable;
-}) {
+}: TimeTableEditorProps) {
   const router = useRouter();
   const timeTableRef = useRef<TimeTable>(timeTable);
   const meetId = useParams().meetId as string;
@@ -27,11 +29,9 @@ export default function TimeTableEditor({
     (_, index) => startTime + index
   );
 
-  type gridColumnsType = {
+  const gridSetList: {
     [key: number]: string;
-  };
-
-  const gridSetList: gridColumnsType = {
+  } = {
     1: `grid grid-cols-table1 w-full`,
     2: `grid grid-cols-table2 w-full`,
     3: `grid grid-cols-table3 w-full`,
@@ -40,7 +40,7 @@ export default function TimeTableEditor({
     6: `grid grid-cols-table6 w-full`,
     7: `grid grid-cols-table7 w-full`,
   };
-  
+
   return (
     <div className="flex flex-col justify-center items-center text-xs mt-16">
       <div className={gridSetList[datesOrDays.length % 7]}>
@@ -70,8 +70,8 @@ export default function TimeTableEditor({
             startTime={startTime}
             endTime={endTime}
             type={type}
-            timeTable={timeTableRef}
-            colIdx={datesOrDays.indexOf(date)}
+            timeTableRef={timeTableRef}
+            // colIdx={datesOrDays.indexOf(date)}
           />
         ))}
       </div>
