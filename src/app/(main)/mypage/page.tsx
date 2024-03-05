@@ -52,6 +52,7 @@ function ManagingMeetsPanel({ managingMeets }: { managingMeets: Meet[] }) {
       {managingMeets.map(meet => (
         <MyMeetCard
           key={meet.id}
+          meetId={meet.id}
           meetName={meet.name}
           description={meet.description}
           startTime={meet.startTime}
@@ -73,6 +74,7 @@ function ParticipatingMeetsPanel({
       {participatingMeets.map(meet => (
         <MyMeetCard
           key={meet.id}
+          meetId={meet.id}
           meetName={meet.name}
           description={meet.description}
           startTime={meet.startTime}

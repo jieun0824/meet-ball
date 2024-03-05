@@ -1,6 +1,8 @@
 import { ClockIcon, MoreIcon, PeopleIcon } from '@/components/icon';
+import Link from 'next/link';
 
 type mainCardProps = {
+  meetId: string;
   meetName: string;
   description: string | null;
   startTime: number;
@@ -9,6 +11,7 @@ type mainCardProps = {
 };
 
 export default function MyMeetCard({
+  meetId,
   meetName,
   description,
   startTime,
@@ -25,7 +28,9 @@ export default function MyMeetCard({
   return (
     <div className={`bg-cardColor p-8 w-80 rounded-2xl text-white shadow-2xl`}>
       <div className="flex justify-between items-center mb-3">
-        <h1 className="text-lg font-semibold">{meetName}</h1>
+        <Link href={`/meet/${meetId}`}>
+          <h1 className="text-lg font-semibold">{meetName}</h1>
+        </Link>
         <MoreIcon size={24} />
       </div>
       <h3 className="mb-2">{description}</h3>
