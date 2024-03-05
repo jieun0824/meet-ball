@@ -1,9 +1,9 @@
 'use server';
 
+import { redirect } from 'next/navigation';
+import { MeetType } from '@prisma/client';
 import { createMeet } from '@/controllers/meet';
 import { validateMeetMode, validateString } from '@/lib/validation';
-import { MeetType } from '@prisma/client';
-import { redirect } from 'next/navigation';
 
 export default async function createMeetFromInput(formData: FormData) {
   const meetName = formData.get('meetName')?.toString();
