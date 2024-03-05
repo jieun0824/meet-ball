@@ -1,5 +1,5 @@
 import TimeTableComponent from '@/components/timeTable/timetable';
-import { getMeet } from '@/controllers/meet';
+import { getMeetWithParticipants } from '@/controllers/meet';
 import { Prisma } from '@prisma/client';
 import type { ParticipantsOnMeets } from '@prisma/client';
 import type CombinedTimeTable from '../../../../../types/CombinedTimeTable';
@@ -17,7 +17,7 @@ export default async function MeetPage({
     startTime,
     endTime,
     participants,
-  } = await getMeet(params.meetId);
+  } = await getMeetWithParticipants(params.meetId);
 
   function combineTimeTables(participants: ParticipantsOnMeets[]) {
     const combinedTimeTable: CombinedTimeTable = {};
