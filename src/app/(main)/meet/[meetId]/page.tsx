@@ -1,72 +1,61 @@
-import TimeTableBody from '@/components/timeTable/timeTableBody';
+import TimeTableComponent from '@/components/timeTable/timetable';
+import { getMeet } from '@/controllers/meet';
+import { Prisma } from '@prisma/client';
+import type { ParticipantsOnMeets } from '@prisma/client';
+import type TransformedParticipants from '../../../../../types/TransformedParticipants';
 
-export default function MeetPage({ params }: { params: { meetId: string } }) {
-  // dummy time
-  const dummyTimeTableDate = {
-    '2023-11-12': {
-      Taegon: [0, 1, 2, 3, 5, 7, 8],
-      Kim: [2, 3, 4, 5, 6, 8],
-      John: [1, 2, 3, 4],
-      Tae: [2, 3],
-      Gon: [3],
-    },
-    '2023-11-13': {
-      Taegon: [1, 2, 3],
-      Kim: [3, 4, 5],
-    },
-    // '2023-11-13': {
-    //   Taegon: [1, 2, 3],
-    //   Kim: [2, 3, 4],
-    // },
-    // '2023-11-15': {
-    //   Taegon: [1, 3, 5],
-    //   Kim: [4, 5, 7],
-    //   Tae: [1, 2, 3, 4],
-    //   Gon: [3, 4, 5],
-    // },
-    // '2023-11-16': {
-    //   Taegon: [1, 3, 5],
-    //   Kim: [4, 5, 7],
-    //   Tae: [1, 2, 3, 4],
-    //   Gon: [3, 4, 5],
-    // },
-    // '2023-11-17': {
-    //   Taegon: [1, 3, 5],
-    //   Kim: [4, 5, 7],
-    //   Tae: [1, 2, 3, 4],
-    //   Gon: [3, 4, 5],
-    // },
-    // '2023-11-18': {
-    //   Taegon: [1, 3, 5],
-    //   Kim: [4, 5, 7],
-    //   Tae: [1, 2, 3, 4],
-    //   Gon: [3, 4, 5],
-    // },
-    // '2023-11-19': {
-    //   Taegon: [1, 3, 5],
-    //   Kim: [4, 5, 7],
-    //   Tae: [1, 2, 3, 4],
-    //   Gon: [3, 4, 5],
-    // },
-  };
+export default async function MeetPage({
+  params,
+}: {
+  params: { meetId: string };
+}) {
+  const {
+    name,
+    description,
+    datesOrDays,
+    meetType,
+    startTime,
+    endTime,
+    participants,
+  } = await getMeet(params.meetId);
+  // console.log(participants);
 
-  const startTime: number = 0;
-  const endTime: number = 10;
+  function transformData(participants: ParticipantsOnMeets[]) {
+    const transformedData: TransformedParticipants = {};
+
+    for (const participant of participants) {
+      const userId = participant.userId;
+      const currentTimeTable = participant.timeTable as Prisma.JsonObject;
+      for (const date in currentTimeTable) {
+        if (!(date in transformedData)) {
+          transformedData[date] = {};
+        }
+        transformedData[date][userId] = currentTimeTable[date] as number[];
+      }
+    }
+
+    return transformedData;
+  }
+
+  const transformedParticipants = transformData(participants);
+
   return (
-    <div className="ml-[35px]">
-      <div className="w-[301px] text-white mt-5 ">
-        <p className="text-2xl">회의 이름</p>
-        <div className="w-[301px] h-[48px] mt-4 items-center border-2 rounded-lg border-white">
-          <p className="">회의 설명 </p>
-        </div>
+    <div className="pb-8 px-20">
+      <div className="flex flex-col items-center justify-center">
+        <p className="text-xl mt-3 w-full">{name}</p>
+        <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-full">
+          {description}
+        </p>
       </div>
-      <div className="">
-        <TimeTableBody
-          scheduledObject={dummyTimeTableDate}
-          startTime={startTime}
-          endTime={endTime}
-        ></TimeTableBody>
-      </div>
+
+      <TimeTableComponent
+        startTime={startTime}
+        endTime={endTime}
+        datesOrDays={datesOrDays}
+        type={meetType}
+        timetable={transformedParticipants}
+        participantsNum={participants.length}
+      />
     </div>
   );
 }

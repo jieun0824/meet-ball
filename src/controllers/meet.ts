@@ -4,7 +4,6 @@ import { Prisma } from '@prisma/client';
 import type { Meet, MeetType } from '@prisma/client';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/authentication';
-import { redirect } from 'next/navigation';
 
 export async function getMyManagingMeets(): Promise<Meet[]> {
   try {
@@ -72,8 +71,6 @@ export async function createMeet(args: CreateMeetParams): Promise<Meet> {
         },
       },
     });
-    const meetId = meet.id;
-    redirect(`/meet/${meetId}/edit`);
     return meet;
   } catch (error) {
     console.error(error);

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Montserrat } from 'next/font/google';
 import './globals.css';
+import { cn } from '@/lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -9,6 +10,12 @@ export const metadata: Metadata = {
   description: 'Helps you find when we can meet together',
 };
 
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-montserrat',
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -16,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(inter.className, montserrat.variable)}>
         <div className="w-dvw h-dvh bg-bgColor p-2">{children}</div>
       </body>
     </html>

@@ -36,10 +36,10 @@ const config: Config = {
         laptop: { min: '769px', max: '1024px' }, //for low resolution laptops
         desktop: { min: '1025px' },
       },
-    },
-    fontFamily: {
-      montserrat: ['var(--font-montserrat)'],
-      roboto: ['Roboto', 'sans-serif'],
+      fontFamily: {
+        montserrat: ['var(--font-montserrat)'],
+        roboto: ['Roboto', 'sans-serif'],
+      },
     },
   },
   plugins: [],

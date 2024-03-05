@@ -1,26 +1,27 @@
 'use client';
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import TimeTable from '../../../types/TimeTable';
 
 // type selectedArea = {
 //   start: [startCol: number, startRow: number] | [];
 //   end: [endCol: number, endRow: number] | [];
 // };
 
-type timeComponentProps = {
+type TimeTableEditorCellProps = {
   time: number;
   selected: boolean;
   addHandler: () => void;
   deleteHandler: () => void;
-  index: [number, number];
+  //index: [number, number];
 };
 
-function TimeCell({
+function TimeTableEditorCell({
   time,
   selected,
   addHandler,
   deleteHandler,
-  index,
-}: timeComponentProps) {
+  //index,
+}: TimeTableEditorCellProps) {
   const [clicked, setClicked] = useState(selected);
   const clickHandler = () => {
     if (clicked) {
@@ -41,26 +42,24 @@ function TimeCell({
     </div>
   );
 }
-
-export default function TimeColumn({
-  date,
-  startTime,
-  endTime,
-  type,
-  timeTable,
-  colIdx,
-}: {
+type TimeTableEditorColumnProps = {
   date: string;
   startTime: number;
   endTime: number;
   type: 'DAYS' | 'DATES';
-  timeTable: {
-    current: {
-      [key: string]: number[];
-    };
+  timeTableRef: {
+    current: TimeTable;
   };
-  colIdx: number;
-}) {
+  // colIdx: number;
+};
+export default function TimeTableEditorColumn({
+  date,
+  startTime,
+  endTime,
+  type,
+  timeTableRef,
+  // colIdx,
+}: TimeTableEditorColumnProps) {
   const timeList = Array.from(
     { length: endTime - startTime },
     (_, index) => startTime + index
@@ -80,36 +79,24 @@ export default function TimeColumn({
     label.current = date;
   }
 
-  useEffect(() => {
-    console.log(timeTable.current);
-  }, [timeTable.current]);
-
-  // const [selectedAreaCollection, setSelectedAreaCollection] = useState<
-  //   selectedArea[]
-  // >([]);
-
-  // useEffect(() => {
-  //   console.log(selectedAreaCollection);
-  // }, [selectedAreaCollection]);
-
   return (
     <div>
       <p className="flex justify-center whitespace-pre-wrap h-[30px]">
         {label.current}
       </p>
       {timeList.map((time: number, rowIdx: number) => (
-        <TimeCell
+        <TimeTableEditorCell
           key={rowIdx}
           time={time}
-          selected={timeTable.current[date].includes(time)}
-          addHandler={() => timeTable.current[date].push(time)}
+          selected={timeTableRef.current[date].includes(time)}
+          addHandler={() => timeTableRef.current[date].push(time)}
           deleteHandler={() =>
-            timeTable.current[date].splice(
-              timeTable.current[date].indexOf(time),
+            timeTableRef.current[date].splice(
+              timeTableRef.current[date].indexOf(time),
               1
             )
           }
-          index={[colIdx, rowIdx]}
+          //index={[colIdx, rowIdx]}
         />
       ))}
     </div>

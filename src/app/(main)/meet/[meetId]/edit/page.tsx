@@ -1,43 +1,39 @@
-import Button from '@/components/button/button';
-import TimeTable from '@/components/timetable/timetable';
-import { getMeet, getTimeTable, updateTimeTable } from '@/controllers/meet';
-import { getCurrentUser } from '@/lib/authentication';
-import { Meet, ParticipantsOnMeets } from '@prisma/client';
+import TimeTableEditor from '@/components/timeTable-edit/timetable-editor';
+import { getMeet, getTimeTable } from '@/controllers/meet';
+import TimeTable from '../../../../../../types/TimeTable';
 
-export default async function CreateTimetable({
+export default async function EditTimetable({
   params,
 }: {
   params: { meetId: string };
 }) {
   const { name, description, datesOrDays, meetType, startTime, endTime } =
     await getMeet(params.meetId);
-  const userTimetable = (await getTimeTable(params.meetId)).timeTable;
+  const userTimeTable = (await getTimeTable(params.meetId))
+    .timeTable as unknown as TimeTable;
 
-  // if user create new timetable (userTimetable == null)
-  const newTimetable: { [key: string]: [] } = {};
-  if (userTimetable == null) {
-    datesOrDays.forEach((date: string, i: number) => {
-      newTimetable[date] = [];
-    });
+  const emptyTimeTable: TimeTable = {};
+  if (!userTimeTable) {
+    for (const key of datesOrDays) {
+      emptyTimeTable[key] = [];
+    }
   }
 
   return (
-    <div>
+    <div className="pb-8 px-20">
       <div className="flex flex-col items-center justify-center">
-        <p className="text-xl mt-3 w-3/4">{name}</p>
-        <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-3/4">
+        <p className="text-xl mt-3 w-full">{name}</p>
+        <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-full">
           {description}
         </p>
       </div>
-      <div className="flex flex-col justify-center items-center text-xs mt-16">
-        <TimeTable
-          startTime={startTime}
-          endTime={endTime}
-          datesOrDays={datesOrDays}
-          type={meetType}
-          userTimetable={userTimetable == null ? newTimetable : userTimetable}
-        />
-      </div>
+      <TimeTableEditor
+        startTime={startTime}
+        endTime={endTime}
+        datesOrDays={datesOrDays}
+        type={meetType}
+        timeTable={userTimeTable ?? emptyTimeTable}
+      />
     </div>
   );
 }
