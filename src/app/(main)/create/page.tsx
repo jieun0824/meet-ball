@@ -1,5 +1,5 @@
-import Form from './Form';
+import MeetForm from './MeetForm';
 
 export default function CreatePage() {
-  return <Form />;
+  return <MeetForm />;
 }
