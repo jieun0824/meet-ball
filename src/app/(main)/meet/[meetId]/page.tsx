@@ -39,7 +39,7 @@ export default async function MeetPage({
         <Link href={`/edit/${params.meetId}`}>
           <GearIcon />
         </Link>
-        <Link href={`/meet/${params.meetId}/invite`}>
+        <Link href={`/meet/${params.meetId}/participants`}>
           <AddPersonIcon />
         </Link>
       </div>
