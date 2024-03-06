@@ -31,7 +31,7 @@ export default async function createMeetFromInput(formData: FormData) {
   if (!meetSelections || meetSelections.length === 0)
     throw new Error('날짜를 선택해주세요.');
 
-  const password = formData.get('password')?.toString();
+  const meetPassword = formData.get('password')?.toString();
 
   try {
     const createdMeet = await createMeet({
@@ -42,7 +42,7 @@ export default async function createMeetFromInput(formData: FormData) {
       endTime,
       datesOrDays: meetSelections,
       confirmTime: confirmDate,
-      password: password,
+      password: meetPassword,
     });
     redirect(`/meet/${createdMeet.id}/edit`);
   } catch (error) {
