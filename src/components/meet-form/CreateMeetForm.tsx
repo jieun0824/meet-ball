@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { validateMeetMode, validateString } from '@/lib/validation';
-import createMeetFromInput from './actions/createMeetFormAction';
+import createMeetFromInput from './createMeetFormAction';
 import {
   MeetNameInput,
   MeetDescriptionInput,
