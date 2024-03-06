@@ -186,38 +186,52 @@ export async function deleteMeet(meetId: string): Promise<Meet> {
 export async function addParticipantsToMeet(
   meetId: string,
   userIds: string[]
-): Promise<Meet> {
+): Promise<void> {
+  // try {
+  //   const currentUser = await getCurrentUser();
+  //   const meet = await prisma.meet.update({
+  //     where: {
+  //       id: meetId,
+  //       managerId: currentUser.id, // only authorized for manager
+  //     },
+  //     data: {
+  //       participants: {
+  //         create: userIds.map(userId => ({
+  //           user: {
+  //             connect: {
+  //               id: userId,
+  //             },
+  //           },
+  //         })),
+  //       },
+  //     },
+  //   });
+  //   return meet;
+  // } catch (error) {
+  //   console.error(error);
+  //   throw error;
+  // }
   try {
     const currentUser = await getCurrentUser();
-    const meet = await prisma.meet.update({
-      where: {
-        id: meetId,
-        managerId: currentUser.id, // only authorized for manager
-      },
-      data: {
-        participants: {
-          create: userIds.map(userId => ({
-            userId,
-          })),
-        },
-      },
+    const meet = await getMeet(meetId);
+    if (meet.managerId !== currentUser.id)
+      throw new Error('Only manager can add participants.');
+
+    // Create an array of ParticipantsOnMeets objects
+    const participants = userIds.map(userId => ({
+      meetId,
+      userId,
+    }));
+
+    // Use the createMany method on the ParticipantsOnMeets model to add all participants at once
+    await prisma.participantsOnMeets.createMany({
+      data: participants,
+      skipDuplicates: true, // This ensures users are not added twice
     });
-    return meet;
   } catch (error) {
     console.error(error);
     throw error;
   }
-  // // Create an array of ParticipantsOnMeets objects
-  // const participants = userIds.map(userId => ({
-  //   meetId,
-  //   userId,
-  // }));
-
-  // // Use the createMany method on the ParticipantsOnMeets model to add all participants at once
-  // await prisma.participantsOnMeets.createMany({
-  //   data: participants,
-  //   skipDuplicates: true, // This ensures users are not added twice
-  // });
 }
 
 export async function acceptMeetInvitation(meetId: string) {
