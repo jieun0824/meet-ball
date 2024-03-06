@@ -1,8 +1,10 @@
-import TimeTableComponent from '@/components/timeTable/timetable';
-import { getMeetWithParticipants } from '@/controllers/meet';
+import Link from 'next/link';
 import { Prisma } from '@prisma/client';
 import type { ParticipantsOnMeets } from '@prisma/client';
 import type CombinedTimeTable from '../../../../../types/CombinedTimeTable';
+import TimeTableComponent from '@/components/timeTable/timetable';
+import { getMeetWithParticipants } from '@/controllers/meet';
+import { AddPersonIcon, GearIcon } from '@/components/icon';
 
 export default async function MeetPage({
   params,
@@ -36,23 +38,28 @@ export default async function MeetPage({
     return combinedTimeTable;
   }
 
-  const transformedParticipants = combineTimeTables(participants);
+  const combinedTimeTable = combineTimeTables(participants);
 
   return (
     <div className="pb-8 px-20">
-      <div className="flex flex-col items-center justify-center">
-        <p className="text-xl mt-3 w-full">{name}</p>
-        <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-full">
-          {description}
-        </p>
+      <div className="flex items-center w-full">
+        <p className="text-xl mt-3 grow">{name}</p>
+        <Link href={`/edit/${params.meetId}`}>
+          <GearIcon />
+        </Link>
+        <Link href={`/meet/${params.meetId}/invite`}>
+          <AddPersonIcon />
+        </Link>
       </div>
-
+      <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-full">
+        {description}
+      </p>
       <TimeTableComponent
         startTime={startTime}
         endTime={endTime}
         datesOrDays={datesOrDays}
         type={meetType}
-        timetable={transformedParticipants}
+        timetable={combinedTimeTable}
         participantsNum={participants.length}
       />
     </div>
