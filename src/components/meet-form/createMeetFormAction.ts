@@ -18,10 +18,10 @@ export default async function createMeetFromInput(formData: FormData) {
   confirmDate.setHours(parseInt(formData.get('confirmHour')!.toString()));
   confirmDate.setMinutes(parseInt(formData.get('confirmMinute')!.toString()));
 
-  let startTime = parseInt(formData.get('meetStartHour')!.toString());
+  let startTime = parseInt(formData.get('meetStartHour')!.toString()) * 2;
   if (formData.get('meetStartMinute')!.toString() === '30') startTime += 1;
 
-  let endTime = parseInt(formData.get('meetEndHour')!.toString());
+  let endTime = parseInt(formData.get('meetEndHour')!.toString()) * 2;
   if (formData.get('meetEndMinute')!.toString() === '30') endTime += 1;
 
   const meetSelections = formData
