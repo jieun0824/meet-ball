@@ -1,7 +1,7 @@
 'use server';
 
 import type { Meet, MeetType } from '@prisma/client';
-import type MeetWithParticipants from '../../types/MeetWithParticipants';
+import type MeetWithParticipants from '@/types/MeetWithParticipants';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/authentication';
 

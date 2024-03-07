@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Prisma } from '@prisma/client';
 import type { ParticipantsOnMeets } from '@prisma/client';
-import type CombinedTimeTable from '../../../../../types/CombinedTimeTable';
+import type CombinedTimeTable from '@/types/CombinedTimeTable';
 import TimeTableComponent from '@/components/timeTable/timetable';
 import { getMeetWithParticipants } from '@/controllers/meet';
 import { AddPersonIcon, GearIcon } from '@/components/icon';
@@ -11,6 +11,8 @@ export default async function MeetPage({
 }: {
   params: { meetId: string };
 }) {
+  // 1. check meet exist on my participating meets
+  // 
   const meet = await getMeetWithParticipants(params.meetId);
 
   function combineTimeTables(participants: ParticipantsOnMeets[]) {

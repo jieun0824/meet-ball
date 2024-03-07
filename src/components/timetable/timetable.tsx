@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import TimeTableColumn from '@/components/timeTable/timetable-column';
-import type CombinedTimeTable from '../../../types/CombinedTimeTable';
+import type CombinedTimeTable from '@/types/CombinedTimeTable';
 
 type TimeTableComponentProps = {
   startTime: number;

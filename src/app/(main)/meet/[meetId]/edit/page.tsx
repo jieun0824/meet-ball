@@ -1,6 +1,6 @@
 import TimeTableEditor from '@/components/timeTable-edit/timetable-editor';
 import { getMeetWithParticipants, getMyTimeTable } from '@/controllers/meet';
-import TimeTable from '../../../../../../types/TimeTable';
+import TimeTable from '@/types/TimeTable';
 
 export default async function EditTimetable({
   params,
