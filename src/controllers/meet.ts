@@ -1,7 +1,7 @@
 'use server';
 
-import { Prisma } from '@prisma/client';
 import type { Meet, MeetType } from '@prisma/client';
+import type MeetWithParticipants from '../../types/MeetWithParticipants';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/authentication';
 
@@ -95,14 +95,6 @@ export async function getMeet(meetId: string): Promise<Meet> {
     throw error;
   }
 }
-
-const meetWithParticipants = Prisma.validator<Prisma.MeetDefaultArgs>()({
-  include: { participants: true },
-});
-
-export type MeetWithParticipants = Prisma.MeetGetPayload<
-  typeof meetWithParticipants
->;
 
 // get meet with participants, only if you are participating in that meet
 export async function getMeetWithParticipants(
