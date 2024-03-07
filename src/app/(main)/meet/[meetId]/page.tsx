@@ -1,18 +1,36 @@
-import Link from 'next/link';
 import { Prisma } from '@prisma/client';
 import type { ParticipantsOnMeets } from '@prisma/client';
 import type CombinedTimeTable from '@/types/CombinedTimeTable';
 import TimeTableComponent from '@/components/timeTable/timetable';
-import { getMeetWithParticipants } from '@/controllers/meet';
-import { AddPersonIcon, GearIcon } from '@/components/icon';
+import {
+  getMeet,
+  getMeetWithParticipants,
+  getMyParticipatingMeets,
+} from '@/controllers/meet';
+import { redirect } from 'next/navigation';
+import EditMeetButton from '../EditMeetButton';
+import ParticipantsButton from '../ParticipantsButton';
 
 export default async function MeetPage({
   params,
 }: {
   params: { meetId: string };
 }) {
-  // 1. check meet exist on my participating meets
-  // 
+  try {
+    const myParticipatingMeets = await getMyParticipatingMeets();
+    // 1. check if I'm participating in this meet
+    if (!myParticipatingMeets.some(meet => meet.id === params.meetId)) {
+      // 2. if not, check if the meet exists
+      const meet = await getMeet(params.meetId);
+      if (!meet) throw new Error('meet not found');
+      // 3. if it exists, redirect to participate page (ask to join or not)
+      redirect(`/meet/${params.meetId}/participate`);
+    }
+  } catch (error) {
+    console.error(error);
+    redirect('/');
+  }
+
   const meet = await getMeetWithParticipants(params.meetId);
 
   function combineTimeTables(participants: ParticipantsOnMeets[]) {
@@ -38,12 +56,8 @@ export default async function MeetPage({
     <div className="pb-8 px-20">
       <div className="flex items-center w-full">
         <p className="text-xl mt-3 grow">{meet.name}</p>
-        <Link href={`/edit/${params.meetId}`}>
-          <GearIcon />
-        </Link>
-        <Link href={`/meet/${params.meetId}/participants`}>
-          <AddPersonIcon />
-        </Link>
+        <EditMeetButton meetId={params.meetId} />
+        <ParticipantsButton meetId={params.meetId} />
       </div>
       <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-full">
         {meet.description}
