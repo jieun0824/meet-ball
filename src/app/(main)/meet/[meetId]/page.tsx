@@ -1,8 +1,8 @@
 import TimeTableComponent from '@/components/timeTable/timetable';
-import { getMeet } from '@/controllers/meet';
+import { getMeetWithParticipants } from '@/controllers/meet';
 import { Prisma } from '@prisma/client';
 import type { ParticipantsOnMeets } from '@prisma/client';
-import type TransformedParticipants from '../../../../../types/TransformedParticipants';
+import type CombinedTimeTable from '../../../../../types/CombinedTimeTable';
 
 export default async function MeetPage({
   params,
@@ -17,27 +17,26 @@ export default async function MeetPage({
     startTime,
     endTime,
     participants,
-  } = await getMeet(params.meetId);
-  // console.log(participants);
+  } = await getMeetWithParticipants(params.meetId);
 
-  function transformData(participants: ParticipantsOnMeets[]) {
-    const transformedData: TransformedParticipants = {};
+  function combineTimeTables(participants: ParticipantsOnMeets[]) {
+    const combinedTimeTable: CombinedTimeTable = {};
+    for (const key of datesOrDays) {
+      combinedTimeTable[key] = {};
+    }
 
     for (const participant of participants) {
       const userId = participant.userId;
       const currentTimeTable = participant.timeTable as Prisma.JsonObject;
-      for (const date in currentTimeTable) {
-        if (!(date in transformedData)) {
-          transformedData[date] = {};
-        }
-        transformedData[date][userId] = currentTimeTable[date] as number[];
+      for (const key in currentTimeTable) {
+        combinedTimeTable[key][userId] = currentTimeTable[key] as number[];
       }
     }
 
-    return transformedData;
+    return combinedTimeTable;
   }
 
-  const transformedParticipants = transformData(participants);
+  const transformedParticipants = combineTimeTables(participants);
 
   return (
     <div className="pb-8 px-20">

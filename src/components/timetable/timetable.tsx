@@ -1,14 +1,14 @@
 'use client';
 import { useState } from 'react';
 import TimeTableColumn from '@/components/timeTable/timetable-column';
-import type TransformedParticipants from '../../../types/TransformedParticipants';
+import type CombinedTimeTable from '../../../types/CombinedTimeTable';
 
 type TimeTableComponentProps = {
   startTime: number;
   endTime: number;
   datesOrDays: string[];
   type: 'DAYS' | 'DATES';
-  timetable: TransformedParticipants;
+  timetable: CombinedTimeTable;
   participantsNum: number;
 };
 

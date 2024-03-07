@@ -1,5 +1,5 @@
-import Form from './Form';
+import CreateMeetForm from '@/components/meet-form/CreateMeetForm';
 
 export default function CreatePage() {
-  return <Form />;
+  return <CreateMeetForm />;
 }

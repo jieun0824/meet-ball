@@ -55,20 +55,36 @@ export type CreateMeetParams = {
   password?: string;
 };
 
-export async function createMeet(args: CreateMeetParams): Promise<Meet> {
+export async function createMeet(params: CreateMeetParams): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
 
     const meet = await prisma.meet.create({
       data: {
         managerId: currentUser.id,
-        ...args,
+        ...params,
         participants: {
           create: {
             userId: currentUser.id, // should involve itself as participant at first
             hasAccepted: true, // should be true for manager by default
           },
         },
+      },
+    });
+    return meet;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getMeet(meetId: string): Promise<Meet> {
+  try {
+    const currentUser = await getCurrentUser();
+    const meet = await prisma.meet.findUniqueOrThrow({
+      where: {
+        id: meetId,
+        managerId: currentUser.id,
       },
     });
     return meet;
@@ -86,7 +102,9 @@ export type MeetWithParticipants = Prisma.MeetGetPayload<
   typeof meetWithParticipants
 >;
 
-export async function getMeet(meetId: string): Promise<MeetWithParticipants> {
+export async function getMeetWithParticipants(
+  meetId: string
+): Promise<MeetWithParticipants> {
   try {
     const currentUser = await getCurrentUser();
     const meet = await prisma.meet.findUniqueOrThrow({
@@ -118,25 +136,27 @@ export type UpdateMeetParams = {
   name?: string;
   description?: string;
   meetType?: MeetType;
-  dateOrDays?: string[];
+  startTime?: number; // 0-47
+  endTime?: number; // 0-47
+  datesOrDays?: string[];
   confirmTime?: Date;
-  isConfirmed?: boolean;
   password?: string;
 };
 
 export async function updateMeet(
   meetId: string,
-  args: UpdateMeetParams
+  params: UpdateMeetParams
 ): Promise<Meet> {
   try {
     const currentUser = await getCurrentUser();
+
     const meet = await prisma.meet.update({
       where: {
         id: meetId,
         managerId: currentUser.id, // only authorized for manager
       },
       data: {
-        ...args,
+        ...params,
       },
     });
     return meet;
