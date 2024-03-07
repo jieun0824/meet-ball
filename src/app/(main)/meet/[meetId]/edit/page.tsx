@@ -1,6 +1,5 @@
 import TimeTableEditor from '@/components/timeTable-edit/timetable-editor';
 import { getMeetWithParticipants, getMyTimeTable } from '@/controllers/meet';
-import TimeTable from '@/types/TimeTable';
 
 export default async function EditTimetable({
   params,
@@ -9,14 +8,9 @@ export default async function EditTimetable({
 }) {
   const { name, description, datesOrDays, meetType, startTime, endTime } =
     await getMeetWithParticipants(params.meetId);
-  const userTimeTable = (await getMyTimeTable(params.meetId))
-    .timeTable as unknown as TimeTable;
-
-  const emptyTimeTable: TimeTable = {};
-  if (!userTimeTable) {
-    for (const key of datesOrDays) {
-      emptyTimeTable[key] = [];
-    }
+  const userTimeTable = (await getMyTimeTable(params.meetId)) ?? {};
+  for (const key of datesOrDays) {
+    userTimeTable[key] = [];
   }
 
   return (
@@ -32,7 +26,7 @@ export default async function EditTimetable({
         endTime={endTime}
         datesOrDays={datesOrDays}
         type={meetType}
-        timeTable={userTimeTable ?? emptyTimeTable}
+        timeTable={userTimeTable}
       />
     </div>
   );
