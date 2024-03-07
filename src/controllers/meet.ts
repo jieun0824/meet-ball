@@ -247,7 +247,9 @@ export type TimeTable = {
 };
 
 // get current user's time table of the meet
-export async function getMyTimeTable(meetId: string) {
+export async function getMyTimeTable(
+  meetId: string
+): Promise<TimeTable | null> {
   try {
     const currentUser = await getCurrentUser();
     const meet = await prisma.participantsOnMeets.findUniqueOrThrow({
@@ -258,7 +260,8 @@ export async function getMyTimeTable(meetId: string) {
         },
       },
     });
-    return meet;
+    if (!meet.timeTable) return null;
+    return meet.timeTable as TimeTable;
   } catch (error) {
     console.error(error);
     throw error;
