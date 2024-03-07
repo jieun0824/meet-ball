@@ -1,5 +1,6 @@
 import TimeTableEditor from '@/components/timeTable-edit/timetable-editor';
 import { getMeetWithParticipants, getMyTimeTable } from '@/controllers/meet';
+import MeetDescription from '../../MeetDescription';
 
 export default async function EditTimetablePage({
   params,
@@ -15,9 +16,7 @@ export default async function EditTimetablePage({
   return (
     <div className="pb-8 px-20">
       <p className="text-xl mt-3 w-full">{meet.name}</p>
-      <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-full">
-        {meet.description}
-      </p>
+      <MeetDescription description={meet.description} />
       <TimeTableEditor
         startTime={meet.startTime}
         endTime={meet.endTime}

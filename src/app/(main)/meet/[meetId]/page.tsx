@@ -10,6 +10,7 @@ import {
 import { redirect } from 'next/navigation';
 import EditMeetButton from '../EditMeetButton';
 import ParticipantsButton from '../ParticipantsButton';
+import MeetDescription from '../MeetDescription';
 
 export default async function MeetPage({
   params,
@@ -59,9 +60,7 @@ export default async function MeetPage({
         <EditMeetButton meetId={params.meetId} />
         <ParticipantsButton meetId={params.meetId} />
       </div>
-      <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-full">
-        {meet.description}
-      </p>
+      <MeetDescription description={meet.description} />
       <TimeTableComponent
         startTime={meet.startTime}
         endTime={meet.endTime}

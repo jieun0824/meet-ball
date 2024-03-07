@@ -1,5 +1,6 @@
 import { getMeet } from '@/controllers/meet';
 import ParticipateButton from './ParticipateButton';
+import MeetDescription from '../../MeetDescription';
 export default async function ParticipateMeetPage({
   params,
 }: {
@@ -9,6 +10,7 @@ export default async function ParticipateMeetPage({
   return (
     <>
       <p className="text-xl mt-3">{meet.name}</p>
+      <MeetDescription description={meet.description} />
       <ParticipateButton meetId={params.meetId} />
     </>
   );
