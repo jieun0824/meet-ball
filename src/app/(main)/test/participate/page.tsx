@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import {
-  getTimeTable,
+  getMyTimeTable,
   updateTimeTable,
 } from '@/controllers/meet';
 
@@ -26,7 +26,7 @@ export default function TemporaryPage() {
         </div>
         <button
           onClick={async () => {
-            const meet = await getTimeTable(inputId);
+            const meet = await getMyTimeTable(inputId);
             setResult(JSON.stringify(meet));
           }}
         >

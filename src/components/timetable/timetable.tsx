@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import TimeTableColumn from '@/components/timeTable/timetable-column';
-import type CombinedTimeTable from '../../../types/CombinedTimeTable';
+import type CombinedTimeTable from '@/types/CombinedTimeTable';
 
 type TimeTableComponentProps = {
   startTime: number;
@@ -45,24 +45,18 @@ export default function TimeTableComponent({
       <div className={gridSetList[datesOrDays.length % 7]}>
         <div className="flex flex-col items-end">
           <div className="min-h-[30px] mr-2 -mt-2">
-            <p>week</p>
+            {/* <p>week</p> */}
           </div>
-          {timeList.map((time: number, index: number) => {
-            const tempHour = Math.floor(time / 2);
-            return (
-              <div key={index} className="min-h-[20px] mr-2">
-                {time % 2 === 0 ? (
-                  <p className="text-xs">{`${tempHour}:00`}</p>
-                ) : (
-                  (index == endTime - startTime || index == 0) && (
-                    <p className="text-xs">{`${tempHour}:30`}</p>
-                  )
-                )}
-              </div>
-            );
-          })}
+          {timeList.map((time: number) => (
+            <div key={time} className="min-h-[20px] mr-2">
+              {time % 2 === 0 ? (
+                <p className="text-xs">{`${Math.floor(time / 2)}:00`}</p>
+              ) : time === startTime || time === endTime ? (
+                <p className="text-xs">{`${Math.floor(time / 2)}:30`}</p>
+              ) : null}
+            </div>
+          ))}
         </div>
-
         {datesOrDays.map((date: string) => (
           <TimeTableColumn
             key={date}

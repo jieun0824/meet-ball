@@ -4,7 +4,7 @@ import Button from '../button/button';
 import TimeTableEditorColumn from '@/components/timeTable-edit/timetable-editor-column';
 import { useParams, useRouter } from 'next/navigation';
 import { updateTimeTable } from '@/controllers/meet';
-import TimeTable from '../../../types/TimeTable';
+import TimeTable from '@/types/TimeTable';
 
 type TimeTableEditorProps = {
   startTime: number;

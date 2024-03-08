@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState } from 'react';
-import TimeTable from '../../../types/TimeTable';
+import TimeTable from '@/types/TimeTable';
 
 // type selectedArea = {
 //   start: [startCol: number, startRow: number] | [];
