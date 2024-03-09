@@ -1,42 +1,37 @@
 'use client';
-import { useEffect, useRef, useState, useTransition } from 'react';
+import { useRef } from 'react';
 import Button from '../button/button';
-import TimeColumn from '@/components/timeTable-edit/time-column-edit';
-import { redirect, useParams, useRouter } from 'next/navigation';
+import TimeTableEditorColumn from '@/components/timeTable-edit/timetable-editor-column';
+import { useParams, useRouter } from 'next/navigation';
 import { updateTimeTable } from '@/controllers/meet';
+import TimeTable from '@/types/TimeTable';
 
-interface TimeTable {
-  current: {
-    [key: string]: number[];
-  };
-}
-
-export default function TimeTable({
-  startTime,
-  endTime,
-  datesOrDays,
-  type,
-  userTimetable,
-}: {
+type TimeTableEditorProps = {
   startTime: number;
   endTime: number;
   datesOrDays: string[];
   type: 'DAYS' | 'DATES';
-  userTimetable: {};
-}) {
+  timeTable: TimeTable;
+};
+
+export default function TimeTableEditor({
+  startTime,
+  endTime,
+  datesOrDays,
+  type,
+  timeTable,
+}: TimeTableEditorProps) {
   const router = useRouter();
-  const timeTable: TimeTable = useRef(userTimetable);
+  const timeTableRef = useRef<TimeTable>(timeTable);
   const meetId = useParams().meetId as string;
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
     (_, index) => startTime + index
   );
 
-  type gridColumnsType = {
+  const gridSetList: {
     [key: number]: string;
-  };
-
-  const gridSetList: gridColumnsType = {
+  } = {
     1: `grid grid-cols-table1 w-full`,
     2: `grid grid-cols-table2 w-full`,
     3: `grid grid-cols-table3 w-full`,
@@ -45,6 +40,7 @@ export default function TimeTable({
     6: `grid grid-cols-table6 w-full`,
     7: `grid grid-cols-table7 w-full`,
   };
+
   return (
     <div className="flex flex-col justify-center items-center text-xs mt-16">
       <div className={gridSetList[datesOrDays.length % 7]}>
@@ -67,15 +63,15 @@ export default function TimeTable({
             );
           })}
         </div>
-        {datesOrDays.map((date: string, i: number) => (
-          <TimeColumn
+        {datesOrDays.map((date: string) => (
+          <TimeTableEditorColumn
             key={date}
             date={date}
             startTime={startTime}
             endTime={endTime}
             type={type}
-            timeTable={timeTable}
-            colIdx={datesOrDays.indexOf(date)}
+            timeTableRef={timeTableRef}
+            // colIdx={datesOrDays.indexOf(date)}
           />
         ))}
       </div>
@@ -83,9 +79,8 @@ export default function TimeTable({
         title="저장하기"
         type="submit"
         onClick={async () => {
-          await updateTimeTable(meetId, timeTable.current).then(() => {
-            router.push(`/meet/${meetId}`);
-          });
+          await updateTimeTable(meetId, timeTableRef.current);
+          router.push(`/meet/${meetId}`);
         }}
       />
     </div>

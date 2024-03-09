@@ -1,6 +1,5 @@
 'use client';
-import { transformedParticipantsType } from '@/app/(main)/meet/[meetId]/page';
-import { ReactElement, useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 type dateParticipantsType = {
   [name: string]: Array<number>;
@@ -20,12 +19,11 @@ type timeCellProps = {
   participants: string[];
 };
 
-function TimeCell({
+function TimeTableCell({
   timeIndex,
   opacity,
   previousOpacity,
   nextOpacity,
-  endTime,
   setHoverData,
   participants,
 }: timeCellProps) {
@@ -41,7 +39,7 @@ function TimeCell({
   );
 }
 
-export default function TimeColumn({
+export default function TimeTableColumn({
   date,
   startTime,
   endTime,
@@ -118,7 +116,7 @@ export default function TimeColumn({
           }
 
           return (
-            <TimeCell
+            <TimeTableCell
               key={index}
               timeIndex={parseInt(timeIndex)}
               opacity={

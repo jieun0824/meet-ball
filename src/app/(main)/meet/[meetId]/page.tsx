@@ -1,104 +1,73 @@
-import TimeTable from '@/components/timeTable/timetable';
-import { MeetWithParticipants, getMeet } from '@/controllers/meet';
-import { ParticipantsOnMeets } from '@prisma/client';
-
-export type participantsType = {
-  userId: string;
-  timeTable: {
-    [key: string]: number[];
-  };
-}[];
-
-export type transformedParticipantsType = {
-  [key: string]: { [key: string]: number[] };
-};
+import { Prisma } from '@prisma/client';
+import type { ParticipantsOnMeets } from '@prisma/client';
+import type CombinedTimeTable from '@/types/CombinedTimeTable';
+import TimeTableComponent from '@/components/timeTable/timetable';
+import {
+  getMeet,
+  getMeetWithParticipants,
+  getMyParticipatingMeets,
+} from '@/controllers/meet';
+import { redirect } from 'next/navigation';
+import EditMeetButton from '../EditMeetButton';
+import ParticipantsButton from '../ParticipantsButton';
+import MeetDescription from '../MeetDescription';
 
 export default async function MeetPage({
   params,
 }: {
   params: { meetId: string };
 }) {
-  const {
-    name,
-    description,
-    datesOrDays,
-    meetType,
-    startTime,
-    endTime,
-    participants,
-  } = await getMeet(params.meetId);
-  console.log(participants);
-
-  // dummy time
-  // const participants: participantsType = [
-  //   {
-  //     userId: 'Taegon',
-  //     timeTable: {
-  //       '2024-02-12': [28, 29, 30],
-  //       '2024-02-13': [],
-  //       '2024-02-15': [],
-  //       '2024-02-16': [],
-  //       '2024-02-17': [],
-  //     },
-  //   },
-  //   {
-  //     userId: 'Jieun',
-  //     timeTable: {
-  //       '2024-02-12': [28, 29, 30, 31, 32, 33],
-  //       '2024-02-13': [],
-  //       '2024-02-15': [28, 29, 30, 31, 32],
-  //       '2024-02-16': [],
-  //       '2024-02-17': [],
-  //     },
-  //   },
-  //   {
-  //     userId: 'Gwon',
-  //     timeTable: {
-  //       '2024-02-12': [28, 29, 30],
-  //       '2024-02-13': [],
-  //       '2024-02-15': [27, 28, 29],
-  //       '2024-02-16': [],
-  //       '2024-02-17': [],
-  //     },
-  //   },
-  // ];
-
-  function transformData(participants: ParticipantsOnMeets[]) {
-    const transformedData: transformedParticipantsType = {};
-
-    participants.forEach((participant: ParticipantsOnMeets) => {
-      const userId = participant.userId;
-
-      Object.keys(participant.timeTable!).forEach((date: string) => {
-        if (!transformedData[date]) {
-          transformedData[date] = {};
-        }
-
-        transformedData[date][userId] = participant.timeTable![date];
-      });
-    });
-
-    return transformedData;
+  try {
+    const myParticipatingMeets = await getMyParticipatingMeets();
+    // 1. check if I'm participating in this meet
+    if (!myParticipatingMeets.some(meet => meet.id === params.meetId)) {
+      // 2. if not, check if the meet exists
+      const meet = await getMeet(params.meetId);
+      if (!meet) throw new Error('meet not found');
+      // 3. if it exists, redirect to participate page (ask to join or not)
+      redirect(`/meet/${params.meetId}/participate`);
+    }
+  } catch (error) {
+    console.error(error);
+    redirect('/');
   }
 
-  const transformedParticipants = transformData(participants);
+  const meet = await getMeetWithParticipants(params.meetId);
+
+  function combineTimeTables(participants: ParticipantsOnMeets[]) {
+    const combinedTimeTable: CombinedTimeTable = {};
+    for (const key of meet.datesOrDays) {
+      combinedTimeTable[key] = {};
+    }
+
+    for (const participant of participants) {
+      const userId = participant.userId;
+      const currentTimeTable = participant.timeTable as Prisma.JsonObject;
+      for (const key in currentTimeTable) {
+        combinedTimeTable[key][userId] = currentTimeTable[key] as number[];
+      }
+    }
+
+    return combinedTimeTable;
+  }
+
+  const combinedTimeTable = combineTimeTables(meet.participants);
 
   return (
     <div className="pb-8 px-20">
-      <div className="flex flex-col items-center justify-center">
-        <p className="text-xl mt-3 w-full">{name}</p>
-        <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-full">
-          {description}
-        </p>
+      <div className="flex items-center w-full">
+        <p className="text-xl mt-3 grow">{meet.name}</p>
+        <EditMeetButton meetId={params.meetId} />
+        <ParticipantsButton meetId={params.meetId} />
       </div>
-
-      <TimeTable
-        startTime={startTime}
-        endTime={endTime}
-        datesOrDays={datesOrDays}
-        type={meetType}
-        timetable={transformedParticipants}
-        participantsNum={participants.length}
+      <MeetDescription description={meet.description} />
+      <TimeTableComponent
+        startTime={meet.startTime}
+        endTime={meet.endTime}
+        datesOrDays={meet.datesOrDays}
+        type={meet.meetType}
+        timetable={combinedTimeTable}
+        participantsNum={meet.participants.length}
       />
     </div>
   );

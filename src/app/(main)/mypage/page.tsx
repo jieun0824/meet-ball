@@ -1,13 +1,14 @@
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { auth } from '@/auth';
+import type { Meet } from '@prisma/client';
 import { getMyInfo } from '@/controllers/user';
 import {
   getMyManagingMeets,
   getMyParticipatingMeets,
 } from '@/controllers/meet';
-import { auth } from '@/auth';
-import { redirect } from 'next/navigation';
-import Link from 'next/link';
+import MyMeetCard from './MyMeetCard';
 import PanelLayout from './PanelLayout';
-import { Meet } from '@prisma/client';
 
 function ProfileIcon({ src }: { src: string }) {
   return (
@@ -45,22 +46,22 @@ function LogoutButton() {
   );
 }
 
-function ManagingMeetCard({ meet }: { meet: Meet }) {
-  return <div>Managing{meet.name}</div>;
-}
-
 function ManagingMeetsPanel({ managingMeets }: { managingMeets: Meet[] }) {
   return (
-    <>
+    <div className="space-y-4">
       {managingMeets.map(meet => (
-        <ManagingMeetCard key={meet.id} meet={meet} />
+        <MyMeetCard
+          key={meet.id}
+          meetId={meet.id}
+          meetName={meet.name}
+          description={meet.description}
+          startTime={meet.startTime}
+          endTime={meet.endTime}
+          participants={['업데이트 필요']}
+        />
       ))}
-    </>
+    </div>
   );
-}
-
-function ParticipatingMeetCard({ meet }: { meet: Meet }) {
-  return <div>Participating {meet.name}</div>;
 }
 
 function ParticipatingMeetsPanel({
@@ -69,11 +70,19 @@ function ParticipatingMeetsPanel({
   participatingMeets: Meet[];
 }) {
   return (
-    <>
+    <div className="space-y-4">
       {participatingMeets.map(meet => (
-        <ParticipatingMeetCard key={meet.id} meet={meet} />
+        <MyMeetCard
+          key={meet.id}
+          meetId={meet.id}
+          meetName={meet.name}
+          description={meet.description}
+          startTime={meet.startTime}
+          endTime={meet.endTime}
+          participants={['업데이트 필요']}
+        />
       ))}
-    </>
+    </div>
   );
 }
 

@@ -1,40 +1,28 @@
-import Button from '@/components/button/button';
-import TimeTable from '@/components/timeTable-edit/timetable-edit';
-import { getMeet, getTimeTable, updateTimeTable } from '@/controllers/meet';
-import { getCurrentUser } from '@/lib/authentication';
-import { Meet, ParticipantsOnMeets } from '@prisma/client';
+import TimeTableEditor from '@/components/timeTable-edit/timetable-editor';
+import { getMeetWithParticipants, getMyTimeTable } from '@/controllers/meet';
+import MeetDescription from '../../MeetDescription';
 
-export default async function CreateTimetable({
+export default async function EditTimetablePage({
   params,
 }: {
   params: { meetId: string };
 }) {
-  const { name, description, datesOrDays, meetType, startTime, endTime } =
-    await getMeet(params.meetId);
-  const userTimetable = (await getTimeTable(params.meetId)).timeTable;
-
-  // if user create new timetable (userTimetable == null)
-  const newTimetable: { [key: string]: [] } = {};
-  if (userTimetable == null) {
-    datesOrDays.forEach((date: string, i: number) => {
-      newTimetable[date] = [];
-    });
+  const meet = await getMeetWithParticipants(params.meetId);
+  const userTimeTable = (await getMyTimeTable(params.meetId)) ?? {};
+  for (const key of meet.datesOrDays) {
+    userTimeTable[key] = [];
   }
 
   return (
     <div className="pb-8 px-20">
-      <div className="flex flex-col items-center justify-center">
-        <p className="text-xl mt-3 w-full">{name}</p>
-        <p className="text-sm h-[40px] border rounded-lg p-2 mt-3 w-full">
-          {description}
-        </p>
-      </div>
-      <TimeTable
-        startTime={startTime}
-        endTime={endTime}
-        datesOrDays={datesOrDays}
-        type={meetType}
-        userTimetable={userTimetable == null ? newTimetable : userTimetable}
+      <p className="text-xl mt-3 w-full">{meet.name}</p>
+      <MeetDescription description={meet.description} />
+      <TimeTableEditor
+        startTime={meet.startTime}
+        endTime={meet.endTime}
+        datesOrDays={meet.datesOrDays}
+        type={meet.meetType}
+        timeTable={userTimeTable}
       />
     </div>
   );

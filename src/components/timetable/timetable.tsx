@@ -1,34 +1,25 @@
 'use client';
-import { useEffect, useRef, useState, useTransition } from 'react';
-import Button from '../button/button';
-import TimeColumn from '@/components/timeTable/time-column';
-import { useParams } from 'next/navigation';
-import { updateTimeTable } from '@/controllers/meet';
-import { transformedParticipantsType } from '@/app/(main)/meet/[meetId]/page';
+import { useState } from 'react';
+import TimeTableColumn from '@/components/timeTable/timetable-column';
+import type CombinedTimeTable from '@/types/CombinedTimeTable';
 
-interface TimeTable {
-  current: {
-    [key: string]: number[];
-  };
-}
-
-type TimeTableProps = {
+type TimeTableComponentProps = {
   startTime: number;
   endTime: number;
   datesOrDays: string[];
   type: 'DAYS' | 'DATES';
-  timetable: transformedParticipantsType;
+  timetable: CombinedTimeTable;
   participantsNum: number;
 };
 
-export default function TimeTable({
+export default function TimeTableComponent({
   startTime,
   endTime,
   datesOrDays,
   type,
   timetable,
   participantsNum,
-}: TimeTableProps) {
+}: TimeTableComponentProps) {
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
     (_, index) => startTime + index
@@ -54,26 +45,20 @@ export default function TimeTable({
       <div className={gridSetList[datesOrDays.length % 7]}>
         <div className="flex flex-col items-end">
           <div className="min-h-[30px] mr-2 -mt-2">
-            <p>week</p>
+            {/* <p>week</p> */}
           </div>
-          {timeList.map((time: number, index: number) => {
-            const tempHour = Math.floor(time / 2);
-            return (
-              <div key={index} className="min-h-[20px] mr-2">
-                {time % 2 === 0 ? (
-                  <p className="text-xs">{`${tempHour}:00`}</p>
-                ) : (
-                  (index == endTime - startTime || index == 0) && (
-                    <p className="text-xs">{`${tempHour}:30`}</p>
-                  )
-                )}
-              </div>
-            );
-          })}
+          {timeList.map((time: number) => (
+            <div key={time} className="min-h-[20px] mr-2">
+              {time % 2 === 0 ? (
+                <p className="text-xs">{`${Math.floor(time / 2)}:00`}</p>
+              ) : time === startTime || time === endTime ? (
+                <p className="text-xs">{`${Math.floor(time / 2)}:30`}</p>
+              ) : null}
+            </div>
+          ))}
         </div>
-
-        {datesOrDays.map((date: string, i: number) => (
-          <TimeColumn
+        {datesOrDays.map((date: string) => (
+          <TimeTableColumn
             key={date}
             date={date}
             startTime={startTime}
@@ -89,8 +74,8 @@ export default function TimeTable({
         <p>
           응답자: {hoverData.length}/{participantsNum}
         </p>
-        {hoverData.map(data => (
-          <p>{data}</p>
+        {hoverData.map((data, i) => (
+          <p key={i}>{data}</p>
         ))}
       </div>
     </div>
