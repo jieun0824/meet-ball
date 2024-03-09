@@ -15,6 +15,7 @@ export default function ShareLinkButton({ meetId }: { meetId: string }) {
     <button
       onClick={() => {
         copyToClipboard(`${window.location.origin}/meet/${meetId}`);
+        alert("링크가 복사되었습니다!");
       }}
     >
       <ShareIcon />
