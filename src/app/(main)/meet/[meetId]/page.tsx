@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation';
 import EditMeetButton from '../EditMeetButton';
 import ParticipantsButton from '../ParticipantsButton';
 import MeetDescription from '../MeetDescription';
+import ShareLinkButton from '../ShareLinkButton';
 
 export default async function MeetPage({
   params,
@@ -50,6 +51,7 @@ export default async function MeetPage({
     <div className="pb-8 px-20">
       <div className="flex items-center w-full">
         <p className="text-xl mt-3 grow">{meet.name}</p>
+        <ShareLinkButton meetId={params.meetId} />
         <EditMeetButton meetId={params.meetId} />
         <ParticipantsButton meetId={params.meetId} />
       </div>
