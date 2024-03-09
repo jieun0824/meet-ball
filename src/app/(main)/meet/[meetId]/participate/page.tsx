@@ -1,6 +1,6 @@
 import { getMeet } from '@/controllers/meet';
-import ParticipateButton from './ParticipateButton';
 import MeetDescription from '../../MeetDescription';
+import ParticipateForm from './ParticipateForm';
 export default async function ParticipateMeetPage({
   params,
 }: {
@@ -11,7 +11,10 @@ export default async function ParticipateMeetPage({
     <>
       <p className="text-xl mt-3">{meet.name}</p>
       <MeetDescription description={meet.description} />
-      <ParticipateButton meetId={params.meetId} />
+      <ParticipateForm
+        meetId={params.meetId}
+        isProtected={meet.password ? true : false}
+      />
     </>
   );
 }
