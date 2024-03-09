@@ -31,7 +31,7 @@ export default async function createMeetFromInput(formData: FormData) {
   if (!meetSelections || meetSelections.length === 0)
     throw new Error('날짜를 선택해주세요.');
 
-  const meetPassword = formData.get('password')?.toString();
+  const meetPassword = formData.get('meetPassword')?.toString();
 
   try {
     const createdMeet = await createMeet({

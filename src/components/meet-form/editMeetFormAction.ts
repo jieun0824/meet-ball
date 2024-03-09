@@ -23,7 +23,7 @@ export default async function handleSubmit(formData: FormData) {
   let endTime = parseInt(formData.get('meetEndHour')!.toString()) * 2;
   if (formData.get('meetEndMinute')!.toString() === '30') endTime += 1;
 
-  const meetPassword = formData.get('password')?.toString();
+  const meetPassword = formData.get('meetPassword')?.toString();
 
   try {
     const updatedMeet = await updateMeet(meetId, {
