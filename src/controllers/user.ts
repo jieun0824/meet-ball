@@ -14,9 +14,33 @@ export async function getMyInfo(): Promise<AuthenticatedUser> {
   }
 }
 
-export async function getUsersByUserIds(
-  userIds: string[]
-): Promise<User[]> {
+type UpdateUserParams = {
+  name?: string;
+  // email?: string;
+  image?: string | null;
+};
+
+export async function updateMyInfo(
+  params: UpdateUserParams
+): Promise<AuthenticatedUser> {
+  try {
+    const currentUser = await getCurrentUser();
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: currentUser.id,
+      },
+      data: {
+        ...params,
+      },
+    });
+    return updatedUser;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getUsersByUserIds(userIds: string[]): Promise<User[]> {
   try {
     const users = await prisma.user.findMany({
       where: {
