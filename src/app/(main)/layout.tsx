@@ -15,8 +15,8 @@ export default function Layout({
               alt="main logo"
               width={130}
               height={100}
-              className="relative -top-4 cursor-pointer"
-              priority={false}
+              className="relative -top-4"
+              priority={true}
             />
           </Link>
         </div>
