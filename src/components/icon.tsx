@@ -9,7 +9,10 @@ import {
   FaArrowAltCircleRight as RightIcon,
 } from 'react-icons/fa';
 import { IoMdMore as MoreIcon } from 'react-icons/io';
-import { FaCircle as CarouselIndexIcon } from 'react-icons/fa6';
+import {
+  FaShareFromSquare as ShareIcon,
+  FaCircle as CarouselIndexIcon,
+} from 'react-icons/fa6';
 
 export {
   ClockIcon,
@@ -19,5 +22,6 @@ export {
   LeftIcon,
   RightIcon,
   MoreIcon,
+  ShareIcon,
   CarouselIndexIcon,
 };
