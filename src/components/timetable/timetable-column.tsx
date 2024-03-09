@@ -1,5 +1,7 @@
 'use client';
-import { useRef } from 'react';
+import TimeTable from '@/types/TimeTable';
+import { Meet } from '@prisma/client';
+import { useEffect, useRef, useState } from 'react';
 
 type dateParticipantsType = {
   [name: string]: Array<number>;
@@ -18,6 +20,9 @@ type timeCellProps = {
   setHoverData: (data: string[]) => void;
   participants: string[];
   isManager: boolean;
+  selected: boolean;
+  addHandler: () => void;
+  deleteHandler: () => void;
 };
 
 function TimeTableCell({
@@ -28,15 +33,32 @@ function TimeTableCell({
   setHoverData,
   participants,
   isManager,
+  selected,
+  addHandler,
+  deleteHandler,
 }: timeCellProps) {
+  const [clicked, setClicked] = useState(selected);
+  const clickHandler = () => {
+    if (clicked) {
+      setClicked(false);
+      deleteHandler();
+    } else {
+      setClicked(true);
+      addHandler();
+    }
+  };
+
   return (
     <div
       style={{
         backgroundColor: `rgba(32, 236, 199, ${opacity})`,
       }}
-      onMouseOver={() => setHoverData(participants)}
+      onMouseOver={() => {
+        setHoverData(participants);
+      }}
       className={`h-[20px] cursor-pointer border-white ${timeIndex % 2 === 0 ? 'border-t-[0.3px]' : ''}
-      ${previousOpacity === 0 && opacity != 0 && 'rounded-t-lg'} ${nextOpacity === 0 && opacity != 0 && 'rounded-b-lg'} `}
+      ${previousOpacity === 0 && opacity != 0 && 'rounded-t-lg'} ${nextOpacity === 0 && opacity != 0 && 'rounded-b-lg'} ${clicked && '!bg-white/50 bg-opacity-35 !rounded-none'} `}
+      onClick={clickHandler}
     ></div>
   );
 }
@@ -50,6 +72,7 @@ export default function TimeTableColumn({
   colIdx,
   setHoverData,
   isManager,
+  confirmedTimeTable,
 }: {
   date: string;
   startTime: number;
@@ -59,6 +82,9 @@ export default function TimeTableColumn({
   colIdx: number;
   setHoverData: (data: string[]) => void;
   isManager: boolean;
+  confirmedTimeTable: {
+    current: TimeTable;
+  };
 }) {
   const label = useRef('');
   const days = ['월', '화', '수', '목', '금', '토', '일'];
@@ -118,11 +144,12 @@ export default function TimeTableColumn({
                 .length;
             nextOpacity = 0;
           }
+          const timeIndexInt = parseInt(timeIndex);
 
           return (
             <TimeTableCell
               key={index}
-              timeIndex={parseInt(timeIndex)}
+              timeIndex={timeIndexInt}
               opacity={
                 +(opacity / Object.keys(dateTimetable).length).toFixed(2)
               }
@@ -130,8 +157,25 @@ export default function TimeTableColumn({
               nextOpacity={nextOpacity}
               endTime={endTime}
               setHoverData={(data: string[]) => setHoverData(data)}
-              participants={scheduleOpacityOfTimeObject[timeIndex]}
+              participants={scheduleOpacityOfTimeObject[timeIndexInt]}
               isManager={isManager}
+              selected={
+                confirmedTimeTable.current[date] != null
+                  ? confirmedTimeTable.current[date].includes(timeIndexInt)
+                  : false
+              }
+              addHandler={() =>
+                confirmedTimeTable.current[date]
+                  ? confirmedTimeTable.current[date].push(timeIndexInt)
+                  : (confirmedTimeTable.current[date] = [timeIndexInt])
+              }
+              deleteHandler={() =>
+                confirmedTimeTable.current[date] &&
+                confirmedTimeTable.current[date].splice(
+                  confirmedTimeTable.current[date].indexOf(timeIndexInt),
+                  1
+                )
+              }
             />
           );
         }

@@ -1,8 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TimeTableColumn from '@/components/timeTable/timetable-column';
 import type CombinedTimeTable from '@/types/CombinedTimeTable';
 import Button from '../button/button';
+import TimeTable from '@/types/TimeTable';
+import { Meet } from '@prisma/client';
 
 type TimeTableComponentProps = {
   startTime: number;
@@ -12,6 +14,7 @@ type TimeTableComponentProps = {
   timetable: CombinedTimeTable;
   participantsNum: number;
   isManager: boolean;
+  confirmedTimeTable: Meet['confirmedTimeTable'];
 };
 
 export default function TimeTableComponent({
@@ -22,12 +25,17 @@ export default function TimeTableComponent({
   timetable,
   participantsNum,
   isManager,
+  confirmedTimeTable,
 }: TimeTableComponentProps) {
+  const timeTableRef = useRef(confirmedTimeTable);
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
     (_, index) => startTime + index
   );
   const [hoverData, setHoverData] = useState<string[]>([]);
+  useEffect(() => {
+    console.log(hoverData);
+  }, [hoverData]);
 
   type gridColumnsType = {
     [key: number]: string;
@@ -78,6 +86,7 @@ export default function TimeTableComponent({
               colIdx={datesOrDays.indexOf(date)}
               setHoverData={(data: string[]) => setHoverData(data)}
               isManager={isManager}
+              confirmedTimeTable={timeTableRef}
             />
           ))}
         </div>

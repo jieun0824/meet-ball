@@ -13,6 +13,7 @@ import ParticipantsButton from '../ParticipantsButton';
 import MeetDescription from '../MeetDescription';
 import { IoShareSocial as ShareButton } from 'react-icons/io5';
 import { getCurrentUser } from '@/lib/authentication';
+import TimeTable from '@/types/TimeTable';
 
 export default async function MeetPage({
   params,
@@ -56,12 +57,16 @@ export default async function MeetPage({
 
   const combinedTimeTable = combineTimeTables(meet.participants);
 
+  //mockData
+  const confirmedTimeTable: TimeTable = {
+    '2024-02-12': [18, 19, 20],
+  };
+
   return (
     <div className="pb-8 px-20">
       <div className="flex items-center w-full">
         <p className="text-xl mt-3 grow">{meet.name}</p>
         <EditMeetButton meetId={params.meetId} />
-        <ShareButton size={24} />
       </div>
       <MeetDescription description={meet.description} />
       <TimeTableComponent
@@ -72,6 +77,7 @@ export default async function MeetPage({
         timetable={combinedTimeTable}
         participantsNum={meet.participants.length}
         isManager={currentUser.id === meet.managerId}
+        confirmedTimeTable={confirmedTimeTable}
       />
     </div>
   );
