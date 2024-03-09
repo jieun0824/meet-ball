@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client';
-import type { ParticipantsOnMeets } from '@prisma/client';
 import type CombinedTimeTable from '@/types/CombinedTimeTable';
 import TimeTableComponent from '@/components/timeTable/timetable';
 import {
@@ -34,24 +33,18 @@ export default async function MeetPage({
 
   const meet = await getMeetWithParticipants(params.meetId);
 
-  function combineTimeTables(participants: ParticipantsOnMeets[]) {
-    const combinedTimeTable: CombinedTimeTable = {};
-    for (const key of meet.datesOrDays) {
-      combinedTimeTable[key] = {};
-    }
-
-    for (const participant of participants) {
-      const userId = participant.userId;
-      const currentTimeTable = participant.timeTable as Prisma.JsonObject;
-      for (const key in currentTimeTable) {
-        combinedTimeTable[key][userId] = currentTimeTable[key] as number[];
-      }
-    }
-
-    return combinedTimeTable;
+  // combine timetables of all participants
+  const combinedTimeTable: CombinedTimeTable = {};
+  for (const key of meet.datesOrDays) {
+    combinedTimeTable[key] = {};
   }
-
-  const combinedTimeTable = combineTimeTables(meet.participants);
+  for (const participant of meet.participants) {
+    const userId = participant.userId;
+    const currentTimeTable = participant.timeTable as Prisma.JsonObject;
+    for (const key in currentTimeTable) {
+      combinedTimeTable[key][userId] = currentTimeTable[key] as number[];
+    }
+  }
 
   return (
     <div className="pb-8 px-20">
