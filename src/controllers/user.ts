@@ -15,7 +15,7 @@ export async function getMyInfo(): Promise<AuthenticatedUser> {
 }
 
 type UpdateUserParams = {
-  name?: string;
+  name?: string | null;
   // email?: string;
   image?: string | null;
 };
