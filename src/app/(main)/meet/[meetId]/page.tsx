@@ -11,6 +11,8 @@ import { redirect } from 'next/navigation';
 import EditMeetButton from '../EditMeetButton';
 import ParticipantsButton from '../ParticipantsButton';
 import MeetDescription from '../MeetDescription';
+import { IoShareSocial as ShareButton } from 'react-icons/io5';
+import { getCurrentUser } from '@/lib/authentication';
 
 export default async function MeetPage({
   params,
@@ -33,6 +35,7 @@ export default async function MeetPage({
   }
 
   const meet = await getMeetWithParticipants(params.meetId);
+  const currentUser = await getCurrentUser();
 
   function combineTimeTables(participants: ParticipantsOnMeets[]) {
     const combinedTimeTable: CombinedTimeTable = {};
@@ -58,7 +61,7 @@ export default async function MeetPage({
       <div className="flex items-center w-full">
         <p className="text-xl mt-3 grow">{meet.name}</p>
         <EditMeetButton meetId={params.meetId} />
-        <ParticipantsButton meetId={params.meetId} />
+        <ShareButton size={24} />
       </div>
       <MeetDescription description={meet.description} />
       <TimeTableComponent
@@ -68,6 +71,7 @@ export default async function MeetPage({
         type={meet.meetType}
         timetable={combinedTimeTable}
         participantsNum={meet.participants.length}
+        isManager={currentUser.id === meet.managerId}
       />
     </div>
   );

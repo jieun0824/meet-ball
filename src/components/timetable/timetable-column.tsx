@@ -17,6 +17,7 @@ type timeCellProps = {
   endTime: number;
   setHoverData: (data: string[]) => void;
   participants: string[];
+  isManager: boolean;
 };
 
 function TimeTableCell({
@@ -26,6 +27,7 @@ function TimeTableCell({
   nextOpacity,
   setHoverData,
   participants,
+  isManager,
 }: timeCellProps) {
   return (
     <div
@@ -47,6 +49,7 @@ export default function TimeTableColumn({
   dateTimetable,
   colIdx,
   setHoverData,
+  isManager,
 }: {
   date: string;
   startTime: number;
@@ -55,6 +58,7 @@ export default function TimeTableColumn({
   dateTimetable: dateParticipantsType;
   colIdx: number;
   setHoverData: (data: string[]) => void;
+  isManager: boolean;
 }) {
   const label = useRef('');
   const days = ['월', '화', '수', '목', '금', '토', '일'];
@@ -127,6 +131,7 @@ export default function TimeTableColumn({
               endTime={endTime}
               setHoverData={(data: string[]) => setHoverData(data)}
               participants={scheduleOpacityOfTimeObject[timeIndex]}
+              isManager={isManager}
             />
           );
         }

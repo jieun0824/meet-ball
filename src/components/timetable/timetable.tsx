@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import TimeTableColumn from '@/components/timeTable/timetable-column';
 import type CombinedTimeTable from '@/types/CombinedTimeTable';
+import Button from '../button/button';
 
 type TimeTableComponentProps = {
   startTime: number;
@@ -10,6 +11,7 @@ type TimeTableComponentProps = {
   type: 'DAYS' | 'DATES';
   timetable: CombinedTimeTable;
   participantsNum: number;
+  isManager: boolean;
 };
 
 export default function TimeTableComponent({
@@ -19,6 +21,7 @@ export default function TimeTableComponent({
   type,
   timetable,
   participantsNum,
+  isManager,
 }: TimeTableComponentProps) {
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
@@ -41,43 +44,52 @@ export default function TimeTableComponent({
   };
 
   return (
-    <div className="flex mobile:flex-col justify-center items-start mobile:items-center text-xs mt-16 mb-16">
-      <div className={gridSetList[datesOrDays.length % 7]}>
-        <div className="flex flex-col items-end">
-          <div className="min-h-[30px] mr-2 -mt-2">
-            {/* <p>week</p> */}
+    <>
+      {isManager && (
+        <div className="flex justify-end">
+          <Button
+            title="스케줄 확정"
+            className="bg-white my-4 active:bg-cardColor text-sm"
+          />
+        </div>
+      )}
+      <div className="flex mobile:flex-col justify-center items-start mobile:items-center text-xs mt-16 mb-16">
+        <div className={gridSetList[datesOrDays.length % 7]}>
+          <div className="flex flex-col items-end">
+            <div className="min-h-[30px] mr-2 -mt-2">{/* <p>week</p> */}</div>
+            {timeList.map((time: number) => (
+              <div key={time} className="min-h-[20px] mr-2">
+                {time % 2 === 0 ? (
+                  <p className="text-xs">{`${Math.floor(time / 2)}:00`}</p>
+                ) : time === startTime || time === endTime ? (
+                  <p className="text-xs">{`${Math.floor(time / 2)}:30`}</p>
+                ) : null}
+              </div>
+            ))}
           </div>
-          {timeList.map((time: number) => (
-            <div key={time} className="min-h-[20px] mr-2">
-              {time % 2 === 0 ? (
-                <p className="text-xs">{`${Math.floor(time / 2)}:00`}</p>
-              ) : time === startTime || time === endTime ? (
-                <p className="text-xs">{`${Math.floor(time / 2)}:30`}</p>
-              ) : null}
-            </div>
+          {datesOrDays.map((date: string) => (
+            <TimeTableColumn
+              key={date}
+              date={date}
+              startTime={startTime}
+              endTime={endTime}
+              type={type}
+              dateTimetable={timetable[date]}
+              colIdx={datesOrDays.indexOf(date)}
+              setHoverData={(data: string[]) => setHoverData(data)}
+              isManager={isManager}
+            />
           ))}
         </div>
-        {datesOrDays.map((date: string) => (
-          <TimeTableColumn
-            key={date}
-            date={date}
-            startTime={startTime}
-            endTime={endTime}
-            type={type}
-            dateTimetable={timetable[date]}
-            colIdx={datesOrDays.indexOf(date)}
-            setHoverData={(data: string[]) => setHoverData(data)}
-          />
-        ))}
+        <div className="bg-cardColor w-3/4 rounded-lg p-6 mt-8 text-[16px] flex flex-col gap-4 m-10">
+          <p>
+            응답자: {hoverData.length}/{participantsNum}
+          </p>
+          {hoverData.map((data, i) => (
+            <p key={i}>{data}</p>
+          ))}
+        </div>
       </div>
-      <div className="bg-cardColor w-3/4 rounded-lg p-6 mt-8 text-[16px] flex flex-col gap-4 m-10">
-        <p>
-          응답자: {hoverData.length}/{participantsNum}
-        </p>
-        {hoverData.map((data, i) => (
-          <p key={i}>{data}</p>
-        ))}
-      </div>
-    </div>
+    </>
   );
 }
