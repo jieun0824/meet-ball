@@ -176,8 +176,14 @@ export async function deleteMeet(meetId: string): Promise<Meet> {
   }
 }
 
-// add myself to the meet
-export async function participateMeet(meetId: string): Promise<void> {
+// add myself to the meet with checking password
+export async function participateMeet(
+  meetId: string,
+  password: string | null
+): Promise<void> {
+  const meet = await getMeet(meetId);
+  if (meet.password !== password) throw new Error('Wrong password');
+  
   const currentUser = await getCurrentUser();
   try {
     await prisma.participantsOnMeets.create({
