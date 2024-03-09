@@ -18,7 +18,7 @@ export default function ConfirmTimeInput({
           className="bg-[#3C3F45] rounded-md text-[#20ECC7]"
         />
         <TimeInput
-          name="confirm"
+          inputName="confirm"
           defaultValue={
             defaultTime.getMinutes() === 0
               ? defaultTime.getHours() * 2
