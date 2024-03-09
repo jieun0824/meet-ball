@@ -37,9 +37,7 @@ function TimeTableEditorCell({
     <div
       className={`h-[20px] cursor-pointer border-white ${time % 2 === 0 ? 'border-t-[0.3px]' : ''} ${clicked && 'bg-pointColor bg-opacity-35'}`}
       onClick={clickHandler}
-    >
-      {/* {'col:' + index[0] + ' row:' + index[1]} */}
-    </div>
+    ></div>
   );
 }
 type TimeTableEditorColumnProps = {
@@ -78,7 +76,7 @@ export default function TimeTableEditorColumn({
   } else {
     label.current = date;
   }
-
+  console.log(timeTableRef.current[date]);
   return (
     <div>
       <p className="flex justify-center whitespace-pre-wrap h-[30px]">
