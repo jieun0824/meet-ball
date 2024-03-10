@@ -67,14 +67,12 @@ export default function MainCard({
       if (meet.confirmedTimeTable[date].length != 0) {
         confirmedTimeString += `${date}/ `;
         const length = meet.confirmedTimeTable[date].length;
-        meet.confirmedTimeTable[date].forEach(
-          (time: number, index: number) => {
-            if (index == 0)
-              confirmedTimeString += `${timeIntegerToTimeString(time)} -`;
-            if (index == length - 1)
-              confirmedTimeString += ` ${timeIntegerToTimeString(time)}\n`;
-          }
-        );
+        meet.confirmedTimeTable[date].forEach((time: number, index: number) => {
+          if (index == 0)
+            confirmedTimeString += `${timeIntegerToTimeString(time)} -`;
+          if (index == length - 1)
+            confirmedTimeString += ` ${timeIntegerToTimeString(time)}\n`;
+        });
       }
     });
   }
@@ -88,7 +86,9 @@ export default function MainCard({
     >
       <div>
         <div className="flex justify-between items-center mb-3">
-          <Link href={`/meet/${meet.id}`}><h1 className="text-lg font-semibold">{meet.name}</h1></Link>
+          <Link href={`/meet/${meet.id}`}>
+            <h1 className="text-lg font-semibold">{meet.name}</h1>
+          </Link>
           {isMyMeet && <MoreButton meetId={meet.id} />}
         </div>
         <h3 className="mb-2">{meet.description}</h3>
