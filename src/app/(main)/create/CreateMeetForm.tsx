@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
-import { validateMeetMode, validateString } from '@/lib/validation';
-import createMeetFromInput from './createMeetFormAction';
+import { validateMeetMode } from '@/lib/validation';
+import createMeetFromInput from './createMeetFromInput';
 import {
   MeetNameInput,
   MeetDescriptionInput,
@@ -11,19 +12,44 @@ import {
   ConfirmTimeInput,
   MeetPasswordInput,
 } from '@/components/meet-form/inputs';
+import { SubmitButton } from '@/components/meet-form/SubmitButton';
+import type FormState from '@/types/FormState';
+import { initialFormState } from '@/types/FormState';
 
-async function clientAction(formData: FormData) {
-  const meetName = formData.get('meetName')?.toString();
-  if (!validateString(meetName)) alert('이름을 입력하세요.');
+type ExtendedFormState = FormState & {
+  meetId: string | null;
+};
+const extendedInitialFormState: ExtendedFormState = {
+  ...initialFormState,
+  meetId: null,
+};
 
-  // remove once it's used
-  localStorage.removeItem('selection');
-
-  await createMeetFromInput(formData);
+async function clientAction(
+  prevState: ExtendedFormState,
+  formData: FormData
+): Promise<ExtendedFormState> {
+  try {
+    const createdMeet = await createMeetFromInput(formData);
+    return {
+      state: 'success',
+      meetId: createdMeet.id,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      state: 'error',
+      meetId: null,
+      error: error instanceof Error ? error.message : 'unexpected error',
+    };
+  }
 }
 
 export default function MeetForm() {
   const router = useRouter();
+  const [formState, formAction] = useFormState<ExtendedFormState, FormData>(
+    clientAction,
+    extendedInitialFormState
+  );
   useEffect(() => {
     // extract data from localStorage
     const selection = localStorage.getItem('selection');
@@ -56,8 +82,16 @@ export default function MeetForm() {
       router.push('/');
     }
   });
+  useEffect(() => {
+    if (formState.state === 'success') {
+      localStorage.removeItem('selection'); // remove selection after successful creation
+      router.push(`/meet/${formState.meetId}`);
+    } else if (formState.state === 'error') {
+      alert(formState.error);
+    }
+  }, [formState]);
   return (
-    <form action={clientAction} className="grid text-white place-items-center">
+    <form action={formAction} className="grid text-white place-items-center">
       <input type="hidden" readOnly name="meetMode"></input>
       <input type="hidden" readOnly name="meetSelections"></input>
       <MeetNameInput />
@@ -65,13 +99,7 @@ export default function MeetForm() {
       <MeetTimeInput />
       <ConfirmTimeInput />
       <MeetPasswordInput />
-      <div className="grid w-[301px] h-[40px] mt-[20px] place-items-center">
-        <div className="grid pacle-items-center bg-textColor w-[100px] h-[40px] rounded-2xl">
-          <button type="submit" className="items-center">
-            미트볼 굴리기!
-          </button>
-        </div>
-      </div>
+      <SubmitButton />
     </form>
   );
 }
