@@ -10,7 +10,7 @@ import {
   MeetTimeInput,
   ConfirmTimeInput,
   MeetPasswordInput,
-} from './inputs';
+} from '@/components/meet-form/inputs';
 
 async function clientAction(formData: FormData) {
   const meetName = formData.get('meetName')?.toString();
