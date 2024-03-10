@@ -5,8 +5,9 @@ import InfoCard from './info-card';
 import Image from 'next/image';
 import { signIn, signOut } from 'next-auth/react';
 import CarouselIndex from '../carousel-index';
+import { Session } from 'next-auth';
 
-export default function InfoCarousel({ session }: { session: any }) {
+export default function InfoCarousel({ session }: { session: Session | null }) {
   const { currentSlide, onMouseDown, onMouseUp, cardRef } = useCarousel(
     3,
     320,
@@ -30,7 +31,7 @@ export default function InfoCarousel({ session }: { session: any }) {
       </div>
       {session == undefined ? (
         <button
-          onClick={() => signIn('google', {callbackUrl: '/'})}
+          onClick={() => signIn('google', { callbackUrl: '/' })}
           className="flex justify-center items-center bg-white rounded-lg pr-4 pl-4 pt-2 pb-2"
         >
           <Image

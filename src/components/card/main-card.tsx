@@ -7,6 +7,7 @@ import DeleteButton from '../button/delete-button';
 import { cn } from '@/lib/utils';
 import { FaCalendarCheck as CalendarIcon } from 'react-icons/fa';
 import Link from 'next/link';
+import TimeTable from '@/types/TimeTable';
 function Modal({ meetId }: { meetId: string }) {
   return (
     <div className="bg-cardColor z-100 p-4 w-28 rounded-md absolute bottom-14 -left-8 transition-opacity">
@@ -59,22 +60,24 @@ export default function MainCard({
   }
 
   let confirmedTimeString = '';
+  const confirmedTimeTable =
+    meet.confirmedTimeTable !== null
+      ? (meet.confirmedTimeTable as TimeTable)
+      : null;
   if (
-    meet.confirmedTimeTable != null &&
-    Object.keys(meet.confirmedTimeTable).length != 0
+    confirmedTimeTable !== null &&
+    Object.keys(confirmedTimeTable).length != 0
   ) {
-    Object.keys(meet.confirmedTimeTable).forEach(date => {
-      if (meet.confirmedTimeTable[date].length != 0) {
+    Object.keys(confirmedTimeTable).forEach(date => {
+      if (confirmedTimeTable[date].length != 0) {
         confirmedTimeString += `${date}/ `;
-        const length = meet.confirmedTimeTable[date].length;
-        meet.confirmedTimeTable[date].forEach(
-          (time: number, index: number) => {
-            if (index == 0)
-              confirmedTimeString += `${timeIntegerToTimeString(time)} -`;
-            if (index == length - 1)
-              confirmedTimeString += ` ${timeIntegerToTimeString(time)}\n`;
-          }
-        );
+        const length = confirmedTimeTable[date].length;
+        confirmedTimeTable[date].forEach((time: number, index: number) => {
+          if (index == 0)
+            confirmedTimeString += `${timeIntegerToTimeString(time)} -`;
+          if (index == length - 1)
+            confirmedTimeString += ` ${timeIntegerToTimeString(time)}\n`;
+        });
       }
     });
   }
@@ -88,7 +91,9 @@ export default function MainCard({
     >
       <div>
         <div className="flex justify-between items-center mb-3">
-          <Link href={`/meet/${meet.id}`}><h1 className="text-lg font-semibold">{meet.name}</h1></Link>
+          <Link href={`/meet/${meet.id}`}>
+            <h1 className="text-lg font-semibold">{meet.name}</h1>
+          </Link>
           {isMyMeet && <MoreButton meetId={meet.id} />}
         </div>
         <h3 className="mb-2">{meet.description}</h3>

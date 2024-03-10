@@ -1,12 +1,12 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import TimeTableColumn from '@/components/timeTable/timetable-column';
 import type CombinedTimeTable from '@/types/CombinedTimeTable';
 import Button from '../button/button';
-import TimeTable from '@/types/TimeTable';
 import { Meet } from '@prisma/client';
-import { updateConfirmedTimeTable, updateTimeTable } from '@/controllers/meet';
+import { updateConfirmedTimeTable } from '@/controllers/meet';
 import Link from 'next/link';
+import TimeTable from '@/types/TimeTable';
 
 type TimeTableComponentProps = {
   startTime: number;
@@ -31,8 +31,8 @@ export default function TimeTableComponent({
   confirmedTimeTable,
   meetId,
 }: TimeTableComponentProps) {
-  const timeTableRef = useRef(confirmedTimeTable);
-  console.log(timeTableRef.current);
+  const confirmedTimeTableRef = useRef<TimeTable>(confirmedTimeTable as TimeTable);
+  console.log(confirmedTimeTableRef.current);
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
     (_, index) => startTime + index
@@ -62,7 +62,7 @@ export default function TimeTableComponent({
             title={`${editMode ? '저장하기' : '스케줄 확정'}`}
             className="cursor-pointer bg-white mt-4 text-sm hover:bg-cardColor hover:text-white active:bg-cardColor active:text-white"
             onClick={async () => {
-              await updateConfirmedTimeTable(meetId, timeTableRef.current).then(
+              await updateConfirmedTimeTable(meetId, confirmedTimeTableRef.current).then(
                 () => {
                   setEditMode(!editMode);
                 }
@@ -102,7 +102,7 @@ export default function TimeTableComponent({
               colIdx={datesOrDays.indexOf(date)}
               setHoverData={(data: string[]) => setHoverData(data)}
               isManager={isManager}
-              confirmedTimeTable={timeTableRef}
+              confirmedTimeTable={confirmedTimeTableRef}
               editMode={editMode}
             />
           ))}
