@@ -14,8 +14,12 @@ export default async function MainPage() {
   } catch (error) {
     console.log(error);
   }
-
-  const currentUser = await getCurrentUser();
+  let currentUser = null;
+  try {
+    currentUser = await getCurrentUser();
+  } catch (error) {
+    console.log(error);
+  }
 
   return (
     <div className="flex mobile:flex-col items-center mobile:px-4 laptop:px-10 laptop:justify-evenly laptop:gap-10 desktop:justify-evenly">
