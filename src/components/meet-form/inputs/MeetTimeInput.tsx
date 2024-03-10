@@ -11,9 +11,9 @@ export default function MeetingTimeInput({
     <div className="w-[301px] mt-[50px]">
       <p className="mt-3 mb-5">회의 시간대</p>
       <div>
-        <TimeInput name="meetStart" defaultValue={startTime} />
+        <TimeInput inputName="meetStart" defaultValue={startTime} />
         <span> - </span>
-        <TimeInput name="meetEnd" defaultValue={endTime} />
+        <TimeInput inputName="meetEnd" defaultValue={endTime} />
       </div>
     </div>
   );

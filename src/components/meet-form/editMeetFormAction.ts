@@ -23,6 +23,8 @@ export default async function handleSubmit(formData: FormData) {
   let endTime = parseInt(formData.get('meetEndHour')!.toString()) * 2;
   if (formData.get('meetEndMinute')!.toString() === '30') endTime += 1;
 
+  if (startTime >= endTime) throw new Error('회의 시간을 확인하세요.');
+
   const meetPassword = formData.get('meetPassword')?.toString();
 
   try {

@@ -9,9 +9,8 @@ export default async function EditTimetablePage({
 }) {
   const meet = await getMeetWithParticipants(params.meetId);
   const userTimeTable = (await getMyTimeTable(params.meetId)) ?? {};
-  for (const key of meet.datesOrDays) {
-    userTimeTable[key] = [];
-  }
+  for (const key of meet.datesOrDays)
+    if (!(key in userTimeTable)) userTimeTable[key] = [];
 
   return (
     <div className="pb-8 px-20">
