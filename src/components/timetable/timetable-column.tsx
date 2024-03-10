@@ -59,8 +59,8 @@ function TimeTableCell({
         setHoverData(participants);
       }}
       className={`relative h-[20px] cursor-pointer border-white ${timeIndex % 2 === 0 ? 'border-t-[0.3px]' : ''}
-      ${previousOpacity === 0 && opacity != 0 && 'rounded-t-lg'} ${nextOpacity === 0 && opacity != 0 && 'rounded-b-lg'} 
-      ${clicked && 'after:bg-pink-200 after:bg-opacity-50 after:z-50 after:absolute after:inset-0 after:mx-2'} `}
+      ${previousOpacity === 0 && !isNaN(opacity) && opacity != 0 ? 'rounded-t-lg' : ''} ${nextOpacity === 0 && !isNaN(opacity) && opacity !== 0 ? 'rounded-b-lg' : ''} 
+      ${clicked && 'after:bg-gray-400 after:bg-opacity-80 after:z-50 after:absolute after:inset-0 after:mx-2'} `}
       onClick={editMode ? clickHandler : undefined}
     ></div>
   );

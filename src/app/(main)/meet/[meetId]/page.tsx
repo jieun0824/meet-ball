@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { ParticipantsOnMeets, Prisma } from '@prisma/client';
 import type CombinedTimeTable from '@/types/CombinedTimeTable';
 import TimeTableComponent from '@/components/timeTable/timetable';
 import {
@@ -44,11 +44,6 @@ export default async function MeetPage({
     }
   }
 
-  //mockData
-  const confirmedTimeTable: TimeTable = {
-    '2024-02-12': [18, 19, 20],
-  };
-
   return (
     <div className="pb-8 px-20">
       <div className="flex items-center w-full">
@@ -65,7 +60,8 @@ export default async function MeetPage({
         timetable={combinedTimeTable}
         participantsNum={meet.participants.length}
         isManager={currentUser.id === meet.managerId}
-        confirmedTimeTable={confirmedTimeTable}
+        confirmedTimeTable={meet.confirmedTimeTable || {}}
+        meetId={params.meetId}
       />
     </div>
   );
