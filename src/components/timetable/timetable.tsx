@@ -6,6 +6,7 @@ import Button from '../button/button';
 import TimeTable from '@/types/TimeTable';
 import { Meet } from '@prisma/client';
 import { updateConfirmedTimeTable, updateTimeTable } from '@/controllers/meet';
+import Link from 'next/link';
 
 type TimeTableComponentProps = {
   startTime: number;
@@ -38,9 +39,6 @@ export default function TimeTableComponent({
   );
   const [hoverData, setHoverData] = useState<string[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
-  useEffect(() => {
-    console.log(hoverData);
-  }, [hoverData]);
 
   type gridColumnsType = {
     [key: number]: string;
@@ -58,11 +56,11 @@ export default function TimeTableComponent({
 
   return (
     <>
-      {isManager && (
-        <div className="flex justify-end">
+      <div className="flex flex-col items-end">
+        {isManager && (
           <Button
             title={`${editMode ? '저장하기' : '스케줄 확정'}`}
-            className="cursor-pointer bg-white my-4 text-sm hover:bg-cardColor hover:text-white active:bg-cardColor active:text-white"
+            className="cursor-pointer bg-white mt-4 text-sm hover:bg-cardColor hover:text-white active:bg-cardColor active:text-white"
             onClick={async () => {
               await updateConfirmedTimeTable(meetId, timeTableRef.current).then(
                 () => {
@@ -71,8 +69,14 @@ export default function TimeTableComponent({
               );
             }}
           />
-        </div>
-      )}
+        )}
+        <Link href={`/meet/${meetId}/edit`}>
+          <Button
+            title="내 스케줄 편집"
+            className="cursor-pointer px-8 bg-white mt-4 text-sm hover:bg-cardColor hover:text-white active:bg-cardColor active:text-white"
+          />
+        </Link>
+      </div>
       <div className="flex mobile:flex-col justify-center items-start mobile:items-center text-xs mt-16 mb-16">
         <div className={gridSetList[datesOrDays.length % 7]}>
           <div className="flex flex-col items-end">
