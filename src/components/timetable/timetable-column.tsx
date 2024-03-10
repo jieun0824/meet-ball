@@ -1,5 +1,7 @@
 'use client';
-import { useRef } from 'react';
+import TimeTable from '@/types/TimeTable';
+import { Meet } from '@prisma/client';
+import { useEffect, useRef, useState } from 'react';
 
 type dateParticipantsType = {
   [name: string]: Array<number>;
@@ -17,6 +19,11 @@ type timeCellProps = {
   endTime: number;
   setHoverData: (data: string[]) => void;
   participants: string[];
+  isManager: boolean;
+  selected: boolean;
+  addHandler: () => void;
+  deleteHandler: () => void;
+  editMode: boolean;
 };
 
 function TimeTableCell({
@@ -26,15 +33,35 @@ function TimeTableCell({
   nextOpacity,
   setHoverData,
   participants,
+  isManager,
+  selected,
+  addHandler,
+  deleteHandler,
+  editMode,
 }: timeCellProps) {
+  const [clicked, setClicked] = useState(selected);
+  const clickHandler = () => {
+    if (clicked) {
+      setClicked(false);
+      deleteHandler();
+    } else {
+      setClicked(true);
+      addHandler();
+    }
+  };
+
   return (
     <div
       style={{
         backgroundColor: `rgba(32, 236, 199, ${opacity})`,
       }}
-      onMouseOver={() => setHoverData(participants)}
-      className={`h-[20px] cursor-pointer border-white ${timeIndex % 2 === 0 ? 'border-t-[0.3px]' : ''}
-      ${previousOpacity === 0 && !isNaN(opacity) && opacity != 0 ? 'rounded-t-lg' : ''} ${nextOpacity === 0 && !isNaN(opacity) && opacity !== 0 ? 'rounded-b-lg' : ''} `}
+      onMouseOver={() => {
+        setHoverData(participants);
+      }}
+      className={`relative h-[20px] cursor-pointer border-white ${timeIndex % 2 === 0 ? 'border-t-[0.3px]' : ''}
+      ${previousOpacity === 0 && opacity != 0 && 'rounded-t-lg'} ${nextOpacity === 0 && opacity != 0 && 'rounded-b-lg'} 
+      ${clicked && 'after:bg-pink-200 after:bg-opacity-50 after:z-50 after:absolute after:inset-0 after:mx-2'} `}
+      onClick={editMode ? clickHandler : undefined}
     ></div>
   );
 }
@@ -47,6 +74,9 @@ export default function TimeTableColumn({
   dateTimetable,
   colIdx,
   setHoverData,
+  isManager,
+  confirmedTimeTable,
+  editMode,
 }: {
   date: string;
   startTime: number;
@@ -55,6 +85,11 @@ export default function TimeTableColumn({
   dateTimetable: dateParticipantsType;
   colIdx: number;
   setHoverData: (data: string[]) => void;
+  isManager: boolean;
+  confirmedTimeTable: {
+    current: TimeTable;
+  };
+  editMode: boolean;
 }) {
   const label = useRef('');
   const days = ['월', '화', '수', '목', '금', '토', '일'];
@@ -114,11 +149,12 @@ export default function TimeTableColumn({
                 .length;
             nextOpacity = 0;
           }
+          const timeIndexInt = parseInt(timeIndex);
 
           return (
             <TimeTableCell
               key={index}
-              timeIndex={parseInt(timeIndex)}
+              timeIndex={timeIndexInt}
               opacity={
                 +(opacity / Object.keys(dateTimetable).length).toFixed(2)
               }
@@ -126,7 +162,26 @@ export default function TimeTableColumn({
               nextOpacity={nextOpacity}
               endTime={endTime}
               setHoverData={(data: string[]) => setHoverData(data)}
-              participants={scheduleOpacityOfTimeObject[timeIndex]}
+              participants={scheduleOpacityOfTimeObject[timeIndexInt]}
+              isManager={isManager}
+              selected={
+                confirmedTimeTable.current[date] != null
+                  ? confirmedTimeTable.current[date].includes(timeIndexInt)
+                  : false
+              }
+              addHandler={() =>
+                confirmedTimeTable.current[date]
+                  ? confirmedTimeTable.current[date].push(timeIndexInt)
+                  : (confirmedTimeTable.current[date] = [timeIndexInt])
+              }
+              deleteHandler={() =>
+                confirmedTimeTable.current[date] &&
+                confirmedTimeTable.current[date].splice(
+                  confirmedTimeTable.current[date].indexOf(timeIndexInt),
+                  1
+                )
+              }
+              editMode={editMode}
             />
           );
         }
