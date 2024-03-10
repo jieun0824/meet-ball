@@ -1,6 +1,5 @@
 'use server';
 
-import { redirect } from 'next/navigation';
 import { updateMeet } from '@/controllers/meet';
 import { validateString } from '@/lib/validation';
 
@@ -28,7 +27,7 @@ export default async function handleSubmit(formData: FormData) {
   const meetPassword = formData.get('meetPassword')?.toString();
 
   try {
-    const updatedMeet = await updateMeet(meetId, {
+    return await updateMeet(meetId, {
       name: meetName,
       description: meetDescription,
       startTime,
@@ -36,7 +35,6 @@ export default async function handleSubmit(formData: FormData) {
       confirmTime: confirmDate,
       password: meetPassword,
     });
-    redirect(`/meet/${updatedMeet.id}/`);
   } catch (error) {
     console.error(error);
     throw error;

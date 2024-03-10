@@ -3,7 +3,7 @@
 import { useFormStatus } from 'react-dom';
 import FadeLoader from 'react-spinners/FadeLoader';
 
-export function SubmitButton() {
+export function SubmitButton({ text }: { text: string }) {
   const formStatus = useFormStatus();
   return (
     <button
@@ -11,11 +11,7 @@ export function SubmitButton() {
       className="bg-pointColor px-3 py-2 rounded-2xl items-center m-4"
       aria-disabled={formStatus.pending}
     >
-      {formStatus.pending ? (
-        <FadeLoader color="white" />
-      ) : (
-        '미트볼 굴리기!'
-      )}
+      {formStatus.pending ? <FadeLoader color="white" /> : <div>{text}</div>}
     </button>
   );
 }

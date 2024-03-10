@@ -104,7 +104,7 @@ export default function MeetForm() {
         <MeetTimeInput />
         <ConfirmTimeInput />
         <MeetPasswordInput />
-        <SubmitButton />
+        <SubmitButton text="미트볼 굴리기!" />
       </form>
     </>
   );
