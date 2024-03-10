@@ -23,6 +23,7 @@ type timeCellProps = {
   selected: boolean;
   addHandler: () => void;
   deleteHandler: () => void;
+  editMode: boolean;
 };
 
 function TimeTableCell({
@@ -36,6 +37,7 @@ function TimeTableCell({
   selected,
   addHandler,
   deleteHandler,
+  editMode,
 }: timeCellProps) {
   const [clicked, setClicked] = useState(selected);
   const clickHandler = () => {
@@ -59,7 +61,7 @@ function TimeTableCell({
       className={`relative h-[20px] cursor-pointer border-white ${timeIndex % 2 === 0 ? 'border-t-[0.3px]' : ''}
       ${previousOpacity === 0 && opacity != 0 && 'rounded-t-lg'} ${nextOpacity === 0 && opacity != 0 && 'rounded-b-lg'} 
       ${clicked && 'after:bg-pink-200 after:bg-opacity-50 after:z-50 after:absolute after:inset-0 after:mx-2'} `}
-      onClick={clickHandler}
+      onClick={editMode ? clickHandler : undefined}
     ></div>
   );
 }
@@ -74,6 +76,7 @@ export default function TimeTableColumn({
   setHoverData,
   isManager,
   confirmedTimeTable,
+  editMode,
 }: {
   date: string;
   startTime: number;
@@ -86,6 +89,7 @@ export default function TimeTableColumn({
   confirmedTimeTable: {
     current: TimeTable;
   };
+  editMode: boolean;
 }) {
   const label = useRef('');
   const days = ['월', '화', '수', '목', '금', '토', '일'];
@@ -177,6 +181,7 @@ export default function TimeTableColumn({
                   1
                 )
               }
+              editMode={editMode}
             />
           );
         }

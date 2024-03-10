@@ -16,6 +16,7 @@ type TimeTableComponentProps = {
   isManager: boolean;
   confirmedTimeTable: Meet['confirmedTimeTable'];
 };
+type confirmMode = 'edit' | 'view';
 
 export default function TimeTableComponent({
   startTime,
@@ -33,6 +34,7 @@ export default function TimeTableComponent({
     (_, index) => startTime + index
   );
   const [hoverData, setHoverData] = useState<string[]>([]);
+  const [editMode, setEditMode] = useState<boolean>(false);
   useEffect(() => {
     console.log(hoverData);
   }, [hoverData]);
@@ -56,8 +58,9 @@ export default function TimeTableComponent({
       {isManager && (
         <div className="flex justify-end">
           <Button
-            title="스케줄 확정"
-            className="bg-white my-4 active:bg-cardColor text-sm"
+            title={`${editMode ? '저장하기' : '스케줄 확정'}`}
+            className="cursor-pointer bg-white my-4 text-sm hover:bg-cardColor hover:text-white active:bg-cardColor active:text-white"
+            onClick={() => setEditMode(!editMode)}
           />
         </div>
       )}
@@ -87,6 +90,7 @@ export default function TimeTableComponent({
               setHoverData={(data: string[]) => setHoverData(data)}
               isManager={isManager}
               confirmedTimeTable={timeTableRef}
+              editMode={editMode}
             />
           ))}
         </div>
