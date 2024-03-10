@@ -5,6 +5,7 @@ import type CombinedTimeTable from '@/types/CombinedTimeTable';
 import Button from '../button/button';
 import TimeTable from '@/types/TimeTable';
 import { Meet } from '@prisma/client';
+import { updateConfirmedTimeTable, updateTimeTable } from '@/controllers/meet';
 
 type TimeTableComponentProps = {
   startTime: number;
@@ -15,8 +16,8 @@ type TimeTableComponentProps = {
   participantsNum: number;
   isManager: boolean;
   confirmedTimeTable: Meet['confirmedTimeTable'];
+  meetId: string;
 };
-type confirmMode = 'edit' | 'view';
 
 export default function TimeTableComponent({
   startTime,
@@ -27,8 +28,10 @@ export default function TimeTableComponent({
   participantsNum,
   isManager,
   confirmedTimeTable,
+  meetId,
 }: TimeTableComponentProps) {
   const timeTableRef = useRef(confirmedTimeTable);
+  console.log(timeTableRef.current);
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
     (_, index) => startTime + index
@@ -60,7 +63,13 @@ export default function TimeTableComponent({
           <Button
             title={`${editMode ? '저장하기' : '스케줄 확정'}`}
             className="cursor-pointer bg-white my-4 text-sm hover:bg-cardColor hover:text-white active:bg-cardColor active:text-white"
-            onClick={() => setEditMode(!editMode)}
+            onClick={async () => {
+              await updateConfirmedTimeTable(meetId, timeTableRef.current).then(
+                () => {
+                  setEditMode(!editMode);
+                }
+              );
+            }}
           />
         </div>
       )}
