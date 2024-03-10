@@ -2,7 +2,7 @@ export function InfoCardWrapper({
   title,
   source,
 }: {
-  title: string;
+  title?: string;
   source: string;
 }) {
   return (

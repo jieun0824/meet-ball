@@ -7,8 +7,7 @@ import {
   getMyManagingMeets,
   getMyParticipatingMeets,
 } from '@/controllers/meet';
-import MyMeetCard from './MyMeetCard';
-import PanelLayout from './PanelLayout';
+import PanelLayout from './_component/PanelLayout';
 import MainCard from '@/components/card/main-card';
 
 function ProfileIcon({ src }: { src: string }) {
