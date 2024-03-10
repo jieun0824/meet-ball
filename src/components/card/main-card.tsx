@@ -5,7 +5,7 @@ type mainCardProps = {
   description: string | null;
   startTime: number;
   endTime: number;
-  participants: string[];
+  participants?: string[];
 };
 
 export default function MainCard({
@@ -23,7 +23,9 @@ export default function MainCard({
   }
 
   return (
-    <div className={`bg-pointColor p-8 w-80 rounded-2xl text-black shadow-2xl`}>
+    <div
+      className={`border-[0.5px] border-pointColor p-8 w-80 rounded-2xl shadow-2xl cursor-pointer hover:shadow-white/25 hover:shadow-lg`}
+    >
       <div className="flex justify-between items-center mb-3">
         <h1 className="text-lg font-semibold">{meetName}</h1>
         <MoreIcon size={24} />
@@ -31,13 +33,13 @@ export default function MainCard({
       <h3 className="mb-2">{description}</h3>
       <div>
         <div className="flex items-center mb-2">
-          <ClockIcon color="black" className="mr-1" />
+          <ClockIcon className="mr-1" />
           <span>{`${timeIntegerToTimeString(startTime)} - ${timeIntegerToTimeString(endTime)}`}</span>
         </div>
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <PeopleIcon color="black" className="mr-1" />
           {participants.join(', ')}
-        </div>
+        </div> */}
       </div>
     </div>
   );
