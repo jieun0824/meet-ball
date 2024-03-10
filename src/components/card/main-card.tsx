@@ -1,9 +1,12 @@
 'use client';
 import EditMeetButton from '@/app/(main)/meet/_component/EditMeetButton';
-import { ClockIcon, MoreIcon, PeopleIcon } from '@/components/icon';
+import { ClockIcon, MoreIcon } from '@/components/icon';
 import { Meet } from '@prisma/client';
 import { useState } from 'react';
 import DeleteButton from '../button/delete-button';
+import { cn } from '@/lib/utils';
+import { FaCalendarCheck as CalendarIcon } from 'react-icons/fa';
+import Link from 'next/link';
 function Modal({ meetId }: { meetId: string }) {
   return (
     <div className="bg-cardColor z-100 p-4 w-28 rounded-md absolute bottom-14 -left-8 transition-opacity">
@@ -40,11 +43,13 @@ function MoreButton({ meetId }: { meetId: string }) {
 }
 
 export default function MainCard({
-  meetInfo,
+  meet,
   isMyMeet,
+  className,
 }: {
-  meetInfo: Meet;
-  isMyMeet: boolean;
+  meet: Meet;
+  isMyMeet?: boolean;
+  className?: string;
 }) {
   function timeIntegerToTimeString(time: number) {
     const hour = Math.floor(time / 2);
@@ -53,24 +58,61 @@ export default function MainCard({
     else return `${hour}:${minuteString} AM`;
   }
 
+  let confirmedTimeString = '';
+  if (
+    meet.confirmedTimeTable != null &&
+    Object.keys(meet.confirmedTimeTable).length != 0
+  ) {
+    Object.keys(meet.confirmedTimeTable).forEach(date => {
+      if (meet.confirmedTimeTable[date].length != 0) {
+        confirmedTimeString += `${date}/ `;
+        const length = meet.confirmedTimeTable[date].length;
+        meet.confirmedTimeTable[date].forEach(
+          (time: number, index: number) => {
+            if (index == 0)
+              confirmedTimeString += `${timeIntegerToTimeString(time)} -`;
+            if (index == length - 1)
+              confirmedTimeString += ` ${timeIntegerToTimeString(time)}\n`;
+          }
+        );
+      }
+    });
+  }
+
   return (
     <div
-      className={`border-[0.5px] border-pointColor p-8 w-80 rounded-2xl shadow-2xl cursor-pointer hover:shadow-white/25 hover:shadow-lg -z-10`}
+      className={cn(
+        className,
+        `border-[0.5px] border-pointColor p-8 w-80 rounded-2xl shadow-2xl cursor-pointer hover:shadow-white/15 hover:shadow-lg -z-10`
+      )}
     >
-      <div className="flex justify-between items-center mb-3">
-        <h1 className="text-lg font-semibold">{meetInfo.name}</h1>
-        {isMyMeet && <MoreButton meetId={meetInfo.id} />}
-      </div>
-      <h3 className="mb-2">{meetInfo.description}</h3>
       <div>
-        <div className="flex items-center mb-2">
-          <ClockIcon className="mr-1" />
-          <span>{`${timeIntegerToTimeString(meetInfo.startTime)} - ${timeIntegerToTimeString(meetInfo.endTime)}`}</span>
+        <div className="flex justify-between items-center mb-3">
+          <Link href={`/meet/${meet.id}`}><h1 className="text-lg font-semibold">{meet.name}</h1></Link>
+          {isMyMeet && <MoreButton meetId={meet.id} />}
         </div>
-        {/* <div className="flex items-center">
+        <h3 className="mb-2">{meet.description}</h3>
+        <div>
+          <div className="flex items-center whitespace-pre-line text-sm">
+            {confirmedTimeString != '' ? (
+              //when meeting is confirmed
+              <>
+                <CalendarIcon className="mr-1" size={15} />
+                <span>{confirmedTimeString}</span>
+              </>
+            ) : (
+              //when meeting is not confirmed
+              <>
+                <ClockIcon className="mr-1" size={15} />
+                <span>{`${timeIntegerToTimeString(meet.startTime)} - ${timeIntegerToTimeString(meet.endTime)}`}</span>
+              </>
+            )}
+          </div>
+          {/* <div className="flex items-center">
           <PeopleIcon color="black" className="mr-1" />
           {participants.join(', ')}
         </div> */}
+        </div>
       </div>
     </div>
   );

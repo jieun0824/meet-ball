@@ -7,8 +7,8 @@ import {
   getMyManagingMeets,
   getMyParticipatingMeets,
 } from '@/controllers/meet';
-import MyMeetCard from './_component/MyMeetCard';
 import PanelLayout from './_component/PanelLayout';
+import MainCard from '@/components/card/main-card';
 
 function ProfileIcon({ src }: { src: string }) {
   return (
@@ -46,19 +46,17 @@ function LogoutButton() {
   );
 }
 
-function ManagingMeetsPanel({ managingMeets }: { managingMeets: Meet[] }) {
+function ManagingMeetsPanel({
+  managingMeets,
+  myId,
+}: {
+  managingMeets: Meet[];
+  myId: string;
+}) {
   return (
     <div className="space-y-4">
       {managingMeets.map(meet => (
-        <MyMeetCard
-          key={meet.id}
-          meetId={meet.id}
-          meetName={meet.name}
-          description={meet.description}
-          startTime={meet.startTime}
-          endTime={meet.endTime}
-          participants={['업데이트 필요']}
-        />
+        <MainCard key={meet.id} meet={meet} isMyMeet={true} />
       ))}
     </div>
   );
@@ -66,22 +64,19 @@ function ManagingMeetsPanel({ managingMeets }: { managingMeets: Meet[] }) {
 
 function ParticipatingMeetsPanel({
   participatingMeets,
+  myId,
 }: {
   participatingMeets: Meet[];
+  myId: string;
 }) {
   return (
     <div className="space-y-4">
-      {participatingMeets.map(meet => (
-        <MyMeetCard
-          key={meet.id}
-          meetId={meet.id}
-          meetName={meet.name}
-          description={meet.description}
-          startTime={meet.startTime}
-          endTime={meet.endTime}
-          participants={['업데이트 필요']}
-        />
-      ))}
+      {participatingMeets.map(
+        meet =>
+          meet.managerId != myId && (
+            <MainCard key={meet.id} meet={meet} isMyMeet={false} />
+          )
+      )}
     </div>
   );
 }
@@ -102,10 +97,15 @@ export default async function MyPage() {
       <PanelLayout
         titles={['생성한 미트볼', '참여중인 미트볼']}
         panels={[
-          <ManagingMeetsPanel key={0} managingMeets={myManagingMeets} />,
+          <ManagingMeetsPanel
+            key={0}
+            managingMeets={myManagingMeets}
+            myId={myInfo.id}
+          />,
           <ParticipatingMeetsPanel
             key={1}
             participatingMeets={myParticipatingMeets}
+            myId={myInfo.id}
           />,
         ]}
       />
