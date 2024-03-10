@@ -183,7 +183,7 @@ export async function participateMeet(
 ): Promise<void> {
   const meet = await getMeet(meetId);
   if (meet.password !== password) throw new Error('Wrong password');
-  
+
   const currentUser = await getCurrentUser();
   try {
     await prisma.participantsOnMeets.create({
@@ -290,6 +290,58 @@ export async function updateTimeTable(meetId: string, timeTable: TimeTable) {
       },
     });
     return meet;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function confirmMeetSchedule(meetId: string) {
+  try {
+    const currentUser = await getCurrentUser();
+    const meet = await prisma.meet.findUniqueOrThrow({
+      where: {
+        id: meetId,
+        managerId: currentUser.id,
+      },
+      include: {
+        participants: true,
+      },
+    });
+
+    // 1. count all participants' timetable per time slot
+    const count = {} as { [key: string]: number[] };
+    for (const key of meet.datesOrDays) {
+      count[key] = Array.from({ length: 49 }, () => 0);
+    }
+    for (const participant of meet.participants) {
+      const currentTimeTable = (participant.timeTable ?? {}) as TimeTable;
+      for (const key of meet.datesOrDays) {
+        if (!currentTimeTable.hasOwnProperty(key)) continue;
+        for (const time of currentTimeTable[key]) {
+          count[key][time] += 1;
+        }
+      }
+    }
+
+    // 2. find all available time slots
+    const confirmedTimeTable = {} as TimeTable;
+    for (const key of meet.datesOrDays) {
+      confirmedTimeTable[key] = [];
+      for (let i = 0; i < 49; i++) {
+        if (count[key][i] === meet.participants.length) {
+          confirmedTimeTable[key].push(i);
+        }
+      }
+    }
+
+    // 3. finally update meet with confirmed time table
+    await prisma.meet.update({
+      where: { id: meetId },
+      data: {
+        confirmedTimeTable,
+      },
+    });
   } catch (error) {
     console.error(error);
     throw error;
