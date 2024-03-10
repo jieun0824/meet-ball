@@ -1,4 +1,4 @@
-import EditForm from '@/components/meet-form/EditMeetForm';
+import EditForm from '@/app/(main)/edit/[meetId]/EditMeetForm';
 import { getMeet } from '@/controllers/meet';
 
 export default async function EditMeetPage({

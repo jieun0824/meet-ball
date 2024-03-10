@@ -1,7 +1,30 @@
 'use client';
 
-import Button from '@/components/button/button';
-import participateFormAction from './participateFormAction';
+import type FormState from '@/types/FormState';
+import { useFormState } from 'react-dom';
+import participateMeetAction from './participateMeetAction';
+import { useEffect, useState } from 'react';
+import LoadingOverlay from '@/components/LoadingOverlay';
+import { useRouter } from 'next/navigation';
+import { SubmitButton } from '@/components/meet-form/SubmitButton';
+
+async function clientAction(
+  prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
+  try {
+    await participateMeetAction(formData);
+    return {
+      state: 'success',
+      error: null,
+    };
+  } catch (error) {
+    return {
+      state: 'error',
+      error: error instanceof Error ? error.message : 'unexpected error',
+    };
+  }
+}
 
 export default function ParticipateForm({
   meetId,
@@ -10,24 +33,35 @@ export default function ParticipateForm({
   meetId: string;
   isProtected: boolean;
 }) {
+  const router = useRouter();
+  const [formState, formAction] = useFormState<FormState, FormData>(
+    clientAction,
+    {
+      state: 'idle',
+      error: null,
+    }
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    if (formState.state === 'success') {
+      setIsLoading(true);
+      router.push(`/meet/${meetId}`);
+    } else if (formState.state === 'error') {
+      alert(formState.error);
+    }
+  }, [formState]);
   return (
-    <form action={participateFormAction}>
-      <div className="flex flex-col gap-6">
-        <input
-          type="hidden"
-          name="meetId"
-          value={meetId}
-          readOnly
-          className="bg-none"
-        />
+    <>
+      {isLoading && <LoadingOverlay />}
+      <form action={formAction}>
+        <input type="hidden" name="meetId" value={meetId} readOnly />
         <input
           type={isProtected ? 'password' : 'hidden'}
-          className="bg-transparent border border-white rounded-lg py-2 text-center"
+          className="text-black"
           name="meetPassword"
-          placeholder="****"
         />
-        <Button type="submit" title="참가하기" />
-      </div>
-    </form>
+        <SubmitButton text="참가하기" />
+      </form>
+    </>
   );
 }

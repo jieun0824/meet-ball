@@ -1,5 +1,4 @@
 import { getMeet } from '@/controllers/meet';
-import MeetDescription from '../../_component/MeetDescription';
 import ParticipateForm from './_component/ParticipateForm';
 import { InfoCardWrapper } from '@/components/login/info-card';
 

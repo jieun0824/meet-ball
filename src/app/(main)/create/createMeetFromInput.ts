@@ -1,17 +1,17 @@
 'use server';
 
-import { redirect } from 'next/navigation';
-import { updateMeet } from '@/controllers/meet';
-import { validateString } from '@/lib/validation';
+import { Meet, MeetType } from '@prisma/client';
+import { createMeet } from '@/controllers/meet';
+import { validateMeetMode, validateString } from '@/lib/validation';
 
-export default async function handleSubmit(formData: FormData) {
-  const meetId = formData.get('meetId')?.toString();
-  if (!meetId) throw new Error('meetId is not provided');
-
+export default async function createMeetFromInput(formData: FormData): Promise<Meet> {
   const meetName = formData.get('meetName')?.toString();
   if (!validateString(meetName)) throw new Error('이름을 입력하세요.');
 
   const meetDescription = formData.get('meetDescription')?.toString();
+
+  const meetMode = formData.get('meetMode')?.toString() as MeetType;
+  if (!validateMeetMode(meetMode)) throw new Error();
 
   const confirmDate = new Date(formData.get('confirmDate')!.toString());
   confirmDate.setHours(parseInt(formData.get('confirmHour')!.toString()));
@@ -25,18 +25,23 @@ export default async function handleSubmit(formData: FormData) {
 
   if (startTime >= endTime) throw new Error('회의 시간을 확인하세요.');
 
+  const meetSelections = formData.get('meetSelections')?.toString().split(',');
+  if (!meetSelections || meetSelections.length === 0)
+    throw new Error('날짜를 선택해주세요.');
+
   const meetPassword = formData.get('meetPassword')?.toString();
 
   try {
-    const updatedMeet = await updateMeet(meetId, {
+    return await createMeet({
       name: meetName,
       description: meetDescription,
+      meetType: meetMode,
       startTime,
       endTime,
+      datesOrDays: meetSelections,
       confirmTime: confirmDate,
       password: meetPassword,
     });
-    redirect(`/meet/${updatedMeet.id}/`);
   } catch (error) {
     console.error(error);
     throw error;

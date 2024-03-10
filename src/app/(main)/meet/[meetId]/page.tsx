@@ -8,7 +8,6 @@ import {
 } from '@/controllers/meet';
 import { redirect } from 'next/navigation';
 import EditMeetButton from '../_component/EditMeetButton';
-import ParticipantsButton from '../_component/ParticipantsButton';
 import MeetDescription from '../_component/MeetDescription';
 import ShareLinkButton from '../_component/ShareLinkButton';
 import { getCurrentUser } from '@/lib/authentication';
