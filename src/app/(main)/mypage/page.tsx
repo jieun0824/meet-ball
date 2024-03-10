@@ -57,7 +57,7 @@ function ManagingMeetsPanel({
   return (
     <div className="space-y-4">
       {managingMeets.map(meet => (
-        <MainCard key={meet.id} meetInfo={meet} isMyMeet={true} />
+        <MainCard key={meet.id} meet={meet} isMyMeet={true} />
       ))}
     </div>
   );
@@ -75,7 +75,7 @@ function ParticipatingMeetsPanel({
       {participatingMeets.map(
         meet =>
           meet.managerId != myId && (
-            <MainCard key={meet.id} meetInfo={meet} isMyMeet={false} />
+            <MainCard key={meet.id} meet={meet} isMyMeet={false} />
           )
       )}
     </div>

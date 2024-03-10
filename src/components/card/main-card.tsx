@@ -1,11 +1,12 @@
 'use client';
 import EditMeetButton from '@/app/(main)/meet/EditMeetButton';
-import { ClockIcon, MoreIcon, PeopleIcon } from '@/components/icon';
+import { ClockIcon, MoreIcon } from '@/components/icon';
 import { Meet } from '@prisma/client';
 import { useState } from 'react';
 import DeleteButton from '../button/delete-button';
 import { cn } from '@/lib/utils';
 import { FaCalendarCheck as CalendarIcon } from 'react-icons/fa';
+import Link from 'next/link';
 function Modal({ meetId }: { meetId: string }) {
   return (
     <div className="bg-cardColor z-100 p-4 w-28 rounded-md absolute bottom-14 -left-8 transition-opacity">
@@ -42,11 +43,11 @@ function MoreButton({ meetId }: { meetId: string }) {
 }
 
 export default function MainCard({
-  meetInfo,
+  meet,
   isMyMeet,
   className,
 }: {
-  meetInfo: Meet;
+  meet: Meet;
   isMyMeet?: boolean;
   className?: string;
 }) {
@@ -57,21 +58,21 @@ export default function MainCard({
     else return `${hour}:${minuteString} AM`;
   }
 
-  let confirmedTime = '';
+  let confirmedTimeString = '';
   if (
-    meetInfo.confirmedTimeTable != null &&
-    Object.keys(meetInfo.confirmedTimeTable).length != 0
+    meet.confirmedTimeTable != null &&
+    Object.keys(meet.confirmedTimeTable).length != 0
   ) {
-    Object.keys(meetInfo.confirmedTimeTable).forEach(date => {
-      if (meetInfo.confirmedTimeTable[date].length != 0) {
-        confirmedTime += `${date}/ `;
-        const length = meetInfo.confirmedTimeTable[date].length;
-        meetInfo.confirmedTimeTable[date].forEach(
+    Object.keys(meet.confirmedTimeTable).forEach(date => {
+      if (meet.confirmedTimeTable[date].length != 0) {
+        confirmedTimeString += `${date}/ `;
+        const length = meet.confirmedTimeTable[date].length;
+        meet.confirmedTimeTable[date].forEach(
           (time: number, index: number) => {
             if (index == 0)
-              confirmedTime += `${timeIntegerToTimeString(time)} -`;
+              confirmedTimeString += `${timeIntegerToTimeString(time)} -`;
             if (index == length - 1)
-              confirmedTime += ` ${timeIntegerToTimeString(time)}\n`;
+              confirmedTimeString += ` ${timeIntegerToTimeString(time)}\n`;
           }
         );
       }
@@ -87,23 +88,23 @@ export default function MainCard({
     >
       <div>
         <div className="flex justify-between items-center mb-3">
-          <h1 className="text-lg font-semibold">{meetInfo.name}</h1>
-          {isMyMeet && <MoreButton meetId={meetInfo.id} />}
+          <Link href={`/meet/${meet.id}`}><h1 className="text-lg font-semibold">{meet.name}</h1></Link>
+          {isMyMeet && <MoreButton meetId={meet.id} />}
         </div>
-        <h3 className="mb-2">{meetInfo.description}</h3>
+        <h3 className="mb-2">{meet.description}</h3>
         <div>
           <div className="flex items-center whitespace-pre-line text-sm">
-            {confirmedTime != '' ? (
+            {confirmedTimeString != '' ? (
               //when meeting is confirmed
               <>
                 <CalendarIcon className="mr-1" size={15} />
-                <span>{confirmedTime}</span>
+                <span>{confirmedTimeString}</span>
               </>
             ) : (
               //when meeting is not confirmed
               <>
                 <ClockIcon className="mr-1" size={15} />
-                <span>{`${timeIntegerToTimeString(meetInfo.startTime)} - ${timeIntegerToTimeString(meetInfo.endTime)}`}</span>
+                <span>{`${timeIntegerToTimeString(meet.startTime)} - ${timeIntegerToTimeString(meet.endTime)}`}</span>
               </>
             )}
           </div>

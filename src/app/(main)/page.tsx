@@ -5,7 +5,6 @@ import {
   getMyParticipatingMeets,
 } from '@/controllers/meet';
 import { getCurrentUser } from '@/lib/authentication';
-import Link from 'next/link';
 
 export default async function MainPage() {
   let myManagingMeets, myParticipatingMeets;
@@ -25,33 +24,25 @@ export default async function MainPage() {
         {myManagingMeets ? (
           <div className="my-10">
             <div className="mb-[20px]">최근 생성 이벤트</div>
-            <Link
-              href={`/meet/${myManagingMeets[myManagingMeets.length - 1].id}`}
-            >
-              <MainCard
-                meetInfo={myManagingMeets[myManagingMeets.length - 1]}
-                isMyMeet={
-                  myManagingMeets[myManagingMeets.length - 1].managerId ===
-                  currentUser?.id
-                }
-              />
-            </Link>
+            <MainCard
+              meet={myManagingMeets[myManagingMeets.length - 1]}
+              isMyMeet={
+                myManagingMeets[myManagingMeets.length - 1].managerId ===
+                currentUser?.id
+              }
+            />
           </div>
         ) : null}
         {myParticipatingMeets ? (
           <div className="my-10">
             <div className="mb-[20px]">최근 참여 이벤트</div>
-            <Link
-              href={`/meet/${myParticipatingMeets[myParticipatingMeets.length - 1].id}`}
-            >
-              <MainCard
-                meetInfo={myParticipatingMeets[myParticipatingMeets.length - 1]}
-                isMyMeet={
-                  myParticipatingMeets[myParticipatingMeets.length - 1]
-                    .managerId === currentUser?.id
-                }
-              />
-            </Link>
+            <MainCard
+              meet={myParticipatingMeets[myParticipatingMeets.length - 1]}
+              isMyMeet={
+                myParticipatingMeets[myParticipatingMeets.length - 1]
+                  .managerId === currentUser?.id
+              }
+            />
           </div>
         ) : null}
       </div>
