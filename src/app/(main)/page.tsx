@@ -4,6 +4,7 @@ import {
   getMyManagingMeets,
   getMyParticipatingMeets,
 } from '@/controllers/meet';
+import { getCurrentUser } from '@/lib/authentication';
 import Link from 'next/link';
 
 export default async function MainPage() {
@@ -14,6 +15,8 @@ export default async function MainPage() {
   } catch (error) {
     console.log(error);
   }
+
+  const currentUser = await getCurrentUser();
 
   return (
     <div className="flex mobile:flex-col items-center mobile:px-4 laptop:px-10 laptop:justify-evenly laptop:gap-10 desktop:justify-evenly">
@@ -27,6 +30,10 @@ export default async function MainPage() {
             >
               <MainCard
                 meetInfo={myManagingMeets[myManagingMeets.length - 1]}
+                isMyMeet={
+                  myManagingMeets[myManagingMeets.length - 1].managerId ===
+                  currentUser?.id
+                }
               />
             </Link>
           </div>
@@ -39,6 +46,10 @@ export default async function MainPage() {
             >
               <MainCard
                 meetInfo={myParticipatingMeets[myParticipatingMeets.length - 1]}
+                isMyMeet={
+                  myParticipatingMeets[myParticipatingMeets.length - 1]
+                    .managerId === currentUser?.id
+                }
               />
             </Link>
           </div>

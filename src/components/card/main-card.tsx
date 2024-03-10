@@ -3,10 +3,7 @@ import EditMeetButton from '@/app/(main)/meet/EditMeetButton';
 import { ClockIcon, MoreIcon, PeopleIcon } from '@/components/icon';
 import { Meet } from '@prisma/client';
 import { useState } from 'react';
-import { createPortal } from 'react-dom';
 import DeleteButton from '../button/delete-button';
-import { create } from 'domain';
-
 function Modal({ meetId }: { meetId: string }) {
   return (
     <div className="bg-cardColor z-100 p-4 w-28 rounded-md absolute bottom-14 -left-8 transition-opacity">
@@ -42,7 +39,13 @@ function MoreButton({ meetId }: { meetId: string }) {
   );
 }
 
-export default function MainCard({ meetInfo }: { meetInfo: Meet }) {
+export default function MainCard({
+  meetInfo,
+  isMyMeet,
+}: {
+  meetInfo: Meet;
+  isMyMeet: boolean;
+}) {
   function timeIntegerToTimeString(time: number) {
     const hour = Math.floor(time / 2);
     const minuteString = ((time % 2) * 30).toString().padStart(2, '0');
@@ -56,7 +59,7 @@ export default function MainCard({ meetInfo }: { meetInfo: Meet }) {
     >
       <div className="flex justify-between items-center mb-3">
         <h1 className="text-lg font-semibold">{meetInfo.name}</h1>
-        <MoreButton meetId={meetInfo.id} />
+        {isMyMeet && <MoreButton meetId={meetInfo.id} />}
       </div>
       <h3 className="mb-2">{meetInfo.description}</h3>
       <div>
