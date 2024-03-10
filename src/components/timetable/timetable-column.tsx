@@ -34,7 +34,7 @@ function TimeTableCell({
       }}
       onMouseOver={() => setHoverData(participants)}
       className={`h-[20px] cursor-pointer border-white ${timeIndex % 2 === 0 ? 'border-t-[0.3px]' : ''}
-      ${previousOpacity === 0 && opacity != 0 && 'rounded-t-lg'} ${nextOpacity === 0 && opacity != 0 && 'rounded-b-lg'} `}
+      ${previousOpacity === 0 && !isNaN(opacity) && opacity != 0 ? 'rounded-t-lg' : ''} ${nextOpacity === 0 && !isNaN(opacity) && opacity !== 0 ? 'rounded-b-lg' : ''} `}
     ></div>
   );
 }
