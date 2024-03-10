@@ -24,14 +24,13 @@ export default async function createMeetFromInput(formData: FormData) {
   let endTime = parseInt(formData.get('meetEndHour')!.toString()) * 2;
   if (formData.get('meetEndMinute')!.toString() === '30') endTime += 1;
 
-  const meetSelections = formData
-    .get('meetSelections')
-    ?.toString()
-    .split(',');
+  if (startTime >= endTime) throw new Error('회의 시간을 확인하세요.');
+
+  const meetSelections = formData.get('meetSelections')?.toString().split(',');
   if (!meetSelections || meetSelections.length === 0)
     throw new Error('날짜를 선택해주세요.');
 
-  const meetPassword = formData.get('password')?.toString();
+  const meetPassword = formData.get('meetPassword')?.toString();
 
   try {
     const createdMeet = await createMeet({

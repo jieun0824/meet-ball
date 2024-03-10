@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client';
-import type { ParticipantsOnMeets } from '@prisma/client';
 import type CombinedTimeTable from '@/types/CombinedTimeTable';
 import TimeTableComponent from '@/components/timeTable/timetable';
 import {
@@ -11,7 +10,7 @@ import { redirect } from 'next/navigation';
 import EditMeetButton from '../EditMeetButton';
 import ParticipantsButton from '../ParticipantsButton';
 import MeetDescription from '../MeetDescription';
-import { IoShareSocial as ShareButton } from 'react-icons/io5';
+import ShareLinkButton from '../ShareLinkButton';
 import { getCurrentUser } from '@/lib/authentication';
 import TimeTable from '@/types/TimeTable';
 
@@ -66,6 +65,7 @@ export default async function MeetPage({
     <div className="pb-8 px-20">
       <div className="flex items-center w-full">
         <p className="text-xl mt-3 grow">{meet.name}</p>
+        <ShareLinkButton meetId={params.meetId} />
         <EditMeetButton meetId={params.meetId} />
       </div>
       <MeetDescription description={meet.description} />
