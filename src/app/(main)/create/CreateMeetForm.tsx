@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { validateMeetMode } from '@/lib/validation';
@@ -15,6 +15,7 @@ import {
 import { SubmitButton } from '@/components/meet-form/SubmitButton';
 import type FormState from '@/types/FormState';
 import { initialFormState } from '@/types/FormState';
+import LoadingOverlay from '@/components/LoadingOverlay';
 
 type ExtendedFormState = FormState & {
   meetId: string | null;
@@ -50,6 +51,7 @@ export default function MeetForm() {
     clientAction,
     extendedInitialFormState
   );
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     // extract data from localStorage
     const selection = localStorage.getItem('selection');
@@ -81,9 +83,10 @@ export default function MeetForm() {
       alert(error);
       router.push('/');
     }
-  });
+  }, []);
   useEffect(() => {
     if (formState.state === 'success') {
+      setIsLoading(true);
       localStorage.removeItem('selection'); // remove selection after successful creation
       router.push(`/meet/${formState.meetId}`);
     } else if (formState.state === 'error') {
@@ -91,15 +94,18 @@ export default function MeetForm() {
     }
   }, [formState]);
   return (
-    <form action={formAction} className="grid text-white place-items-center">
-      <input type="hidden" readOnly name="meetMode"></input>
-      <input type="hidden" readOnly name="meetSelections"></input>
-      <MeetNameInput />
-      <MeetDescriptionInput />
-      <MeetTimeInput />
-      <ConfirmTimeInput />
-      <MeetPasswordInput />
-      <SubmitButton />
-    </form>
+    <>
+      {isLoading && <LoadingOverlay />}
+      <form action={formAction} className="grid text-white place-items-center">
+        <input type="hidden" readOnly name="meetMode"></input>
+        <input type="hidden" readOnly name="meetSelections"></input>
+        <MeetNameInput />
+        <MeetDescriptionInput />
+        <MeetTimeInput />
+        <ConfirmTimeInput />
+        <MeetPasswordInput />
+        <SubmitButton />
+      </form>
+    </>
   );
 }
