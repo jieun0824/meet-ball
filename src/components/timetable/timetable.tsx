@@ -1,7 +1,10 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TimeTableColumn from '@/components/timeTable/timetable-column';
 import type CombinedTimeTable from '@/types/CombinedTimeTable';
+import Button from '../button/button';
+import TimeTable from '@/types/TimeTable';
+import { Meet } from '@prisma/client';
 
 type TimeTableComponentProps = {
   startTime: number;
@@ -10,7 +13,10 @@ type TimeTableComponentProps = {
   type: 'DAYS' | 'DATES';
   timetable: CombinedTimeTable;
   participantsNum: number;
+  isManager: boolean;
+  confirmedTimeTable: Meet['confirmedTimeTable'];
 };
+type confirmMode = 'edit' | 'view';
 
 export default function TimeTableComponent({
   startTime,
@@ -19,12 +25,19 @@ export default function TimeTableComponent({
   type,
   timetable,
   participantsNum,
+  isManager,
+  confirmedTimeTable,
 }: TimeTableComponentProps) {
+  const timeTableRef = useRef(confirmedTimeTable);
   const timeList = Array.from(
     { length: endTime - startTime + 1 },
     (_, index) => startTime + index
   );
   const [hoverData, setHoverData] = useState<string[]>([]);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  useEffect(() => {
+    console.log(hoverData);
+  }, [hoverData]);
 
   type gridColumnsType = {
     [key: number]: string;
@@ -41,43 +54,55 @@ export default function TimeTableComponent({
   };
 
   return (
-    <div className="flex mobile:flex-col justify-center items-start mobile:items-center text-xs mt-16 mb-16">
-      <div className={gridSetList[datesOrDays.length % 7]}>
-        <div className="flex flex-col items-end">
-          <div className="min-h-[30px] mr-2 -mt-2">
-            {/* <p>week</p> */}
+    <>
+      {isManager && (
+        <div className="flex justify-end">
+          <Button
+            title={`${editMode ? '저장하기' : '스케줄 확정'}`}
+            className="cursor-pointer bg-white my-4 text-sm hover:bg-cardColor hover:text-white active:bg-cardColor active:text-white"
+            onClick={() => setEditMode(!editMode)}
+          />
+        </div>
+      )}
+      <div className="flex mobile:flex-col justify-center items-start mobile:items-center text-xs mt-16 mb-16">
+        <div className={gridSetList[datesOrDays.length % 7]}>
+          <div className="flex flex-col items-end">
+            <div className="min-h-[30px] mr-2 -mt-2">{/* <p>week</p> */}</div>
+            {timeList.map((time: number) => (
+              <div key={time} className="min-h-[20px] mr-2">
+                {time % 2 === 0 ? (
+                  <p className="text-xs">{`${Math.floor(time / 2)}:00`}</p>
+                ) : time === startTime || time === endTime ? (
+                  <p className="text-xs">{`${Math.floor(time / 2)}:30`}</p>
+                ) : null}
+              </div>
+            ))}
           </div>
-          {timeList.map((time: number) => (
-            <div key={time} className="min-h-[20px] mr-2">
-              {time % 2 === 0 ? (
-                <p className="text-xs">{`${Math.floor(time / 2)}:00`}</p>
-              ) : time === startTime || time === endTime ? (
-                <p className="text-xs">{`${Math.floor(time / 2)}:30`}</p>
-              ) : null}
-            </div>
+          {datesOrDays.map((date: string) => (
+            <TimeTableColumn
+              key={date}
+              date={date}
+              startTime={startTime}
+              endTime={endTime}
+              type={type}
+              dateTimetable={timetable[date]}
+              colIdx={datesOrDays.indexOf(date)}
+              setHoverData={(data: string[]) => setHoverData(data)}
+              isManager={isManager}
+              confirmedTimeTable={timeTableRef}
+              editMode={editMode}
+            />
           ))}
         </div>
-        {datesOrDays.map((date: string) => (
-          <TimeTableColumn
-            key={date}
-            date={date}
-            startTime={startTime}
-            endTime={endTime}
-            type={type}
-            dateTimetable={timetable[date]}
-            colIdx={datesOrDays.indexOf(date)}
-            setHoverData={(data: string[]) => setHoverData(data)}
-          />
-        ))}
+        <div className="bg-cardColor w-3/4 rounded-lg p-6 mt-8 text-[16px] flex flex-col gap-4 m-10">
+          <p>
+            응답자: {hoverData.length}/{participantsNum}
+          </p>
+          {hoverData.map((data, i) => (
+            <p key={i}>{data}</p>
+          ))}
+        </div>
       </div>
-      <div className="bg-cardColor w-3/4 rounded-lg p-6 mt-8 text-[16px] flex flex-col gap-4 m-10">
-        <p>
-          응답자: {hoverData.length}/{participantsNum}
-        </p>
-        {hoverData.map((data, i) => (
-          <p key={i}>{data}</p>
-        ))}
-      </div>
-    </div>
+    </>
   );
 }

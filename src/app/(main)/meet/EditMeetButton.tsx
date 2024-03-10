@@ -4,7 +4,7 @@ import { GearIcon } from '@/components/icon';
 export default function EditMeetButton({ meetId }: { meetId: string }) {
   return (
     <Link href={`/edit/${meetId}`}>
-      <GearIcon />
+      <GearIcon size={18} />
     </Link>
   );
 }

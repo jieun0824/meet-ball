@@ -11,6 +11,8 @@ import EditMeetButton from '../EditMeetButton';
 import ParticipantsButton from '../ParticipantsButton';
 import MeetDescription from '../MeetDescription';
 import ShareLinkButton from '../ShareLinkButton';
+import { getCurrentUser } from '@/lib/authentication';
+import TimeTable from '@/types/TimeTable';
 
 export default async function MeetPage({
   params,
@@ -33,19 +35,31 @@ export default async function MeetPage({
   }
 
   const meet = await getMeetWithParticipants(params.meetId);
+  const currentUser = await getCurrentUser();
 
-  // combine timetables of all participants
-  const combinedTimeTable: CombinedTimeTable = {};
-  for (const key of meet.datesOrDays) {
-    combinedTimeTable[key] = {};
-  }
-  for (const participant of meet.participants) {
-    const userId = participant.userId;
-    const currentTimeTable = participant.timeTable as Prisma.JsonObject;
-    for (const key in currentTimeTable) {
-      combinedTimeTable[key][userId] = currentTimeTable[key] as number[];
+  function combineTimeTables(participants: ParticipantsOnMeets[]) {
+    const combinedTimeTable: CombinedTimeTable = {};
+    for (const key of meet.datesOrDays) {
+      combinedTimeTable[key] = {};
     }
+
+    for (const participant of participants) {
+      const userId = participant.userId;
+      const currentTimeTable = participant.timeTable as Prisma.JsonObject;
+      for (const key in currentTimeTable) {
+        combinedTimeTable[key][userId] = currentTimeTable[key] as number[];
+      }
+    }
+
+    return combinedTimeTable;
   }
+
+  const combinedTimeTable = combineTimeTables(meet.participants);
+
+  //mockData
+  const confirmedTimeTable: TimeTable = {
+    '2024-02-12': [18, 19, 20],
+  };
 
   return (
     <div className="pb-8 px-20">
@@ -53,7 +67,6 @@ export default async function MeetPage({
         <p className="text-xl mt-3 grow">{meet.name}</p>
         <ShareLinkButton meetId={params.meetId} />
         <EditMeetButton meetId={params.meetId} />
-        <ParticipantsButton meetId={params.meetId} />
       </div>
       <MeetDescription description={meet.description} />
       <TimeTableComponent
@@ -63,6 +76,8 @@ export default async function MeetPage({
         type={meet.meetType}
         timetable={combinedTimeTable}
         participantsNum={meet.participants.length}
+        isManager={currentUser.id === meet.managerId}
+        confirmedTimeTable={confirmedTimeTable}
       />
     </div>
   );
