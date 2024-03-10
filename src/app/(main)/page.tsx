@@ -26,14 +26,7 @@ export default async function MainPage() {
               href={`/meet/${myManagingMeets[myManagingMeets.length - 1].id}`}
             >
               <MainCard
-                meetName={myManagingMeets[myManagingMeets.length - 1].name}
-                description={
-                  myManagingMeets[myManagingMeets.length - 1].description
-                }
-                startTime={
-                  myManagingMeets[myManagingMeets.length - 1].startTime
-                }
-                endTime={myManagingMeets[myManagingMeets.length - 1].endTime}
+                meetInfo={myManagingMeets[myManagingMeets.length - 1]}
               />
             </Link>
           </div>
@@ -45,20 +38,7 @@ export default async function MainPage() {
               href={`/meet/${myParticipatingMeets[myParticipatingMeets.length - 1].id}`}
             >
               <MainCard
-                meetName={
-                  myParticipatingMeets[myParticipatingMeets.length - 1].name
-                }
-                description={
-                  myParticipatingMeets[myParticipatingMeets.length - 1]
-                    .description
-                }
-                startTime={
-                  myParticipatingMeets[myParticipatingMeets.length - 1]
-                    .startTime
-                }
-                endTime={
-                  myParticipatingMeets[myParticipatingMeets.length - 1].endTime
-                }
+                meetInfo={myParticipatingMeets[myParticipatingMeets.length - 1]}
               />
             </Link>
           </div>
