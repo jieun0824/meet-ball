@@ -2,7 +2,7 @@
 
 import type { Meet } from '@prisma/client';
 import { validateString } from '@/lib/validation';
-import handleSubmit from './editMeetFormAction';
+import editMeetFromInput from './editMeetFromInput';
 import {
   MeetNameInput,
   MeetDescriptionInput,
@@ -16,7 +16,7 @@ async function clientAction(formData: FormData) {
   if (!validateString(meetName)) alert('이름을 입력하세요.');
   // TODO: more validation for update
 
-  await handleSubmit(formData);
+  await editMeetFromInput(formData);
 }
 
 export default function EditForm({ meet }: { meet: Meet }) {
