@@ -1,4 +1,4 @@
-import { ParticipantsOnMeets, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import type CombinedTimeTable from '@/types/CombinedTimeTable';
 import TimeTableComponent from '@/components/timeTable/timetable';
 import {
@@ -11,7 +11,6 @@ import EditMeetButton from '../_component/EditMeetButton';
 import MeetDescription from '../_component/MeetDescription';
 import ShareLinkButton from '../_component/ShareLinkButton';
 import { getCurrentUser } from '@/lib/authentication';
-import TimeTable from '@/types/TimeTable';
 
 export default async function MeetPage({
   params,

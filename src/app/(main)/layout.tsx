@@ -3,8 +3,7 @@ import Link from 'next/link';
 
 export default function Layout({
   children,
-  modal,
-}: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
       <header className="relative flex justify-around items-center top-0 left-0 w-dvw h-14 bg-[#1E1E1E] shadow-2xl">
@@ -31,7 +30,6 @@ export default function Layout({
           </Link>
         </div>
       </header>
-      {modal}
       <div className="w-dvw bg-bgColor">{children}</div>
     </>
   );

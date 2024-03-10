@@ -1,7 +1,6 @@
 'use client';
 import TimeTable from '@/types/TimeTable';
-import { Meet } from '@prisma/client';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 type dateParticipantsType = {
   [name: string]: Array<number>;

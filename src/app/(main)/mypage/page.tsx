@@ -48,10 +48,8 @@ function LogoutButton() {
 
 function ManagingMeetsPanel({
   managingMeets,
-  myId,
 }: {
   managingMeets: Meet[];
-  myId: string;
 }) {
   return (
     <div className="space-y-4">
@@ -100,7 +98,6 @@ export default async function MyPage() {
           <ManagingMeetsPanel
             key={0}
             managingMeets={myManagingMeets}
-            myId={myInfo.id}
           />,
           <ParticipatingMeetsPanel
             key={1}
