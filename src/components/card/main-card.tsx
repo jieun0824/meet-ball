@@ -1,5 +1,5 @@
 'use client';
-import EditMeetButton from '@/app/(main)/meet/EditMeetButton';
+import EditMeetButton from '@/app/(main)/meet/_component/EditMeetButton';
 import { ClockIcon, MoreIcon, PeopleIcon } from '@/components/icon';
 import { Meet } from '@prisma/client';
 import { useState } from 'react';
