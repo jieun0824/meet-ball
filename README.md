@@ -1,8 +1,14 @@
 # MeetBall
 
+<figcaption>[PC version]</figcaption>
 <img width="1257" alt="image" src="https://github.com/gwonhong/meet-ball/assets/75533669/43bb7cfa-b6f5-447a-8f87-8120eaf25b64">
 
 <img width="1259" alt="image" src="https://github.com/gwonhong/meet-ball/assets/75533669/2a5ec211-d603-445f-a0a0-d44838defcea">
+
+<figcaption>[Mobile version]</figcaption>
+<p align="center">
+<img width="50%" alt="image" src="https://github.com/gwonhong/meet-ball/assets/86359553/ab5c86cb-8668-48cf-8d52-3b0e96f2026d"><img width="50%" alt="image" src="https://github.com/gwonhong/meet-ball/assets/86359553/bdef232b-72ed-4315-8406-a9d6bc570d90">
+</p>
 
 ## 소개
 
