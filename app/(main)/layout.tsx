@@ -30,7 +30,7 @@ export default function Layout({
           </Link>
         </div>
       </header>
-      <div className="w-dvw bg-bgColor">{children}</div>
+      <div className="flex flex-col">{children}</div>
     </>
   );
 }
