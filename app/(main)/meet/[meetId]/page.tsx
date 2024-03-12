@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import type CombinedTimeTable from '../../../../types/CombinedTimeTable';
-import TimeTableComponent from '../../../../components/timeTable/timetable';
+import TimeTableComponent from './_component/timetable';
 import {
   getMeet,
   getMeetWithParticipants,

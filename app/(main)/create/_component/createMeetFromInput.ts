@@ -1,10 +1,12 @@
 'use server';
 
 import { Meet, MeetType } from '@prisma/client';
-import { createMeet } from '../../../controllers/meet';
-import { validateMeetMode, validateString } from '../../../lib/validation';
+import { createMeet } from '../../../../controllers/meet';
+import { validateMeetMode, validateString } from '../../../../lib/validation';
 
-export default async function createMeetFromInput(formData: FormData): Promise<Meet> {
+export default async function createMeetFromInput(
+  formData: FormData
+): Promise<Meet> {
   const meetName = formData.get('meetName')?.toString();
   if (!validateString(meetName)) throw new Error('이름을 입력하세요.');
 

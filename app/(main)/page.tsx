@@ -1,4 +1,4 @@
-import DatesSelector from '../../components/calendar/dates-selector';
+import DatesSelector from './_component/calendar/dates-selector';
 import MainCard from '../../components/card/main-card';
 import {
   getMyManagingMeets,
