@@ -86,7 +86,7 @@ export default function MainCard({
     <div
       className={cn(
         className,
-        `border-[0.5px] border-pointColor p-8 w-80 rounded-2xl shadow-2xl cursor-pointer hover:shadow-white/15 hover:shadow-lg -z-10`
+        `border-[0.5px] border-pointColor p-8 rounded-2xl shadow-2xl cursor-pointer hover:shadow-white/15 hover:shadow-lg -z-10`
       )}
     >
       <div>

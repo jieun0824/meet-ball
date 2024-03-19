@@ -48,7 +48,7 @@ function LogoutButton() {
 
 function ManagingMeetsPanel({ managingMeets }: { managingMeets: Meet[] }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       {managingMeets.map(meet => (
         <MainCard key={meet.id} meet={meet} isMyMeet={true} />
       ))}
@@ -64,7 +64,7 @@ function ParticipatingMeetsPanel({
   myId: string;
 }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       {participatingMeets.map(
         meet =>
           meet.managerId != myId && (

@@ -22,11 +22,11 @@ export default async function MainPage() {
   }
 
   return (
-    <div className="flex mobile:flex-col items-center mobile:px-4 laptop:px-10 laptop:justify-evenly laptop:gap-10 desktop:justify-evenly">
+    <div className="flex mobile:flex-col items-center laptop:justify-evenly gap-10 desktop:justify-evenly">
       <DatesSelector />
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full max-w-[456px]">
         {myManagingMeets ? (
-          <div className="my-10">
+          <div className="my-10 w-full">
             <div className="mb-[20px]">최근 생성 이벤트</div>
             <MainCard
               meet={myManagingMeets[myManagingMeets.length - 1]}

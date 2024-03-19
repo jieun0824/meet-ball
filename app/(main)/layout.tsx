@@ -30,7 +30,7 @@ export default function Layout({
           </Link>
         </div>
       </header>
-      <div className="flex flex-col">{children}</div>
+      <div className="flex flex-col p-4">{children}</div>
     </>
   );
 }
