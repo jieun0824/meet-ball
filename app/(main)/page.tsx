@@ -6,6 +6,12 @@ import {
 } from '../../controllers/meet';
 import { getCurrentUser } from '../../lib/authentication';
 
+function CardWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col w-full max-w-[456px] gap-10">{children}</div>
+  );
+}
+
 export default async function MainPage() {
   let myManagingMeets, myParticipatingMeets;
   try {
@@ -22,34 +28,36 @@ export default async function MainPage() {
   }
 
   return (
-    <div className="flex mobile:flex-col items-center laptop:justify-evenly gap-10 desktop:justify-evenly">
+    <div className="flex mobile:flex-col items-center gap-10 desktop:justify-center laptop:justify-center">
       <DatesSelector />
-      <div className="flex flex-col w-full max-w-[456px]">
-        {myManagingMeets ? (
-          <div className="my-10 w-full">
-            <div className="mb-[20px]">최근 생성 이벤트</div>
-            <MainCard
-              meet={myManagingMeets[myManagingMeets.length - 1]}
-              isMyMeet={
-                myManagingMeets[myManagingMeets.length - 1].managerId ===
-                currentUser?.id
-              }
-            />
-          </div>
-        ) : null}
-        {myParticipatingMeets ? (
-          <div className="my-10">
-            <div className="mb-[20px]">최근 참여 이벤트</div>
-            <MainCard
-              meet={myParticipatingMeets[myParticipatingMeets.length - 1]}
-              isMyMeet={
-                myParticipatingMeets[myParticipatingMeets.length - 1]
-                  .managerId === currentUser?.id
-              }
-            />
-          </div>
-        ) : null}
-      </div>
+      {myManagingMeets || myManagingMeets ? (
+        <CardWrapper>
+          {myManagingMeets ? (
+            <div>
+              <div className="mb-[20px]">최근 생성 이벤트</div>
+              <MainCard
+                meet={myManagingMeets[myManagingMeets.length - 1]}
+                isMyMeet={
+                  myManagingMeets[myManagingMeets.length - 1].managerId ===
+                  currentUser?.id
+                }
+              />
+            </div>
+          ) : null}
+          {myParticipatingMeets ? (
+            <div>
+              <div className="mb-[20px]">최근 참여 이벤트</div>
+              <MainCard
+                meet={myParticipatingMeets[myParticipatingMeets.length - 1]}
+                isMyMeet={
+                  myParticipatingMeets[myParticipatingMeets.length - 1]
+                    .managerId === currentUser?.id
+                }
+              />
+            </div>
+          ) : null}
+        </CardWrapper>
+      ) : null}
     </div>
   );
 }

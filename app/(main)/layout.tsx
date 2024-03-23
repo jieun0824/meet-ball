@@ -6,7 +6,7 @@ export default function Layout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
-      <header className="relative flex justify-around items-center top-0 left-0 w-dvw h-14 bg-[#1E1E1E] shadow-2xl">
+      <header className="relative flex justify-around items-center top-0 left-0 w-dvw h-14 shadow-2xl">
         <div className="relative w-2/5 h-full mr-[40%]">
           <Link href="/">
             <Image
