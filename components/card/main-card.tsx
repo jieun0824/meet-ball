@@ -8,24 +8,6 @@ import { FaCalendarCheck as CalendarIcon } from 'react-icons/fa';
 import Link from 'next/link';
 import TimeTable from '../../types/TimeTable';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-function Modal({ meetId }: { meetId: string }) {
-  return (
-    <div className="bg-cardColor z-100 p-4 w-28 rounded-md absolute bottom-14 -left-8 transition-opacity">
-      <div className="flex gap-1">
-        <DeleteButton meetId={meetId} />
-        <span className="text-sm">삭제하기</span>
-      </div>
-      <div className="flex gap-1">
-        <EditMeetButton meetId={meetId} />
-        <span className="text-sm">수정하기</span>
-      </div>
-      <div
-        className="w-[30px] h-[30px] bg-cardColor absolute rotate-[315deg] rounded-[4px] left-1/3
-          "
-      ></div>
-    </div>
-  );
-}
 
 function MoreButton({ meetId }: { meetId: string }) {
   return (

@@ -27,7 +27,7 @@ export default async function MainPage() {
     <div className="flex mobile:flex-col items-center mobile:px-4 laptop:px-10 laptop:justify-evenly laptop:gap-10 desktop:justify-evenly">
       <DatesSelector />
       <div className="flex flex-col">
-        {myManagingMeets ? (
+        {myManagingMeets && myManagingMeets.length != 0 ? (
           <div className="my-10">
             <div className="mb-[20px]">최근 생성 이벤트</div>
             <MainCard
@@ -39,7 +39,7 @@ export default async function MainPage() {
             />
           </div>
         ) : null}
-        {myParticipatingMeets ? (
+        {myParticipatingMeets && myParticipatingMeets.length != 0 ? (
           <div className="my-10">
             <div className="mb-[20px]">최근 참여 이벤트</div>
             <MainCard
