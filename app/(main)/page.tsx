@@ -36,6 +36,7 @@ export default async function MainPage() {
                 myManagingMeets[myManagingMeets.length - 1].managerId ===
                 currentUser?.id
               }
+              pathName="/"
             />
           </div>
         ) : null}
@@ -48,6 +49,7 @@ export default async function MainPage() {
                 myParticipatingMeets[myParticipatingMeets.length - 1]
                   .managerId === currentUser?.id
               }
+              pathName="/"
             />
           </div>
         ) : null}

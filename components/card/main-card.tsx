@@ -9,7 +9,13 @@ import Link from 'next/link';
 import TimeTable from '../../types/TimeTable';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
-function MoreButton({ meetId }: { meetId: string }) {
+function MoreButton({
+  meetId,
+  pathName,
+}: {
+  meetId: string;
+  pathName: string;
+}) {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -17,7 +23,7 @@ function MoreButton({ meetId }: { meetId: string }) {
       </PopoverTrigger>
       <PopoverContent className="w-28 !bg-bgColor">
         <div className="flex gap-1">
-          <DeleteButton meetId={meetId} />
+          <DeleteButton meetId={meetId} pathName={pathName} />
           <span className="text-sm">삭제하기</span>
         </div>
         <div className="flex gap-1">
@@ -37,10 +43,12 @@ export default function MainCard({
   meet,
   isMyMeet,
   className,
+  pathName,
 }: {
   meet: Meet;
   isMyMeet?: boolean;
   className?: string;
+  pathName: string;
 }) {
   function timeIntegerToTimeString(time: number) {
     const hour = Math.floor(time / 2);
@@ -84,7 +92,7 @@ export default function MainCard({
           <Link href={`/meet/${meet.id}`}>
             <h1 className="text-lg font-semibold">{meet.name}</h1>
           </Link>
-          {isMyMeet && <MoreButton meetId={meet.id} />}
+          {isMyMeet && <MoreButton meetId={meet.id} pathName={pathName} />}
         </div>
         <h3 className="mb-2">{meet.description}</h3>
         <div>

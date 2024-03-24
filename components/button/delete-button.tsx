@@ -3,11 +3,17 @@ import { revalidatePath } from 'next/cache';
 import { deleteMeet } from '../../controllers/meet';
 import { MdDelete as DeleteIcon } from 'react-icons/md';
 
-export default function DeleteButton({ meetId }: { meetId: string }) {
+export default function DeleteButton({
+  meetId,
+  pathName,
+}: {
+  meetId: string;
+  pathName: string;
+}) {
   return (
     <div
       onClick={async () => {
-        await deleteMeet(meetId);
+        await deleteMeet(meetId, pathName);
       }}
     >
       <DeleteIcon size={20} />

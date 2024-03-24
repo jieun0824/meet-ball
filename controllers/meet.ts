@@ -5,7 +5,7 @@ import type MeetWithParticipants from '../types/MeetWithParticipants';
 import type TimeTable from '../types/TimeTable';
 import prisma from '../lib/prisma';
 import { getCurrentUser } from '../lib/authentication';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 // get current user's managing meets
 export async function getMyManagingMeets(): Promise<Meet[]> {
@@ -162,7 +162,10 @@ export async function updateMeet(
   }
 }
 
-export async function deleteMeet(meetId: string): Promise<Meet> {
+export async function deleteMeet(
+  meetId: string,
+  pathName: string
+): Promise<Meet> {
   const currentUser = await getCurrentUser();
   try {
     const meet = await prisma.meet.delete({
@@ -171,6 +174,7 @@ export async function deleteMeet(meetId: string): Promise<Meet> {
         managerId: currentUser.id, // only authorized for manager
       },
     });
+    revalidatePath(pathName);
     return meet;
   } catch (error) {
     console.error(error);
