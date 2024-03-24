@@ -76,6 +76,8 @@ export async function createMeet(params: CreateMeetParams): Promise<Meet> {
         },
       },
     });
+    revalidatePath('/');
+    revalidatePath('/mypage');
     return meet;
   } catch (error) {
     console.error(error);

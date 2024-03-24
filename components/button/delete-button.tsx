@@ -15,6 +15,7 @@ export default function DeleteButton({
       onClick={async () => {
         await deleteMeet(meetId, pathName);
       }}
+      className="cursor-pointer"
     >
       <DeleteIcon size={20} />
     </div>
