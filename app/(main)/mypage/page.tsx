@@ -10,6 +10,8 @@ import {
 import PanelLayout from './_component/PanelLayout';
 import MainCard from '../../../components/card/main-card';
 
+export const dynamic = 'force-dynamic';
+
 function ProfileIcon({ src }: { src: string }) {
   return (
     <img
@@ -46,11 +48,7 @@ function LogoutButton() {
   );
 }
 
-function ManagingMeetsPanel({
-  managingMeets,
-}: {
-  managingMeets: Meet[];
-}) {
+function ManagingMeetsPanel({ managingMeets }: { managingMeets: Meet[] }) {
   return (
     <div className="space-y-4">
       {managingMeets.map(meet => (
@@ -95,10 +93,7 @@ export default async function MyPage() {
       <PanelLayout
         titles={['생성한 미트볼', '참여중인 미트볼']}
         panels={[
-          <ManagingMeetsPanel
-            key={0}
-            managingMeets={myManagingMeets}
-          />,
+          <ManagingMeetsPanel key={0} managingMeets={myManagingMeets} />,
           <ParticipatingMeetsPanel
             key={1}
             participatingMeets={myParticipatingMeets}

@@ -6,6 +6,8 @@ import {
 } from '../../controllers/meet';
 import { getCurrentUser } from '../../lib/authentication';
 
+export const dynamic = 'force-dynamic'; //force dynamic rendering(request -> render)
+
 export default async function MainPage() {
   let myManagingMeets, myParticipatingMeets;
   try {

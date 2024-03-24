@@ -5,6 +5,7 @@ import type MeetWithParticipants from '../types/MeetWithParticipants';
 import type TimeTable from '../types/TimeTable';
 import prisma from '../lib/prisma';
 import { getCurrentUser } from '../lib/authentication';
+import { revalidateTag } from 'next/cache';
 
 // get current user's managing meets
 export async function getMyManagingMeets(): Promise<Meet[]> {
