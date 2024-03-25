@@ -1,12 +1,12 @@
 'use client';
 
-import type FormState from '../../../../../../types/FormState';
+import type FormState from '@/types/FormState';
 import { useFormState } from 'react-dom';
 import participateMeetAction from './participateMeetAction';
 import { useEffect, useState } from 'react';
-import LoadingOverlay from '../../../../../../components/LoadingOverlay';
+import LoadingOverlay from '@/components/LoadingOverlay';
 import { useRouter } from 'next/navigation';
-import { SubmitButton } from '../../../../../../components/meet-form/SubmitButton';
+import { SubmitButton } from '@/components/meet-form/SubmitButton';
 
 async function clientAction(
   prevState: FormState,

@@ -30,7 +30,7 @@ export default function RootLayout({
           'bg-bgColor text-white'
         )}
       >
-        <div className="w-dvw h-dvh bg-bgColor p-2">{children}</div>
+        {children}
       </body>
     </html>
   );

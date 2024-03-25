@@ -1,10 +1,10 @@
 'use client';
 
-import useCarousel from '../../hooks/useCarousel';
-import InfoCard from './info-card';
+import useCarousel from '@/hooks/useCarousel';
+import InfoCard from '@/components/card/info-card';
 import Image from 'next/image';
 import { signIn, signOut } from 'next-auth/react';
-import CarouselIndex from '../carousel-index';
+import CarouselIndex from '@/components/carousel-index';
 import { Session } from 'next-auth';
 
 export default function InfoCarousel({ session }: { session: Session | null }) {

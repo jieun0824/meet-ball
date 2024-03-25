@@ -1,10 +1,10 @@
 'use client';
 import { useRef } from 'react';
-import Button from '../button/button';
+import Button from '@/components/button/button';
 import TimeTableEditorColumn from './timetable-editor-column';
 import { useParams, useRouter } from 'next/navigation';
-import { updateTimeTable } from '../../controllers/meet';
-import TimeTable from '../../types/TimeTable';
+import { updateTimeTable } from '@/controllers/meet';
+import TimeTable from '@/types/TimeTable';
 
 type TimeTableEditorProps = {
   startTime: number;

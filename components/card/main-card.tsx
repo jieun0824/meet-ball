@@ -1,9 +1,9 @@
-import EditMeetButton from '../../app/(main)/meet/_component/EditMeetButton';
+import EditMeetButton from '@/app/(main)/meet/_component/EditMeetButton';
 import { ClockIcon, MoreIcon } from '../icon';
 import { Meet } from '@prisma/client';
 import { useState } from 'react';
 import DeleteButton from '../button/delete-button';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils';
 import { FaCalendarCheck as CalendarIcon } from 'react-icons/fa';
 import Link from 'next/link';
 import TimeTable from '../../types/TimeTable';
@@ -84,7 +84,7 @@ export default function MainCard({
     <div
       className={cn(
         className,
-        `border-[0.5px] border-pointColor p-8 w-80 rounded-2xl shadow-2xl cursor-pointer hover:shadow-white/15 hover:shadow-lg -z-10`
+        `border-[0.5px] border-pointColor p-8 rounded-2xl shadow-2xl cursor-pointer hover:shadow-white/15 hover:shadow-lg -z-10`
       )}
     >
       <div>

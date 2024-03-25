@@ -1,6 +1,6 @@
-import { getMeet } from '../../../../../controllers/meet';
+import { getMeet } from '@/controllers/meet';
 import ParticipateForm from './_component/ParticipateForm';
-import { InfoCardWrapper } from '../../../../../components/login/info-card';
+import { InfoCardWrapper } from '@/components/card/info-card';
 
 export default async function ParticipateMeetPage({
   params,
