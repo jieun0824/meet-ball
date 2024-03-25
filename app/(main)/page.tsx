@@ -12,6 +12,8 @@ function CardWrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
+export const dynamic = 'force-dynamic'; //force dynamic rendering(request -> render)
+
 export default async function MainPage() {
   let myManagingMeets, myParticipatingMeets;
   try {
@@ -32,7 +34,7 @@ export default async function MainPage() {
       <DatesSelector />
       {myManagingMeets || myManagingMeets ? (
         <CardWrapper>
-          {myManagingMeets ? (
+          {myManagingMeets && myManagingMeets.length != 0 ? (
             <div>
               <div className="mb-[20px]">최근 생성 이벤트</div>
               <MainCard
@@ -44,7 +46,7 @@ export default async function MainPage() {
               />
             </div>
           ) : null}
-          {myParticipatingMeets ? (
+          {myParticipatingMeets && myParticipatingMeets.length !=0  ? (
             <div>
               <div className="mb-[20px]">최근 참여 이벤트</div>
               <MainCard

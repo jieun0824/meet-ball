@@ -10,6 +10,8 @@ import {
 import PanelLayout from './_component/PanelLayout';
 import MainCard from '@/components/card/main-card';
 
+export const dynamic = 'force-dynamic';
+
 function ProfileIcon({ src }: { src: string }) {
   return (
     <img
@@ -50,7 +52,12 @@ function ManagingMeetsPanel({ managingMeets }: { managingMeets: Meet[] }) {
   return (
     <div className="space-y-4 w-full">
       {managingMeets.map(meet => (
-        <MainCard key={meet.id} meet={meet} isMyMeet={true} />
+        <MainCard
+          key={meet.id}
+          meet={meet}
+          isMyMeet={true}
+          pathName="/mypage"
+        />
       ))}
     </div>
   );
@@ -68,7 +75,12 @@ function ParticipatingMeetsPanel({
       {participatingMeets.map(
         meet =>
           meet.managerId != myId && (
-            <MainCard key={meet.id} meet={meet} isMyMeet={false} />
+            <MainCard
+              key={meet.id}
+              meet={meet}
+              isMyMeet={false}
+              pathName="/mypage"
+            />
           )
       )}
     </div>
