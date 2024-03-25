@@ -1,12 +1,12 @@
 'use client';
 import { useRef, useState } from 'react';
 import TimeTableColumn from './timetable-column';
-import type CombinedTimeTable from '../../../../../types/CombinedTimeTable';
-import Button from '../../../../../components/button/button';
+import type CombinedTimeTable from '@/types/CombinedTimeTable';
+import Button from '@/components/button/button';
 import { Meet } from '@prisma/client';
-import { updateConfirmedTimeTable } from '../../../../../controllers/meet';
+import { updateConfirmedTimeTable } from '@/controllers/meet';
 import Link from 'next/link';
-import TimeTable from '../../../../../types/TimeTable';
+import TimeTable from '@/types/TimeTable';
 
 type TimeTableComponentProps = {
   startTime: number;

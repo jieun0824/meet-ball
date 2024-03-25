@@ -2,7 +2,7 @@ import TimeTableEditor from './_component/timetable-editor';
 import {
   getMeetWithParticipants,
   getMyTimeTable,
-} from '../../../../../controllers/meet';
+} from '@/controllers/meet';
 import MeetDescription from '../../_component/MeetDescription';
 
 export default async function EditTimetablePage({

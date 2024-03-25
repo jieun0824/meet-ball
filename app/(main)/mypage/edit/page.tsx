@@ -1,4 +1,4 @@
-import { getCurrentUser } from '../../../../lib/authentication';
+import { getCurrentUser } from '@/lib/authentication';
 import EditProfileForm from './_component/EditProfileForm';
 
 export default async function EditProfilePage() {

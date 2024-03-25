@@ -1,7 +1,7 @@
 'use server';
 
-import { updateMeet } from '../../../../../controllers/meet';
-import { validateString } from '../../../../../lib/validation';
+import { updateMeet } from '@/controllers/meet';
+import { validateString } from '@/lib/validation';
 
 export default async function handleSubmit(formData: FormData) {
   const meetId = formData.get('meetId')?.toString();

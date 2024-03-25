@@ -1,10 +1,10 @@
 import DatesSelector from './_component/dates-selector';
-import MainCard from '../../components/card/main-card';
+import MainCard from '@/components/card/main-card';
 import {
   getMyManagingMeets,
   getMyParticipatingMeets,
-} from '../../controllers/meet';
-import { getCurrentUser } from '../../lib/authentication';
+} from '@/controllers/meet';
+import { getCurrentUser } from '@/lib/authentication';
 
 function CardWrapper({ children }: { children: React.ReactNode }) {
   return (

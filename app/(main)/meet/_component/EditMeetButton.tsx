@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { GearIcon } from '../../../../components/icon';
+import { GearIcon } from '@/components/icon';
 
 export default function EditMeetButton({ meetId }: { meetId: string }) {
   return (

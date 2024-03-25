@@ -1,13 +1,13 @@
 'use client';
-import EditMeetButton from '../../app/(main)/meet/_component/EditMeetButton';
+import EditMeetButton from '@/app/(main)/meet/_component/EditMeetButton';
 import { ClockIcon, MoreIcon } from '../icon';
 import { Meet } from '@prisma/client';
 import { useState } from 'react';
 import DeleteButton from '../button/delete-button';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils';
 import { FaCalendarCheck as CalendarIcon } from 'react-icons/fa';
 import Link from 'next/link';
-import TimeTable from '../../types/TimeTable';
+import TimeTable from '@/types/TimeTable';
 function Modal({ meetId }: { meetId: string }) {
   return (
     <div className="bg-cardColor z-100 p-4 w-28 rounded-md absolute bottom-14 -left-8 transition-opacity">

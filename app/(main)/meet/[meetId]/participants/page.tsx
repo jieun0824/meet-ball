@@ -1,6 +1,6 @@
 // import AddParticipantForm from './AddParticipantForm';
-import { getMeetWithParticipants } from '../../../../../controllers/meet';
-import { getUsersByUserIds } from '../../../../../controllers/user';
+import { getMeetWithParticipants } from '@/controllers/meet';
+import { getUsersByUserIds } from '@/controllers/user';
 import Link from 'next/link';
 
 export default async function MeetParticipantsPage({

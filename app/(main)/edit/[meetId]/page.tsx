@@ -1,5 +1,5 @@
 import EditForm from './_component/EditMeetForm';
-import { getMeet } from '../../../../controllers/meet';
+import { getMeet } from '@/controllers/meet';
 
 export default async function EditMeetPage({
   params,

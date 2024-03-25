@@ -2,13 +2,13 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import type { Meet } from '@prisma/client';
-import { getMyInfo } from '../../../controllers/user';
+import { getMyInfo } from '@/controllers/user';
 import {
   getMyManagingMeets,
   getMyParticipatingMeets,
-} from '../../../controllers/meet';
+} from '@/controllers/meet';
 import PanelLayout from './_component/PanelLayout';
-import MainCard from '../../../components/card/main-card';
+import MainCard from '@/components/card/main-card';
 
 function ProfileIcon({ src }: { src: string }) {
   return (

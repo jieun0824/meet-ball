@@ -11,11 +11,11 @@ import {
   MeetTimeInput,
   ConfirmTimeInput,
   MeetPasswordInput,
-} from '../../../../../components/meet-form/inputs';
-import { SubmitButton } from '../../../../../components/meet-form/SubmitButton';
-import type FormState from '../../../../../types/FormState';
-import { initialFormState } from '../../../../../types/FormState';
-import LoadingOverlay from '../../../../../components/LoadingOverlay';
+} from '@/components/meet-form/inputs';
+import { SubmitButton } from '@/components/meet-form/SubmitButton';
+import type FormState from '@/types/FormState';
+import { initialFormState } from '@/types/FormState';
+import LoadingOverlay from '@/components/LoadingOverlay';
 
 type ExtendedFormState = FormState & {
   meetId: string | null;
