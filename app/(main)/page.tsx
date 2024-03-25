@@ -28,7 +28,7 @@ export default async function MainPage() {
   }
 
   return (
-    <div className="flex mobile:flex-col items-center gap-10 desktop:justify-center laptop:justify-center">
+    <div className="w-full flex mobile:flex-col items-center gap-10 desktop:justify-center laptop:justify-center">
       <DatesSelector />
       {myManagingMeets || myManagingMeets ? (
         <CardWrapper>
