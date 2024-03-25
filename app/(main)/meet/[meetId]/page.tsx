@@ -43,7 +43,7 @@ export default async function MeetPage({
   }
 
   return (
-    <div className="pb-8 w-3/4">
+    <>
       <div className="flex items-center w-full">
         <p className="text-xl mt-3 grow">{meet.name}</p>
         <ShareLinkButton meetId={params.meetId} />
@@ -61,6 +61,6 @@ export default async function MeetPage({
         confirmedTimeTable={meet.confirmedTimeTable || {}}
         meetId={params.meetId}
       />
-    </div>
+    </>
   );
 }

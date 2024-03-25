@@ -16,7 +16,7 @@ export default async function EditTimetablePage({
     if (!(key in userTimeTable)) userTimeTable[key] = [];
 
   return (
-    <div className="pb-8 px-20">
+    <>
       <p className="text-xl mt-3 w-full">{meet.name}</p>
       <MeetDescription description={meet.description} />
       <TimeTableEditor
@@ -26,6 +26,6 @@ export default async function EditTimetablePage({
         type={meet.meetType}
         timeTable={userTimeTable}
       />
-    </div>
+    </>
   );
 }
