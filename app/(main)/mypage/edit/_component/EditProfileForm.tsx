@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import editProfileFormAction from './editProfileFormAction';
-import type FormState from '../../../../../types/FormState';
-import { initialFormState } from '../../../../../types/FormState';
-import { SubmitButton } from '../../../../../components/meet-form/SubmitButton';
-import LoadingOverlay from '../../../../../components/LoadingOverlay';
+import type FormState from '@/types/FormState';
+import { initialFormState } from '@/types/FormState';
+import { SubmitButton } from '@/components/meet-form/SubmitButton';
+import LoadingOverlay from '@/components/LoadingOverlay';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';

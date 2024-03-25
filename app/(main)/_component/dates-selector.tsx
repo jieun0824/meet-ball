@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import useMultiSelect from '../../hooks/useMultiSelect';
-import Button from '../button/button';
+import useMultiSelect from '@/hooks/useMultiSelect';
+import Button from '@/components/button/button';
 import { Calendar, WeekCalendar } from './calendar';
 import { MeetType } from '@prisma/client';
 import { useRouter } from 'next/navigation';

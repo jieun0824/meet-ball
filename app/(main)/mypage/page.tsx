@@ -2,13 +2,13 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import type { Meet } from '@prisma/client';
-import { getMyInfo } from '../../../controllers/user';
+import { getMyInfo } from '@/controllers/user';
 import {
   getMyManagingMeets,
   getMyParticipatingMeets,
-} from '../../../controllers/meet';
+} from '@/controllers/meet';
 import PanelLayout from './_component/PanelLayout';
-import MainCard from '../../../components/card/main-card';
+import MainCard from '@/components/card/main-card';
 
 function ProfileIcon({ src }: { src: string }) {
   return (
@@ -46,13 +46,9 @@ function LogoutButton() {
   );
 }
 
-function ManagingMeetsPanel({
-  managingMeets,
-}: {
-  managingMeets: Meet[];
-}) {
+function ManagingMeetsPanel({ managingMeets }: { managingMeets: Meet[] }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       {managingMeets.map(meet => (
         <MainCard key={meet.id} meet={meet} isMyMeet={true} />
       ))}
@@ -68,7 +64,7 @@ function ParticipatingMeetsPanel({
   myId: string;
 }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       {participatingMeets.map(
         meet =>
           meet.managerId != myId && (
@@ -88,17 +84,14 @@ export default async function MyPage() {
   const myManagingMeets = await getMyManagingMeets();
   const myParticipatingMeets = await getMyParticipatingMeets();
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col justify-center items-center">
       <ProfileIcon src={myInfo.image ?? ''} />
       <UserName name={myInfo.name ?? ''} />
       <EditProfileButton />
       <PanelLayout
         titles={['생성한 미트볼', '참여중인 미트볼']}
         panels={[
-          <ManagingMeetsPanel
-            key={0}
-            managingMeets={myManagingMeets}
-          />,
+          <ManagingMeetsPanel key={0} managingMeets={myManagingMeets} />,
           <ParticipatingMeetsPanel
             key={1}
             participatingMeets={myParticipatingMeets}

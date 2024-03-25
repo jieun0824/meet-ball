@@ -1,6 +1,6 @@
 'use client';
 
-import { ShareIcon } from '../../../../components/icon';
+import { ShareIcon } from '@/components/icon';
 
 async function copyToClipboard(text: string) {
   try {

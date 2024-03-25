@@ -1,5 +1,5 @@
 'use client';
-import TimeTable from '../../types/TimeTable';
+import TimeTable from '@/types/TimeTable';
 import { useRef, useState } from 'react';
 
 type dateParticipantsType = {

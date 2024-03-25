@@ -1,4 +1,4 @@
-import { ClockIcon, MoreIcon, PeopleIcon } from '../../../../components/icon';
+import { ClockIcon, MoreIcon, PeopleIcon } from '@/components/icon';
 import Link from 'next/link';
 
 type mainCardProps = {

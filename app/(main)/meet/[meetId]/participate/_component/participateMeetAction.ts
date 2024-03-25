@@ -1,6 +1,6 @@
 'use server';
 
-import { participateMeet } from '../../../../../../controllers/meet';
+import { participateMeet } from '@/controllers/meet';
 import { Prisma } from '@prisma/client';
 import { redirect } from 'next/navigation';
 

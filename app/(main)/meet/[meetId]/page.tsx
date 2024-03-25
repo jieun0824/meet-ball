@@ -1,16 +1,16 @@
 import { Prisma } from '@prisma/client';
-import type CombinedTimeTable from '../../../../types/CombinedTimeTable';
-import TimeTableComponent from '../../../../components/timeTable/timetable';
+import type CombinedTimeTable from '@/types/CombinedTimeTable';
+import TimeTableComponent from './_component/timetable';
 import {
   getMeet,
   getMeetWithParticipants,
   getMyParticipatingMeets,
-} from '../../../../controllers/meet';
+} from '@/controllers/meet';
 import { redirect } from 'next/navigation';
 import EditMeetButton from '../_component/EditMeetButton';
 import MeetDescription from '../_component/MeetDescription';
 import ShareLinkButton from '../_component/ShareLinkButton';
-import { getCurrentUser } from '../../../../lib/authentication';
+import { getCurrentUser } from '@/lib/authentication';
 
 export default async function MeetPage({
   params,
@@ -43,7 +43,7 @@ export default async function MeetPage({
   }
 
   return (
-    <div className="pb-8 px-20">
+    <>
       <div className="flex items-center w-full">
         <p className="text-xl mt-3 grow">{meet.name}</p>
         <ShareLinkButton meetId={params.meetId} />
@@ -61,6 +61,6 @@ export default async function MeetPage({
         confirmedTimeTable={meet.confirmedTimeTable || {}}
         meetId={params.meetId}
       />
-    </div>
+    </>
   );
 }
