@@ -1,7 +1,7 @@
 'use client';
 
 import useCarousel from '@/hooks/useCarousel';
-import InfoCard from './info-card';
+import InfoCard from '@/components/card/info-card';
 import Image from 'next/image';
 import { signIn, signOut } from 'next-auth/react';
 import CarouselIndex from '@/components/carousel-index';
