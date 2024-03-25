@@ -1,7 +1,21 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { getMyInfo } from '@/controllers/user';
 
-export default function Header() {
+function ProfileIcon({ src }: { src: string }) {
+  return (
+    <img
+      src={src}
+      alt="profile icon"
+      width={35}
+      height={35}
+      className="rounded-full"
+    />
+  );
+}
+
+export default async function Header() {
+  const myInfo = await getMyInfo();
   return (
     <header className="z-10 w-full h-14 shadow-2xl px-4 flex justify-center">
       <div className="w-full max-w-6xl h-full flex justify-between items-center">
@@ -15,14 +29,20 @@ export default function Header() {
             priority={true}
           />
         </Link>
-        <Link href="/mypage">
-          <Image
-            src="/icon/profile.svg"
-            alt="profile logo"
-            width={35}
-            height={35}
-          />
-        </Link>
+        {myInfo ? (
+          <Link href="/mypage">
+            <ProfileIcon src={myInfo.image ?? ''} />
+          </Link>
+        ) : (
+          <Link href="/login">
+            <Image
+              src="/icon/profile.svg"
+              alt="profile logo"
+              width={35}
+              height={35}
+            />
+          </Link>
+        )}
       </div>
     </header>
   );
