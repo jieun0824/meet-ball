@@ -63,7 +63,7 @@ type WeekDaysProps = {
 function WeekCalendar({ selectedDays, handleSelectedDays }: WeekDaysProps) {
   const days = ['월', '화', '수', '목', '금', '토', '일'];
   return (
-    <div className="bg-cardColor p-6 rounded-lg flex mt-8 justify-evenly">
+    <div className="bg-cardColor p-6 rounded-lg flex mt-8 justify-evenly bg-opacity-60 w-full">
       {days.map((day, i) => (
         <div key={i} className="" onClick={() => handleSelectedDays(day)}>
           <div

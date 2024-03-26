@@ -89,7 +89,7 @@ export default function MainCard({
   }
 
   return (
-    <Card className="relative border-none !bg-opacity-30 hover:scale-[0.98] transition">
+    <Card className="relative !bg-opacity-30 !bg-cardColor/5 hover:scale-[0.98] transition !border-cardColor">
       <Link href={`/meet/${meet.id}`}>
         <CardHeader>
           <CardTitle>{meet.name}</CardTitle>
