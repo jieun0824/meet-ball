@@ -1,34 +1,20 @@
 'use client';
-
-import useCarousel from '@/hooks/useCarousel';
-import InfoCard from '@/components/card/info-card';
+import InfoCard from '@/app/login/_component/info-card';
 import Image from 'next/image';
 import { signIn, signOut } from 'next-auth/react';
-import CarouselIndex from '@/components/carousel-index';
+import Autoplay from 'embla-carousel-autoplay';
 import { Session } from 'next-auth';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
+import { Button } from '@/components/ui/button';
 
-export default function InfoCarousel({ session }: { session: Session | null }) {
-  const { currentSlide, onMouseDown, onMouseUp, cardRef } = useCarousel(
-    3,
-    320,
-    true
-  );
+function GoogleLoginBtn({ session }: { session: Session | null }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-6 h-full">
-      <div className="flex flex-col items-center mb-6">
-        <Image src="/icon/logo.svg" alt="logo" width={200} height={100} />
-        <div className="mt-8 w-72 relative overflow-hidden flex h-full">
-          <div
-            className="grid grid-cols-3 gap-80 font-semibold "
-            onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp}
-            ref={cardRef}
-          >
-            <InfoCard />
-          </div>
-        </div>
-        <CarouselIndex currentSlide={currentSlide} />
-      </div>
+    <>
       {session == undefined ? (
         <button
           onClick={() => signIn('google', { callbackUrl: '/' })}
@@ -52,6 +38,29 @@ export default function InfoCarousel({ session }: { session: Session | null }) {
           <div className="text-black font-roboto">로그아웃</div>
         </button>
       )}
+    </>
+  );
+}
+
+export default function InfoCarousel({ session }: { session: Session | null }) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-10 h-full">
+      <div className="flex flex-col items-center mb-6 justify-center">
+        <Image src="/icon/logo.svg" alt="logo" width={200} height={100} />
+        <Carousel
+          plugins={[
+            Autoplay({
+              delay: 6000,
+            }),
+          ]}
+          className="relative"
+        >
+          <CarouselContent>
+            <InfoCard />
+          </CarouselContent>
+        </Carousel>
+      </div>
+      <GoogleLoginBtn session={session} />
     </div>
   );
 }

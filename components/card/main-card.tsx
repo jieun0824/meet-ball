@@ -8,6 +8,14 @@ import { FaCalendarCheck as CalendarIcon } from 'react-icons/fa';
 import Link from 'next/link';
 import TimeTable from '../../types/TimeTable';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../ui/card';
 
 function MoreButton({
   meetId,
@@ -18,10 +26,10 @@ function MoreButton({
 }) {
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild className="absolute right-5 top-8 cursor-pointer">
         <MoreIcon size={24} />
       </PopoverTrigger>
-      <PopoverContent className="w-28 !bg-bgColor">
+      <PopoverContent className="w-28 !bg-opacity-20 border-none">
         <div className="flex gap-1">
           <DeleteButton meetId={meetId} pathName={pathName} />
           <span className="text-sm">삭제하기</span>
@@ -81,42 +89,34 @@ export default function MainCard({
   }
 
   return (
-    <div
-      className={cn(
-        className,
-        `border-[0.5px] border-pointColor p-8 rounded-2xl shadow-2xl cursor-pointer hover:shadow-white/15 hover:shadow-lg -z-10`
-      )}
-    >
-      <div>
-        <div className="flex justify-between items-center mb-3">
-          <Link href={`/meet/${meet.id}`}>
-            <h1 className="text-lg font-semibold">{meet.name}</h1>
-          </Link>
-          {isMyMeet && <MoreButton meetId={meet.id} pathName={pathName} />}
-        </div>
-        <h3 className="mb-2">{meet.description}</h3>
-        <div>
-          <div className="flex items-center whitespace-pre-line text-sm">
-            {confirmedTimeString != '' ? (
-              //when meeting is confirmed
-              <>
-                <CalendarIcon className="mr-1" size={15} />
-                <span>{confirmedTimeString}</span>
-              </>
-            ) : (
-              //when meeting is not confirmed
-              <>
-                <ClockIcon className="mr-1" size={15} />
-                <span>{`${timeIntegerToTimeString(meet.startTime)} - ${timeIntegerToTimeString(meet.endTime)}`}</span>
-              </>
-            )}
-          </div>
-          {/* <div className="flex items-center">
-          <PeopleIcon color="black" className="mr-1" />
-          {participants.join(', ')}
-        </div> */}
-        </div>
-      </div>
-    </div>
+    <Card className="relative !bg-opacity-30 !bg-cardColor/5 hover:scale-[0.98] transition !border-cardColor">
+      <Link href={`/meet/${meet.id}`}>
+        <CardHeader>
+          <CardTitle>{meet.name}</CardTitle>
+          <CardDescription>{meet.description}</CardDescription>
+        </CardHeader>
+      </Link>
+      {isMyMeet && <MoreButton meetId={meet.id} pathName={pathName} />}
+      <CardContent>
+        {confirmedTimeString != '' ? (
+          //when meeting is confirmed
+          <p className="flex gap-1 items-center">
+            <CalendarIcon className="mr-1" size={15} />
+            <span>{confirmedTimeString}</span>
+          </p>
+        ) : (
+          //when meeting is not confirmed
+          <p className="flex gap-1 items-center">
+            <ClockIcon className="mr-1" size={15} />
+            <span>{`${timeIntegerToTimeString(meet.startTime)} - ${timeIntegerToTimeString(meet.endTime)}`}</span>
+          </p>
+        )}
+      </CardContent>
+      <CardFooter>
+        {/* <p className="flex items-center">
+      <PeopleIcon color="black" className="mr-1" />
+      {meet.participants.join(', ')}</p> */}
+      </CardFooter>
+    </Card>
   );
 }
