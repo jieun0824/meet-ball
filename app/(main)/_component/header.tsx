@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { getMyInfo } from '@/controllers/user';
+import { auth } from '@/auth';
 
 function ProfileIcon({ src }: { src: string }) {
   return (
@@ -15,7 +16,11 @@ function ProfileIcon({ src }: { src: string }) {
 }
 
 export default async function Header() {
-  const myInfo = await getMyInfo();
+  const session = await auth();
+  let myInfo = null;
+  if (session) {
+    myInfo = await getMyInfo();
+  }
   return (
     <header className="z-10 w-full h-14 shadow-2xl px-4 flex justify-center">
       <div className="w-full max-w-6xl h-full flex justify-between items-center">

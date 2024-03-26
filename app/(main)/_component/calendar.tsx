@@ -18,7 +18,7 @@ function Calendar({
       showOutsideDays={showOutsideDays}
       className={cn(
         'p-4 border-none relative flex w-full',
-        'before:absolute before:inset-0 before:top-16 before:bg-cardColor before:rounded-xl before:shadow-lg',
+        'before:absolute before:inset-0 before:top-16 before:bg-cardColor before:rounded-xl before:shadow-lg before:bg-opacity-60',
         className
       )}
       classNames={{
